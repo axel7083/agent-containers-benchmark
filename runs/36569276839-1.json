@@ -4,7 +4,7 @@
  "n_planned": 225,
  "run_id": "36569276839-1",
  "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36569276839",
- "created_at": "2026-09-29T15:04:03+00:00",
+ "created_at": "2026-09-29T16:11:40+00:00",
  "dataset_version": 1,
  "harbor_version": "0.23.0",
  "billing": {
@@ -178,6 +178,1030 @@
    "metered_usd": 0.109196,
    "unattributed_usd": 0.000321
   }
+ },
+ "catalog": {
+  "schema_version": 1,
+  "dataset_version": 1,
+  "harbor_version": "0.23.0",
+  "arms": [
+   {
+    "id": "implicit",
+    "summary": "The task's natural request, nothing appended. No practice is named.",
+    "reading": "Baseline behaviour: what the agent does unprompted.",
+    "appended": {
+     "containerfile": ""
+    }
+   },
+   {
+    "id": "nudge",
+    "summary": "One generic sentence appended, naming no specific practice.",
+    "reading": "Gain over implicit = disposition: the model knows the practice but only applies it when reminded.",
+    "appended": {
+     "containerfile": "Follow container best practices (security, reproducibility, image size) in your solution.\n"
+    }
+   },
+   {
+    "id": "explicit",
+    "summary": "Every graded rule appended verbatim.",
+    "reading": "Gain over nudge = missing specific knowledge. Still failing here = the model cannot do it even when told.",
+    "appended": {
+     "containerfile": "Follow these container best practices:\n- Use fully qualified image names (registry/namespace/name) for every base image.\n- Pin base images to an explicit version tag or digest, never `latest` or an implicit tag.\n- Pin base images by `@sha256:` digest.\n- Use a multi-stage build so build tools do not ship in the final image.\n- Keep the final image small (minimal or distroless runtime base).\n- Run the application as a non-root user.\n- Never copy secrets such as `.env` files into the image.\n- Add a `.containerignore` (or `.dockerignore`) to keep secrets, VCS data and local dependencies out of the build context.\n- Install dependencies from the lockfile (`npm ci`, `pip install -r requirements.txt`).\n- Use the exec (JSON) form for CMD/ENTRYPOINT so signals reach the application.\n- Copy dependency manifests and install dependencies before copying the rest of the source.\n- Clean the OS package manager cache in the same layer that installs packages.\n- Declare a HEALTHCHECK for the service.\n- Keep the Containerfile free of hadolint warnings and errors.\n"
+    }
+   }
+  ],
+  "gates": [
+   {
+    "id": "artifact",
+    "title": "Artifact",
+    "description": "A `Containerfile` or `Dockerfile` exists in the app directory."
+   },
+   {
+    "id": "build",
+    "title": "Build",
+    "description": "The grader removes the agent's containers and pods, then rebuilds the file with `podman build --no-cache`. The agent's own images are never trusted."
+   },
+   {
+    "id": "start",
+    "title": "Start",
+    "description": "`podman run -d -p 18080:<port>` starts the image and the container keeps running."
+   },
+   {
+    "id": "probe",
+    "title": "Probe",
+    "description": "An HTTP request to the task's probe path returns the expected status and body within 60 seconds."
+   }
+  ],
+  "failure_classes": {
+   "none": "All gates passed.",
+   "no-artifact": "The agent produced no Containerfile/Dockerfile.",
+   "build": "The rebuild failed.",
+   "start": "The container exited or could not be created.",
+   "probe": "The container runs but the probe never succeeded.",
+   "timeout": "The agent did not finish within the task's time limit (counted as a failure).",
+   "infra": "Infrastructure problem (registry rate limit, disk, grader crash); excluded from scores.",
+   "budget": "The shard's OpenRouter spending cap was hit; excluded from scores.",
+   "no-verdict": "No grader result was produced; excluded from scores."
+  },
+  "families": {
+   "containerfile": {
+    "checks": [
+     {
+      "id": "containerfile-name",
+      "title": "Podman-native file name",
+      "category": "podman-native",
+      "weight": 0.0,
+      "rule": "Name the build file `Containerfile`.",
+      "why": "`Containerfile` is the engine-neutral name Podman and Buildah look for first. `Dockerfile` works just as well, so this is reported for information and never scored.",
+      "how": "Name of the build file the grader found in the app directory.",
+      "accepted": [
+       "Containerfile"
+      ],
+      "not_applicable": "",
+      "informational": true
+     },
+     {
+      "id": "fq-image-names",
+      "title": "Fully qualified image names",
+      "category": "podman-native",
+      "weight": 1.0,
+      "rule": "Use fully qualified image names (registry/namespace/name) for every base image.",
+      "why": "Podman resolves short names such as `node` through `unqualified-search-registries`: depending on the host it may prompt, fail, or pull from an unexpected registry. A registry-qualified name is unambiguous everywhere.",
+      "how": "Every external `FROM` must start with a registry host (a component containing `.` or `:`, or `localhost`).",
+      "accepted": [
+       "registry-qualified reference"
+      ],
+      "not_applicable": "The build uses only `scratch` or earlier stages.",
+      "informational": false
+     },
+     {
+      "id": "base-tag-pinned",
+      "title": "Base image version pinned",
+      "category": "reproducibility",
+      "weight": 1.0,
+      "rule": "Pin base images to an explicit version tag or digest, never `latest` or an implicit tag.",
+      "why": "`latest` (or no tag) silently changes what you build on; an explicit version makes upgrades deliberate.",
+      "how": "No external `FROM` may be untagged or tagged `latest`, unless it carries a digest.",
+      "accepted": [
+       "version tag",
+       "digest"
+      ],
+      "not_applicable": "The build uses only `scratch` or earlier stages.",
+      "informational": false
+     },
+     {
+      "id": "base-digest-pinned",
+      "title": "Base image pinned by digest",
+      "category": "reproducibility",
+      "weight": 1.0,
+      "rule": "Pin base images by `@sha256:` digest.",
+      "why": "Tags can be re-pushed; a digest identifies one exact image, so the same Containerfile always builds on the same bits.",
+      "how": "Every external `FROM` must include `@sha256:`.",
+      "accepted": [
+       "digest"
+      ],
+      "not_applicable": "The build uses only `scratch` or earlier stages.",
+      "informational": false
+     },
+     {
+      "id": "multi-stage",
+      "title": "Multi-stage build",
+      "category": "efficiency",
+      "weight": 1.0,
+      "rule": "Use a multi-stage build so build tools do not ship in the final image.",
+      "why": "Compilers, SDKs and build caches bloat the image and widen its attack surface; a separate runtime stage ships only the output.",
+      "how": "At least two stages, the final stage does not derive from a stage that ran build steps, and it copies artifacts with `COPY --from`.",
+      "accepted": [
+       "builder stage + COPY --from into a clean runtime base"
+      ],
+      "not_applicable": "The app has no build step (the task spec sets `needs_build = false`).",
+      "informational": false
+     },
+     {
+      "id": "final-image-size",
+      "title": "Final image within size budget",
+      "category": "efficiency",
+      "weight": 1.0,
+      "rule": "Keep the final image small (minimal or distroless runtime base).",
+      "why": "Smaller images pull faster, store cheaper and carry fewer packages to patch.",
+      "how": "Size reported by `podman image inspect` for the rebuilt image, against the task's `image_size_mb` budget.",
+      "accepted": [
+       "any base within the task's size budget"
+      ],
+      "not_applicable": "The task defines no size budget.",
+      "informational": false
+     },
+     {
+      "id": "non-root-user",
+      "title": "Runs as non-root",
+      "category": "security",
+      "weight": 1.0,
+      "rule": "Run the application as a non-root user.",
+      "why": "A process running as root in the container turns any application bug into root inside the container.",
+      "how": "UIDs of the running container's processes (`podman top <ctr> huid`); falls back to the image `User` when the container did not start.",
+      "accepted": [
+       "USER with a non-zero uid",
+       "base image whose default user is non-root"
+      ],
+      "not_applicable": "",
+      "informational": false
+     },
+     {
+      "id": "no-secret-in-image",
+      "title": "No secret baked into the image",
+      "category": "security",
+      "weight": 1.0,
+      "rule": "Never copy secrets such as `.env` files into the image.",
+      "why": "Anything copied into a layer is readable by whoever can pull the image, even if a later layer deletes it.",
+      "how": "Each task app contains a `.env` with a unique canary value. The grader searches the image filesystem and `podman history` for it.",
+      "accepted": [
+       "ignore file",
+       "explicit COPY of only the needed files"
+      ],
+      "not_applicable": "The task plants no secret.",
+      "informational": false
+     },
+     {
+      "id": "ignore-file",
+      "title": "Build context ignore file",
+      "category": "security",
+      "weight": 1.0,
+      "rule": "Add a `.containerignore` (or `.dockerignore`) to keep secrets, VCS data and local dependencies out of the build context.",
+      "why": "Without an ignore file, `COPY . .` sends and copies everything: secrets, `.git`, local `node_modules`.",
+      "how": "A non-empty `.containerignore` or `.dockerignore` next to the Containerfile.",
+      "accepted": [
+       ".containerignore",
+       ".dockerignore"
+      ],
+      "not_applicable": "",
+      "informational": false
+     },
+     {
+      "id": "deterministic-deps",
+      "title": "Dependencies installed from the lockfile",
+      "category": "reproducibility",
+      "weight": 1.0,
+      "rule": "Install dependencies from the lockfile (`npm ci`, `pip install -r requirements.txt`).",
+      "why": "`npm install` may rewrite the lockfile and resolve different versions; `npm ci` installs exactly what was locked.",
+      "how": "Node with `package-lock.json`: a `RUN` using `npm ci`. Python: `pip install -r requirements\u2026`, `uv sync` or `poetry install`.",
+      "accepted": [
+       "npm ci",
+       "pip install -r",
+       "uv sync",
+       "poetry install"
+      ],
+      "not_applicable": "No lockfile, no dependency install step, or a language without one.",
+      "informational": false
+     },
+     {
+      "id": "exec-form-entrypoint",
+      "title": "Exec-form CMD / ENTRYPOINT",
+      "category": "maintainability",
+      "weight": 1.0,
+      "rule": "Use the exec (JSON) form for CMD/ENTRYPOINT so signals reach the application.",
+      "why": "The shell form wraps the app in `/bin/sh -c`, which does not forward SIGTERM: `podman stop` then waits and kills it.",
+      "how": "`CMD` and `ENTRYPOINT` of the final stage must be JSON arrays.",
+      "accepted": [
+       "exec form"
+      ],
+      "not_applicable": "The final stage inherits CMD/ENTRYPOINT from its base image.",
+      "informational": false
+     },
+     {
+      "id": "layer-cache-order",
+      "title": "Cache-friendly layer order",
+      "category": "efficiency",
+      "weight": 1.0,
+      "rule": "Copy dependency manifests and install dependencies before copying the rest of the source.",
+      "why": "If the whole source is copied before installing dependencies, every code edit re-downloads all dependencies.",
+      "how": "In the stage that installs dependencies, no whole-context `COPY .` may precede the install `RUN`.",
+      "accepted": [
+       "manifest COPY before source COPY"
+      ],
+      "not_applicable": "No dependency install step, or a language without dependency manifests.",
+      "informational": false
+     },
+     {
+      "id": "pkg-cache-cleaned",
+      "title": "Package manager cache cleaned",
+      "category": "efficiency",
+      "weight": 0.5,
+      "rule": "Clean the OS package manager cache in the same layer that installs packages.",
+      "why": "Package indexes and caches left in a layer add tens of MB that no later layer can remove.",
+      "how": "Every `RUN` in the final stage that installs OS packages also cleans the cache (or uses `--no-cache` / a cache mount).",
+      "accepted": [
+       "dnf clean all",
+       "rm -rf /var/lib/apt/lists/*",
+       "apk --no-cache",
+       "cache mounts"
+      ],
+      "not_applicable": "The final stage installs no OS packages.",
+      "informational": false
+     },
+     {
+      "id": "healthcheck",
+      "title": "HEALTHCHECK declared",
+      "category": "maintainability",
+      "weight": 0.5,
+      "rule": "Declare a HEALTHCHECK for the service.",
+      "why": "Lets the engine report when the service is up but broken. Note: Podman's default OCI image format drops `HEALTHCHECK` unless built with `--format docker`; the evidence says when that happened.",
+      "how": "A `HEALTHCHECK` instruction (other than `NONE`) in the final stage.",
+      "accepted": [
+       "HEALTHCHECK instruction"
+      ],
+      "not_applicable": "",
+      "informational": false
+     },
+     {
+      "id": "hadolint-clean",
+      "title": "hadolint clean",
+      "category": "maintainability",
+      "weight": 1.0,
+      "rule": "Keep the Containerfile free of hadolint warnings and errors.",
+      "why": "hadolint encodes many community Containerfile rules (DLxxxx) and shellcheck findings in `RUN` lines.",
+      "how": "`hadolint --format json` on the Containerfile; no finding of level `warning` or `error`. Failing rule codes are listed in the evidence.",
+      "accepted": [
+       "no hadolint warning/error"
+      ],
+      "not_applicable": "",
+      "informational": false
+     }
+    ]
+   }
+  },
+  "cells": [
+   {
+    "id": "claude-code.haiku-4.5",
+    "harness": "claude-code",
+    "version": "2.1.284",
+    "model": "anthropic/claude-haiku-4.5"
+   },
+   {
+    "id": "codex.gpt-6-luna",
+    "harness": "codex",
+    "version": "0.159.0",
+    "model": "openai/gpt-6-luna"
+   },
+   {
+    "id": "opencode.gpt-6-luna",
+    "harness": "opencode",
+    "version": "1.18.33",
+    "model": "openai/gpt-6-luna"
+   },
+   {
+    "id": "opencode.glm-5.3-flash",
+    "harness": "opencode",
+    "version": "1.18.33",
+    "model": "z-ai/glm-5.3-flash"
+   },
+   {
+    "id": "opencode.deepseek-v4.1-flash",
+    "harness": "opencode",
+    "version": "1.18.33",
+    "model": "deepseek/deepseek-v4.1-flash"
+   }
+  ],
+  "tasks": [
+   {
+    "id": "containerfile-go-api",
+    "family": "containerfile",
+    "metadata": {
+     "family": "containerfile",
+     "language": "go",
+     "difficulty": "medium"
+    },
+    "timeouts": {
+     "agent_sec": 900.0,
+     "verifier_sec": 900.0
+    },
+    "instruction": "The Go HTTP service in `/app` needs to run in a container. Containerize it so it can be built and run with Podman.\n\nThe service listens on port 8080 and answers `GET /health`.\n",
+    "spec": {
+     "language": "go",
+     "port": 8080,
+     "needs_build": true,
+     "probe": {
+      "path": "/health",
+      "expect_status": 200,
+      "expect_body": "ok"
+     },
+     "image_size_mb": 50,
+     "canary_file": ".env"
+    },
+    "files": [
+     {
+      "path": ".env",
+      "size": 30,
+      "content": "API_TOKEN=acb-canary-9d41c6aa\n"
+     },
+     {
+      "path": "go.mod",
+      "size": 35,
+      "content": "module example.com/quotes\n\ngo 1.25\n"
+     },
+     {
+      "path": "main.go",
+      "size": 626,
+      "content": "package main\n\nimport (\n\t\"encoding/json\"\n\t\"log\"\n\t\"net/http\"\n\t\"os\"\n)\n\nvar quotes = []string{\"Simplicity is prerequisite for reliability.\", \"Make it work, make it right, make it fast.\"}\n\nfunc main() {\n\tport := os.Getenv(\"PORT\")\n\tif port == \"\" {\n\t\tport = \"8080\"\n\t}\n\thttp.HandleFunc(\"/health\", func(w http.ResponseWriter, _ *http.Request) {\n\t\tw.Write([]byte(\"ok\"))\n\t})\n\thttp.HandleFunc(\"/quotes\", func(w http.ResponseWriter, _ *http.Request) {\n\t\tw.Header().Set(\"Content-Type\", \"application/json\")\n\t\tjson.NewEncoder(w).Encode(quotes)\n\t})\n\tlog.Printf(\"quotes listening on :%s\", port)\n\tlog.Fatal(http.ListenAndServe(\":\"+port, nil))\n}\n"
+     }
+    ],
+    "oracles": [
+     {
+      "name": "best",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "containerfile-name",
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "multi-stage",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "exec-form-entrypoint",
+         "layer-cache-order",
+         "hadolint-clean"
+        ],
+        "na": [
+         "deterministic-deps",
+         "pkg-cache-cleaned"
+        ],
+        "fail": [
+         "healthcheck"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 10,
+        "content": ".env\n.git\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 444,
+        "content": "FROM docker.io/library/golang:1.25@sha256:699337d620559a59b4a2bb298ad59611e535d2ee755a34cf2d2a98f37578dc80 AS build\nWORKDIR /src\nCOPY go.mod ./\nRUN go mod download\nCOPY main.go ./\nRUN CGO_ENABLED=0 go build -trimpath -ldflags=\"-s -w\" -o /out/quotes .\n\nFROM gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab\nCOPY --from=build /out/quotes /quotes\nEXPOSE 8080\nENTRYPOINT [\"/quotes\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "naive",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "multi-stage",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "exec-form-entrypoint"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "Dockerfile",
+        "size": 72,
+        "content": "FROM golang\nWORKDIR /app\nCOPY . .\nRUN go build -o server .\nCMD ./server\n"
+       }
+      ]
+     },
+     {
+      "name": "nothing",
+      "expect": {
+       "reward": 0,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "ignore-file"
+        ]
+       }
+      },
+      "files": []
+     },
+     {
+      "name": "ubi-minimal",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "multi-stage",
+         "non-root-user",
+         "no-secret-in-image",
+         "exec-form-entrypoint"
+        ],
+        "fail": [
+         "final-image-size"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 5,
+        "content": ".env\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 409,
+        "content": "FROM docker.io/library/golang:1.25@sha256:699337d620559a59b4a2bb298ad59611e535d2ee755a34cf2d2a98f37578dc80 AS build\nWORKDIR /src\nCOPY . .\nRUN CGO_ENABLED=0 go build -o /out/quotes .\n\nFROM registry.access.redhat.com/ubi10/ubi-minimal@sha256:a9f9316ec3a1419a2de6ce4d2d9f034d477e97cdf2a16d6f04b7bd632ac753c4\nCOPY --from=build /out/quotes /usr/local/bin/quotes\nUSER 1001\nEXPOSE 8080\nCMD [\"/usr/local/bin/quotes\"]\n"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "containerfile-node-api",
+    "family": "containerfile",
+    "metadata": {
+     "family": "containerfile",
+     "language": "node",
+     "difficulty": "easy"
+    },
+    "timeouts": {
+     "agent_sec": 900.0,
+     "verifier_sec": 900.0
+    },
+    "instruction": "The Node.js HTTP API in `/app` needs to run in a container. Containerize it so it can be built and run with Podman.\n\nThe API listens on port 8080 and answers `GET /health`.\n",
+    "spec": {
+     "language": "node",
+     "port": 8080,
+     "needs_build": false,
+     "probe": {
+      "path": "/health",
+      "expect_status": 200,
+      "expect_body": "ok"
+     },
+     "image_size_mb": 300,
+     "canary_file": ".env"
+    },
+    "files": [
+     {
+      "path": ".env",
+      "size": 134,
+      "content": "# local development credentials - never commit or ship\nDATABASE_URL=postgres://inventory:acb-canary-7f3a9c1e@localhost:5432/inventory\n"
+     },
+     {
+      "path": "README.md",
+      "size": 92,
+      "content": "# inventory-api\n\nSmall inventory HTTP API.\n\n```sh\nnpm ci\nnpm start   # listens on :8080\n```\n"
+     },
+     {
+      "path": "package-lock.json",
+      "size": 43038,
+      "content": null
+     },
+     {
+      "path": "package.json",
+      "size": 299,
+      "content": "{\n  \"name\": \"inventory-api\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"main\": \"src/server.js\",\n  \"scripts\": {\n    \"start\": \"node src/server.js\",\n    \"test\": \"node --test\"\n  },\n  \"dependencies\": {\n    \"express\": \"5.1.0\"\n  },\n  \"devDependencies\": {\n    \"nodemon\": \"3.1.10\"\n  }\n}\n"
+     },
+     {
+      "path": "src/server.js",
+      "size": 577,
+      "content": "import express from 'express';\n\nconst app = express();\nconst port = Number(process.env.PORT ?? 8080);\nconst items = [\n  { id: 1, name: 'widget', stock: 12 },\n  { id: 2, name: 'gadget', stock: 0 },\n];\n\napp.get('/health', (_req, res) => res.type('text').send('ok'));\napp.get('/items', (_req, res) => res.json(items));\napp.get('/items/:id', (req, res) => {\n  const item = items.find(i => i.id === Number(req.params.id));\n  return item ? res.json(item) : res.status(404).json({ error: 'not found' });\n});\n\napp.listen(port, () => console.log(`inventory-api listening on ${port}`));\n"
+     }
+    ],
+    "oracles": [
+     {
+      "name": "best",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "containerfile-name",
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "layer-cache-order",
+         "healthcheck",
+         "hadolint-clean"
+        ],
+        "na": [
+         "multi-stage",
+         "pkg-cache-cleaned"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 59,
+        "content": "node_modules\n.env\n.git\n*.md\nContainerfile\n.containerignore\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 607,
+        "content": "FROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c AS deps\nWORKDIR /app\nCOPY package.json package-lock.json ./\nRUN npm ci --omit=dev\n\nFROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c\nWORKDIR /app\nENV NODE_ENV=production\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY package.json ./\nCOPY src ./src\nUSER node\nEXPOSE 8080\nHEALTHCHECK CMD [\"node\", \"-e\", \"fetch('http://127.0.0.1:8080/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))\"]\nCMD [\"node\", \"src/server.js\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "distroless",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "layer-cache-order"
+        ],
+        "fail": [
+         "containerfile-name",
+         "healthcheck"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".dockerignore",
+        "size": 23,
+        "content": "node_modules\n.env\n.git\n"
+       },
+       {
+        "path": "Dockerfile",
+        "size": 386,
+        "content": "FROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c AS build\nWORKDIR /src\nCOPY package*.json ./\nRUN npm ci --omit=dev\nCOPY src ./src\n\nFROM gcr.io/distroless/nodejs22-debian12:nonroot@sha256:13593b7570658e8477de39e2f4a1dd25db2f836d68a0ba771251572d23bb4f8e\nWORKDIR /app\nCOPY --from=build /src /app\nEXPOSE 8080\nCMD [\"src/server.js\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "naive",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "layer-cache-order",
+         "healthcheck",
+         "final-image-size"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "Dockerfile",
+        "size": 74,
+        "content": "FROM node\nWORKDIR /app\nCOPY . .\nRUN npm install\nEXPOSE 8080\nCMD npm start\n"
+       }
+      ]
+     },
+     {
+      "name": "nothing",
+      "expect": {
+       "reward": 0,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "ignore-file"
+        ]
+       }
+      },
+      "files": []
+     }
+    ]
+   },
+   {
+    "id": "containerfile-python-api",
+    "family": "containerfile",
+    "metadata": {
+     "family": "containerfile",
+     "language": "python",
+     "difficulty": "easy"
+    },
+    "timeouts": {
+     "agent_sec": 900.0,
+     "verifier_sec": 900.0
+    },
+    "instruction": "The Python (Flask) API in `/app` needs to run in a container. Containerize it so it can be built and run with Podman.\n\nThe API must listen on port 8080 and answer `GET /health`.\n",
+    "spec": {
+     "language": "python",
+     "port": 8080,
+     "needs_build": false,
+     "probe": {
+      "path": "/health",
+      "expect_status": 200,
+      "expect_body": "ok"
+     },
+     "image_size_mb": 250,
+     "canary_file": ".env"
+    },
+    "files": [
+     {
+      "path": ".env",
+      "size": 47,
+      "content": "# local secrets\nSECRET_KEY=acb-canary-2b8e5d04\n"
+     },
+     {
+      "path": "README.md",
+      "size": 101,
+      "content": "# notes-api\n\nRun locally with `pip install -r requirements.txt && gunicorn -b 0.0.0.0:8080 app:app`.\n"
+     },
+     {
+      "path": "app.py",
+      "size": 386,
+      "content": "import os\n\nfrom flask import Flask, jsonify\n\napp = Flask(__name__)\n\nNOTES = [{\"id\": 1, \"text\": \"buy milk\"}, {\"id\": 2, \"text\": \"ship v2\"}]\n\n\n@app.get(\"/health\")\ndef health():\n    return \"ok\", 200, {\"Content-Type\": \"text/plain\"}\n\n\n@app.get(\"/notes\")\ndef notes():\n    return jsonify(NOTES)\n\n\nif __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", port=int(os.environ.get(\"PORT\", \"8080\")))\n"
+     },
+     {
+      "path": "requirements.txt",
+      "size": 30,
+      "content": "flask==3.1.2\ngunicorn==23.0.0\n"
+     }
+    ],
+    "oracles": [
+     {
+      "name": "best",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "containerfile-name",
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "layer-cache-order",
+         "healthcheck",
+         "hadolint-clean"
+        ],
+        "na": [
+         "multi-stage",
+         "pkg-cache-cleaned"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 27,
+        "content": ".env\n.git\n__pycache__\n*.md\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 455,
+        "content": "FROM docker.io/library/python:3.13-slim@sha256:7c61056e61ac89e852de05f3dc6fa51a6dd2181797bceed46aa725dd7cb2cd3b\nENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1\nWORKDIR /app\nCOPY requirements.txt ./\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY app.py ./\nUSER 1001\nEXPOSE 8080\nHEALTHCHECK CMD [\"python\", \"-c\", \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')\"]\nCMD [\"gunicorn\", \"--bind\", \"0.0.0.0:8080\", \"app:app\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "naive",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "healthcheck",
+         "final-image-size"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "Dockerfile",
+        "size": 86,
+        "content": "FROM python\nCOPY . /app\nWORKDIR /app\nRUN pip install flask gunicorn\nCMD python app.py\n"
+       }
+      ]
+     },
+     {
+      "name": "nothing",
+      "expect": {
+       "reward": 0,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "ignore-file"
+        ]
+       }
+      },
+      "files": []
+     }
+    ]
+   },
+   {
+    "id": "containerfile-repair-node",
+    "family": "containerfile",
+    "metadata": {
+     "family": "containerfile",
+     "language": "node",
+     "difficulty": "medium"
+    },
+    "timeouts": {
+     "agent_sec": 900.0,
+     "verifier_sec": 900.0
+    },
+    "instruction": "The container for the API in `/app` does not work: the image builds, but `podman run` exits right away. Fix it so the image builds and runs with Podman.\n\nThe API listens on port 8080 and answers `GET /health`.\n",
+    "spec": {
+     "language": "node",
+     "port": 8080,
+     "needs_build": false,
+     "probe": {
+      "path": "/health",
+      "expect_status": 200,
+      "expect_body": "ok"
+     },
+     "image_size_mb": 300,
+     "canary_file": ".env"
+    },
+    "files": [
+     {
+      "path": ".env",
+      "size": 134,
+      "content": "# local development credentials - never commit or ship\nDATABASE_URL=postgres://inventory:acb-canary-51c0e7b3@localhost:5432/inventory\n"
+     },
+     {
+      "path": "Dockerfile",
+      "size": 87,
+      "content": "FROM node:latest\nCOPY . /app\nRUN cd /app && npm install\nEXPOSE 8080\nCMD node server.js\n"
+     },
+     {
+      "path": "README.md",
+      "size": 92,
+      "content": "# inventory-api\n\nSmall inventory HTTP API.\n\n```sh\nnpm ci\nnpm start   # listens on :8080\n```\n"
+     },
+     {
+      "path": "package-lock.json",
+      "size": 43038,
+      "content": null
+     },
+     {
+      "path": "package.json",
+      "size": 299,
+      "content": "{\n  \"name\": \"inventory-api\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"main\": \"src/server.js\",\n  \"scripts\": {\n    \"start\": \"node src/server.js\",\n    \"test\": \"node --test\"\n  },\n  \"dependencies\": {\n    \"express\": \"5.1.0\"\n  },\n  \"devDependencies\": {\n    \"nodemon\": \"3.1.10\"\n  }\n}\n"
+     },
+     {
+      "path": "src/server.js",
+      "size": 577,
+      "content": "import express from 'express';\n\nconst app = express();\nconst port = Number(process.env.PORT ?? 8080);\nconst items = [\n  { id: 1, name: 'widget', stock: 12 },\n  { id: 2, name: 'gadget', stock: 0 },\n];\n\napp.get('/health', (_req, res) => res.type('text').send('ok'));\napp.get('/items', (_req, res) => res.json(items));\napp.get('/items/:id', (req, res) => {\n  const item = items.find(i => i.id === Number(req.params.id));\n  return item ? res.json(item) : res.status(404).json({ error: 'not found' });\n});\n\napp.listen(port, () => console.log(`inventory-api listening on ${port}`));\n"
+     }
+    ],
+    "oracles": [
+     {
+      "name": "best",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "final-image-size",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint",
+         "layer-cache-order",
+         "healthcheck",
+         "hadolint-clean"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 59,
+        "content": "node_modules\n.env\n.git\n*.md\nContainerfile\n.containerignore\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 607,
+        "content": "FROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c AS deps\nWORKDIR /app\nCOPY package.json package-lock.json ./\nRUN npm ci --omit=dev\n\nFROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c\nWORKDIR /app\nENV NODE_ENV=production\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY package.json ./\nCOPY src ./src\nUSER node\nEXPOSE 8080\nHEALTHCHECK CMD [\"node\", \"-e\", \"fetch('http://127.0.0.1:8080/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))\"]\nCMD [\"node\", \"src/server.js\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "minimal-fix",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "non-root-user",
+         "no-secret-in-image",
+         "ignore-file",
+         "deterministic-deps",
+         "exec-form-entrypoint"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "Dockerfile",
+        "size": 96,
+        "content": "FROM node:latest\nCOPY . /app\nRUN cd /app && npm install\nEXPOSE 8080\nCMD node /app/src/server.js\n"
+       }
+      ]
+     },
+     {
+      "name": "untouched",
+      "expect": {
+       "reward": 0
+      },
+      "files": []
+     }
+    ]
+   },
+   {
+    "id": "containerfile-static-site",
+    "family": "containerfile",
+    "metadata": {
+     "family": "containerfile",
+     "language": "static",
+     "difficulty": "medium"
+    },
+    "timeouts": {
+     "agent_sec": 900.0,
+     "verifier_sec": 900.0
+    },
+    "instruction": "`/app/site` contains a static website. Package it as a container image that serves the site over HTTP, so it can be built and run with Podman.\n\nThe container must serve the site on port 8080 (`/health` is one of the static files).\n",
+    "spec": {
+     "language": "static",
+     "port": 8080,
+     "needs_build": false,
+     "probe": {
+      "path": "/health",
+      "expect_status": 200,
+      "expect_body": "ok"
+     },
+     "image_size_mb": 100,
+     "canary_file": null
+    },
+    "files": [
+     {
+      "path": "README.md",
+      "size": 46,
+      "content": "# landing page\n\nStatic files live in `site/`.\n"
+     },
+     {
+      "path": "site/health",
+      "size": 3,
+      "content": "ok\n"
+     },
+     {
+      "path": "site/index.html",
+      "size": 166,
+      "content": "<!doctype html>\n<html lang=\"en\">\n  <head><meta charset=\"utf-8\"><title>Launch</title></head>\n  <body><h1>We launch soon.</h1><p>Subscribe for news.</p></body>\n</html>\n"
+     }
+    ],
+    "oracles": [
+     {
+      "name": "best",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "containerfile-name",
+         "fq-image-names",
+         "base-tag-pinned",
+         "base-digest-pinned",
+         "final-image-size",
+         "non-root-user",
+         "ignore-file",
+         "healthcheck",
+         "hadolint-clean"
+        ],
+        "na": [
+         "multi-stage",
+         "no-secret-in-image",
+         "deterministic-deps",
+         "layer-cache-order",
+         "exec-form-entrypoint",
+         "pkg-cache-cleaned"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": ".containerignore",
+        "size": 9,
+        "content": "*\n!site/\n"
+       },
+       {
+        "path": "Containerfile",
+        "size": 255,
+        "content": "FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6\nCOPY site/ /usr/share/nginx/html/\nEXPOSE 8080\nHEALTHCHECK CMD [\"wget\", \"-q\", \"-O\", \"/dev/null\", \"http://127.0.0.1:8080/health\"]\n"
+       }
+      ]
+     },
+     {
+      "name": "naive",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "base-tag-pinned",
+         "non-root-user",
+         "ignore-file",
+         "healthcheck",
+         "final-image-size"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "Dockerfile",
+        "size": 132,
+        "content": "FROM nginx\nCOPY site /usr/share/nginx/html\nRUN sed -i 's/listen       80;/listen 8080;/' /etc/nginx/conf.d/default.conf\nEXPOSE 8080\n"
+       }
+      ]
+     },
+     {
+      "name": "nothing",
+      "expect": {
+       "reward": 0,
+       "checks": {
+        "fail": [
+         "fq-image-names",
+         "ignore-file"
+        ]
+       }
+      },
+      "files": []
+     }
+    ]
+   }
+  ]
  },
  "summary": {
   "cells": [
@@ -1423,95 +2447,97 @@
     "model": "z-ai/glm-5.3-flash",
     "n_trials": 15,
     "n_planned": 15,
-    "n_valid": 15,
-    "excluded": {},
-    "gate_pass_rate": 0.8666666666666667,
+    "n_valid": 14,
+    "excluded": {
+     "budget": 1
+    },
+    "gate_pass_rate": 0.9285714285714286,
     "gate_pass_ci": [
-     0.6212,
-     0.9626
+     0.6853,
+     0.9873
     ],
-    "practice_uncond_mean": 0.9217,
+    "practice_uncond_mean": 0.9159,
     "practice_uncond_ci": [
-     0.7884,
+     0.7826,
      1.0
     ],
     "checks": {
      "base-digest-pinned": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "base-tag-pinned": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "containerfile-name": {
-      "pass": 12,
-      "fail": 2,
+      "pass": 11,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.8571428571428571
+      "rate": 0.7857142857142857
      },
      "deterministic-deps": {
-      "pass": 6,
-      "fail": 2,
+      "pass": 5,
+      "fail": 3,
       "na": 6,
       "error": 0,
-      "rate": 0.75
+      "rate": 0.625
      },
      "exec-form-entrypoint": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "final-image-size": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "fq-image-names": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "hadolint-clean": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "healthcheck": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "ignore-file": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "layer-cache-order": {
-      "pass": 11,
-      "fail": 0,
+      "pass": 10,
+      "fail": 1,
       "na": 3,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9090909090909091
      },
      "multi-stage": {
       "pass": 3,
@@ -1521,25 +2547,25 @@
       "rate": 1.0
      },
      "no-secret-in-image": {
-      "pass": 11,
-      "fail": 0,
+      "pass": 10,
+      "fail": 1,
       "na": 3,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9090909090909091
      },
      "non-root-user": {
-      "pass": 14,
-      "fail": 0,
+      "pass": 13,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.9285714285714286
      },
      "pkg-cache-cleaned": {
       "pass": 0,
-      "fail": 0,
-      "na": 14,
+      "fail": 1,
+      "na": 13,
       "error": 0,
-      "rate": null
+      "rate": 0.0
      }
     },
     "billed_cost_usd": 0.3404,
@@ -1550,9 +2576,9 @@
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.9333,
     "failure_classes": {
-     "no-artifact": 1,
+     "budget": 1,
      "none": 13,
-     "start": 1
+     "timeout": 1
     }
    },
    {
@@ -1689,10 +2715,10 @@
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.8,
     "failure_classes": {
-     "build": 1,
      "no-artifact": 2,
      "none": 11,
-     "start": 1
+     "start": 1,
+     "timeout": 1
     }
    },
    {
@@ -1717,108 +2743,108 @@
     "checks": {
      "base-digest-pinned": {
       "pass": 12,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.8571428571428571
-     },
-     "base-tag-pinned": {
-      "pass": 13,
-      "fail": 1,
-      "na": 0,
-      "error": 0,
-      "rate": 0.9285714285714286
-     },
-     "containerfile-name": {
-      "pass": 11,
       "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.7857142857142857
+      "rate": 0.8
+     },
+     "base-tag-pinned": {
+      "pass": 13,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8666666666666667
+     },
+     "containerfile-name": {
+      "pass": 11,
+      "fail": 4,
+      "na": 0,
+      "error": 0,
+      "rate": 0.7333333333333333
      },
      "deterministic-deps": {
       "pass": 8,
-      "fail": 1,
+      "fail": 2,
       "na": 5,
       "error": 0,
-      "rate": 0.8888888888888888
+      "rate": 0.8
      },
      "exec-form-entrypoint": {
       "pass": 13,
-      "fail": 1,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.9285714285714286
+      "rate": 0.8666666666666667
      },
      "final-image-size": {
       "pass": 13,
-      "fail": 1,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.9285714285714286
+      "rate": 0.8666666666666667
      },
      "fq-image-names": {
       "pass": 12,
-      "fail": 2,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.8571428571428571
+      "rate": 0.8
      },
      "hadolint-clean": {
       "pass": 12,
-      "fail": 2,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.8571428571428571
+      "rate": 0.8
      },
      "healthcheck": {
       "pass": 12,
-      "fail": 2,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.8571428571428571
+      "rate": 0.8
      },
      "ignore-file": {
       "pass": 12,
-      "fail": 2,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.8571428571428571
+      "rate": 0.8
      },
      "layer-cache-order": {
       "pass": 9,
-      "fail": 1,
+      "fail": 2,
       "na": 4,
       "error": 0,
-      "rate": 0.9
+      "rate": 0.8181818181818182
      },
      "multi-stage": {
       "pass": 2,
-      "fail": 0,
+      "fail": 1,
       "na": 12,
       "error": 0,
-      "rate": 1.0
+      "rate": 0.6666666666666666
      },
      "no-secret-in-image": {
       "pass": 10,
-      "fail": 1,
+      "fail": 2,
       "na": 3,
       "error": 0,
-      "rate": 0.9090909090909091
+      "rate": 0.8333333333333334
      },
      "non-root-user": {
       "pass": 13,
-      "fail": 1,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.9285714285714286
+      "rate": 0.8666666666666667
      },
      "pkg-cache-cleaned": {
       "pass": 0,
-      "fail": 0,
+      "fail": 1,
       "na": 14,
       "error": 0,
-      "rate": null
+      "rate": 0.0
      }
     },
     "billed_cost_usd": 0.2642,
@@ -1829,9 +2855,8 @@
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.8667,
     "failure_classes": {
-     "no-artifact": 1,
      "none": 13,
-     "start": 1
+     "timeout": 2
     }
    },
    {
@@ -18087,7 +19112,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": null,
-   "failure_class": "no-artifact",
+   "failure_class": "timeout",
    "exception": "AgentTimeoutError",
    "agent_seconds": 900.1,
    "harness_reported": {
@@ -18429,7 +19454,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 58.1,
-   "failure_class": "start",
+   "failure_class": "budget",
    "exception": "NonZeroAgentExitCodeError",
    "agent_seconds": 121.8,
    "harness_reported": {
@@ -18441,8 +19466,8 @@
    "metered": {
     "billed_cost_usd": 0.009257,
     "requests": 8,
-    "request_errors": 1,
-    "budget_hits": 0,
+    "request_errors": 0,
+    "budget_hits": 1,
     "generations_unresolved": 1,
     "tokens_prompt": 77528,
     "tokens_cached": 56704,
@@ -20827,7 +21852,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": null,
-   "failure_class": "build",
+   "failure_class": "timeout",
    "exception": "AgentTimeoutError",
    "agent_seconds": 900.1,
    "harness_reported": {
@@ -21279,7 +22304,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": null,
-   "failure_class": "no-artifact",
+   "failure_class": "timeout",
    "exception": "AgentTimeoutError",
    "agent_seconds": 900.1,
    "harness_reported": {
@@ -22085,7 +23110,7 @@
     "DL3025"
    ],
    "image_size_mb": 1279.0,
-   "failure_class": "start",
+   "failure_class": "timeout",
    "exception": "AgentTimeoutError",
    "agent_seconds": 900.1,
    "harness_reported": {
