@@ -1,0 +1,273 @@
+{
+ "schema_version": 1,
+ "run_id": "36565832785-1",
+ "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36565832785",
+ "created_at": "2026-09-29T12:09:54+00:00",
+ "dataset_version": 1,
+ "harbor_version": "0.23.0",
+ "billing": {
+  "run_id": "36565832785-1",
+  "shards": {
+   "claude-code.haiku-4.5__implicit": {
+    "usage": 0.0785996,
+    "limit": 0.4,
+    "limit_remaining": 0.32140040000000003,
+    "created_at": "2026-09-29T12:05:46.525Z"
+   }
+  }
+ },
+ "summary": {
+  "cells": [
+   {
+    "cell": "claude-code.haiku-4.5",
+    "arm": "implicit",
+    "harness": "claude-code",
+    "model": "anthropic/claude-haiku-4.5",
+    "n_trials": 1,
+    "n_valid": 1,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.2065,
+     1.0
+    ],
+    "practice_uncond_mean": 0.4348,
+    "practice_uncond_ci": [
+     null,
+     null
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "containerfile-name": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "deterministic-deps": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "exec-form-entrypoint": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "hadolint-clean": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "layer-cache-order": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0786,
+    "cost_per_success_usd": 0.0786,
+    "mean_agent_seconds": 75.9,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 1
+    }
+   }
+  ]
+ },
+ "trials": [
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__2EnZAmK",
+   "reward": 1.0,
+   "practice_uncond": 0.4348,
+   "practice_cond": 0.4348,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: golang:1.25-alpine, alpine:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: alpine:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: golang:1.25-alpine, alpine:latest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "17 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3007"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007"
+   ],
+   "image_size_mb": 17.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 75.9,
+   "harness_reported": {
+    "input_tokens": 225124.0,
+    "cache_tokens": 179396.0,
+    "output_tokens": 1702.0,
+    "cost_usd": 0.392998
+   },
+   "metered": {
+    "billed_cost_usd": 0.0786,
+    "requests": 8,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 225124,
+    "tokens_cached": 179396,
+    "tokens_completion": 1702,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 9,
+    "tool_calls": 10,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  }
+ ]
+}
