@@ -1,0 +1,18 @@
+family = "containerfile"
+
+[app]
+language = "python"
+port = 8080
+needs_build = false
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 250
+
+[canary]
+file = ".env"
+value = "acb-canary-2b8e5d04"

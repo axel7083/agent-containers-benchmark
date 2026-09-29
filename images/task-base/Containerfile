@@ -1,0 +1,25 @@
+# Task environment for agent-containers-benchmark.
+# Fedora 45 + Podman 6 running rootful inside a privileged container, plus the
+# tools agents need to install themselves (Harbor installs the agent CLI at runtime).
+FROM quay.io/fedora/fedora:45@sha256:370f643e96ec63bd503f506f2b406cbc447eed2179206d0ca13ac93bde2b5e43
+
+RUN dnf install -y --setopt=install_weak_deps=False \
+      podman crun netavark aardvark-dns passt fuse-overlayfs skopeo \
+      bash coreutils procps-ng findutils which tar gzip xz unzip diffutils \
+      curl ca-certificates git jq ripgrep \
+      nodejs npm \
+      python3 python3-pyyaml \
+      hadolint \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf /var/log/dnf*
+
+# Nested engine configuration: no systemd inside, storage on a volume
+# (overlay-on-overlay is not allowed), netavark bridge networking.
+COPY containers.conf /etc/containers/containers.conf
+COPY storage.conf /etc/containers/storage.conf
+VOLUME ["/var/lib/containers", "/var/tmp"]
+
+# Graders and linters live outside PATH so agents do not stumble on them.
+RUN mkdir -p /opt/acb && rpm -qa --qf '%{NAME}-%{EPOCHNUM}:%{VERSION}-%{RELEASE}.%{ARCH}\n' | sort > /opt/acb/rpm.lock
+
+WORKDIR /app

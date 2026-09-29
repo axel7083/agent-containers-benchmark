@@ -1,0 +1,14 @@
+family = "containerfile"
+
+[app]
+language = "static"
+port = 8080
+needs_build = false
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 100

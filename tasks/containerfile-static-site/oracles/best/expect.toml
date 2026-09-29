@@ -1,0 +1,5 @@
+reward = 1
+[checks]
+pass = ["containerfile-name", "fq-image-names", "base-tag-pinned", "base-digest-pinned", "final-image-size", "non-root-user",
+        "ignore-file", "healthcheck", "hadolint-clean"]
+na = ["multi-stage", "no-secret-in-image", "deterministic-deps", "layer-cache-order", "exec-form-entrypoint", "pkg-cache-cleaned"]

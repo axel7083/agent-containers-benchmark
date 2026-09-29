@@ -1,0 +1,4 @@
+reward = 1
+[checks]
+pass = ["fq-image-names", "base-tag-pinned", "base-digest-pinned", "multi-stage", "non-root-user", "no-secret-in-image", "exec-form-entrypoint"]
+fail = ["final-image-size"]
