@@ -37,7 +37,7 @@ instead of uploading if one is found.
 ## GitHub hardening
 
 - Workflow-level `permissions: {}`; each job requests the minimum. The agent job has a read-only
-  token (`contents: read`, `packages: read`). Only `aggregate` has `contents: write`, and only
+  token (`contents: read`). Only `aggregate` has `contents: write`, and only
   its final step (which runs no artifact-derived code) uses the token.
 - `actions/checkout` with `persist-credentials: false` everywhere.
 - Every action is pinned to a full commit SHA; only GitHub-owned actions are used.
