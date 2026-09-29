@@ -13,19 +13,24 @@ shard_by = "task"
 cap_headroom = 1.5
 cap_floor_usd = 0.05
 
-[[cells]]
-id = "claude-code.haiku-4.5"
-harness = "claude-code"
-version = "2.1.284"
-model = "anthropic/claude-haiku-4.5"
-est_cost_per_trial = { implicit = 0.06, nudge = 0.12, explicit = 0.32 }
+# Native pairings use each harness's own default model (per its docs on 2026-09-29), at its default
+# effort. OpenCode has no fixed default, so it is the model-agnostic axis (same harness, several models).
 
 [[cells]]
-id = "codex.gpt-6-luna"
+id = "claude-code.opus-5.5"
+harness = "claude-code"
+version = "2.1.284"
+model = "anthropic/claude-opus-5.5"
+# Estimated from Haiku 4.5 x 4 (price ratio) until measured.
+est_cost_per_trial = { implicit = 0.25, nudge = 0.50, explicit = 1.30 }
+
+[[cells]]
+id = "codex.gpt-6-sol"
 harness = "codex"
 version = "0.159.0"
-model = "openai/gpt-6-luna"
-est_cost_per_trial = { implicit = 0.005, nudge = 0.008, explicit = 0.012 }
+model = "openai/gpt-6-sol"
+# Estimated from gpt-6-luna x 20 (price ratio) until measured.
+est_cost_per_trial = { implicit = 0.10, nudge = 0.16, explicit = 0.24 }
 
 [[cells]]
 id = "opencode.gpt-6-luna"

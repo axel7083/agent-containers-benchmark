@@ -55,7 +55,7 @@ jobs:
           persist-credentials: false
       - id: plan
         env:
-          CELLS: ${{ github.event_name == 'schedule' && 'codex.gpt-6-luna,opencode.glm-5.3-flash' || inputs.cells }}
+          CELLS: ${{ github.event_name == 'schedule' && 'opencode.gpt-6-luna,opencode.glm-5.3-flash' || inputs.cells }}
           ARMS: ${{ github.event_name == 'schedule' && 'implicit' || inputs.arms }}
           TASKS: ${{ inputs.tasks }}
           TRIALS: ${{ inputs.trials }}
