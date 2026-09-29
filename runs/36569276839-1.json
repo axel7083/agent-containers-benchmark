@@ -1438,108 +1438,108 @@
     "checks": {
      "base-digest-pinned": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "base-tag-pinned": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "containerfile-name": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "deterministic-deps": {
       "pass": 6,
-      "fail": 3,
+      "fail": 2,
       "na": 6,
       "error": 0,
-      "rate": 0.6666666666666666
+      "rate": 0.75
      },
      "exec-form-entrypoint": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "final-image-size": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "fq-image-names": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "hadolint-clean": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "healthcheck": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "ignore-file": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "layer-cache-order": {
       "pass": 11,
-      "fail": 1,
+      "fail": 0,
       "na": 3,
       "error": 0,
-      "rate": 0.9166666666666666
+      "rate": 1.0
      },
      "multi-stage": {
       "pass": 3,
       "fail": 0,
-      "na": 12,
+      "na": 11,
       "error": 0,
       "rate": 1.0
      },
      "no-secret-in-image": {
       "pass": 11,
-      "fail": 1,
+      "fail": 0,
       "na": 3,
       "error": 0,
-      "rate": 0.9166666666666666
+      "rate": 1.0
      },
      "non-root-user": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "pkg-cache-cleaned": {
       "pass": 0,
-      "fail": 1,
+      "fail": 0,
       "na": 14,
       "error": 0,
-      "rate": 0.0
+      "rate": null
      }
     },
     "billed_cost_usd": 0.3404,
@@ -1577,108 +1577,108 @@
     "checks": {
      "base-digest-pinned": {
       "pass": 0,
-      "fail": 15,
+      "fail": 13,
       "na": 0,
       "error": 0,
       "rate": 0.0
      },
      "base-tag-pinned": {
       "pass": 10,
-      "fail": 5,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.6666666666666666
+      "rate": 0.7692307692307693
      },
      "containerfile-name": {
       "pass": 9,
-      "fail": 6,
+      "fail": 4,
       "na": 0,
       "error": 0,
-      "rate": 0.6
+      "rate": 0.6923076923076923
      },
      "deterministic-deps": {
       "pass": 6,
-      "fail": 4,
+      "fail": 2,
       "na": 5,
-      "error": 0,
-      "rate": 0.6
-     },
-     "exec-form-entrypoint": {
-      "pass": 11,
-      "fail": 3,
-      "na": 1,
-      "error": 0,
-      "rate": 0.7857142857142857
-     },
-     "final-image-size": {
-      "pass": 8,
-      "fail": 7,
-      "na": 0,
-      "error": 0,
-      "rate": 0.5333333333333333
-     },
-     "fq-image-names": {
-      "pass": 2,
-      "fail": 13,
-      "na": 0,
-      "error": 0,
-      "rate": 0.13333333333333333
-     },
-     "hadolint-clean": {
-      "pass": 8,
-      "fail": 7,
-      "na": 0,
-      "error": 0,
-      "rate": 0.5333333333333333
-     },
-     "healthcheck": {
-      "pass": 1,
-      "fail": 14,
-      "na": 0,
-      "error": 0,
-      "rate": 0.06666666666666667
-     },
-     "ignore-file": {
-      "pass": 8,
-      "fail": 7,
-      "na": 0,
-      "error": 0,
-      "rate": 0.5333333333333333
-     },
-     "layer-cache-order": {
-      "pass": 6,
-      "fail": 4,
-      "na": 5,
-      "error": 0,
-      "rate": 0.6
-     },
-     "multi-stage": {
-      "pass": 2,
-      "fail": 1,
-      "na": 12,
-      "error": 0,
-      "rate": 0.6666666666666666
-     },
-     "no-secret-in-image": {
-      "pass": 9,
-      "fail": 3,
-      "na": 3,
       "error": 0,
       "rate": 0.75
      },
-     "non-root-user": {
-      "pass": 6,
-      "fail": 9,
+     "exec-form-entrypoint": {
+      "pass": 11,
+      "fail": 1,
+      "na": 1,
+      "error": 0,
+      "rate": 0.9166666666666666
+     },
+     "final-image-size": {
+      "pass": 8,
+      "fail": 5,
       "na": 0,
       "error": 0,
-      "rate": 0.4
+      "rate": 0.6153846153846154
+     },
+     "fq-image-names": {
+      "pass": 2,
+      "fail": 11,
+      "na": 0,
+      "error": 0,
+      "rate": 0.15384615384615385
+     },
+     "hadolint-clean": {
+      "pass": 8,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6153846153846154
+     },
+     "healthcheck": {
+      "pass": 1,
+      "fail": 12,
+      "na": 0,
+      "error": 0,
+      "rate": 0.07692307692307693
+     },
+     "ignore-file": {
+      "pass": 8,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6153846153846154
+     },
+     "layer-cache-order": {
+      "pass": 6,
+      "fail": 2,
+      "na": 5,
+      "error": 0,
+      "rate": 0.75
+     },
+     "multi-stage": {
+      "pass": 2,
+      "fail": 0,
+      "na": 11,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 9,
+      "fail": 1,
+      "na": 3,
+      "error": 0,
+      "rate": 0.9
+     },
+     "non-root-user": {
+      "pass": 6,
+      "fail": 7,
+      "na": 0,
+      "error": 0,
+      "rate": 0.46153846153846156
      },
      "pkg-cache-cleaned": {
       "pass": 2,
-      "fail": 2,
+      "fail": 0,
       "na": 11,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      }
     },
     "billed_cost_usd": 0.0605,
@@ -1717,108 +1717,108 @@
     "checks": {
      "base-digest-pinned": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "base-tag-pinned": {
       "pass": 13,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 0.8666666666666667
+      "rate": 0.9285714285714286
      },
      "containerfile-name": {
       "pass": 11,
-      "fail": 4,
+      "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.7333333333333333
+      "rate": 0.7857142857142857
      },
      "deterministic-deps": {
       "pass": 8,
-      "fail": 2,
+      "fail": 1,
       "na": 5,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8888888888888888
      },
      "exec-form-entrypoint": {
       "pass": 13,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 0.8666666666666667
+      "rate": 0.9285714285714286
      },
      "final-image-size": {
       "pass": 13,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 0.8666666666666667
+      "rate": 0.9285714285714286
      },
      "fq-image-names": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "hadolint-clean": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "healthcheck": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "ignore-file": {
       "pass": 12,
-      "fail": 3,
+      "fail": 2,
       "na": 0,
       "error": 0,
-      "rate": 0.8
+      "rate": 0.8571428571428571
      },
      "layer-cache-order": {
       "pass": 9,
-      "fail": 2,
+      "fail": 1,
       "na": 4,
       "error": 0,
-      "rate": 0.8181818181818182
+      "rate": 0.9
      },
      "multi-stage": {
       "pass": 2,
-      "fail": 1,
+      "fail": 0,
       "na": 12,
       "error": 0,
-      "rate": 0.6666666666666666
+      "rate": 1.0
      },
      "no-secret-in-image": {
       "pass": 10,
-      "fail": 2,
+      "fail": 1,
       "na": 3,
       "error": 0,
-      "rate": 0.8333333333333334
+      "rate": 0.9090909090909091
      },
      "non-root-user": {
       "pass": 13,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 0.8666666666666667
+      "rate": 0.9285714285714286
      },
      "pkg-cache-cleaned": {
       "pass": 0,
-      "fail": 1,
+      "fail": 0,
       "na": 14,
       "error": 0,
-      "rate": 0.0
+      "rate": null
      }
     },
     "billed_cost_usd": 0.2642,

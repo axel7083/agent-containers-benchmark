@@ -24,6 +24,7 @@
     "harness": "claude-code",
     "model": "anthropic/claude-haiku-4.5",
     "n_trials": 1,
+    "n_planned": null,
     "n_valid": 1,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -144,6 +145,8 @@
      }
     },
     "billed_cost_usd": 0.0786,
+    "unattributed_cost_usd": 0.0,
+    "harness_reported_cost_usd": 0.393,
     "cost_per_success_usd": 0.0786,
     "mean_agent_seconds": 75.9,
     "docker_usage_rate": 0.0,

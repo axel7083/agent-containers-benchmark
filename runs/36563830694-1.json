@@ -24,6 +24,7 @@
     "harness": "opencode",
     "model": "z-ai/glm-5.3-flash",
     "n_trials": 1,
+    "n_planned": null,
     "n_valid": 1,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -144,6 +145,8 @@
      }
     },
     "billed_cost_usd": 0.0108,
+    "unattributed_cost_usd": 0.0,
+    "harness_reported_cost_usd": 0.0122,
     "cost_per_success_usd": 0.0108,
     "mean_agent_seconds": 229.4,
     "docker_usage_rate": 0.0,
