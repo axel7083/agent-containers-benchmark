@@ -28,6 +28,14 @@ print("\n".join(harbor_agent_args(s["harness"], s["version"], s["model"], os.env
 set +e
 .venv/bin/harbor "${args[@]}" "${agent_args[@]}"
 status=$?
+if [ "$status" -ne 0 ] && ! compgen -G "$OUT_DIR/jobs/$SHARD_ID/*/result.json" >/dev/null; then
+  # Harbor failed before any trial started (e.g. preflight timeout): retry once.
+  echo "harbor produced no trial (exit $status); retrying once"
+  timeout 60 podman info >/dev/null
+  rm -rf "$OUT_DIR/jobs/$SHARD_ID"
+  .venv/bin/harbor "${args[@]}" "${agent_args[@]}"
+  status=$?
+fi
 set -e
 echo "harbor exited with $status"
 # A failing trial is a result, not a CI failure; the aggregate job decides.

@@ -122,6 +122,8 @@ jobs:
           set -euo pipefail
           podman --version
           systemctl --user start podman.socket
+          # Harbor's preflight gives `podman info` 10s; warm the engine up first.
+          for i in 1 2 3 4 5; do timeout 60 podman info >/dev/null && break; sleep 5; done
           podman compose version
           podman pull --quiet "$(cat images/task-base.lock)"
           .venv/bin/acb build-tasks

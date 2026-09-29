@@ -25,9 +25,10 @@ from typing import Any
 from .stats import cluster_bootstrap_mean, wilson
 
 SCHEMA_VERSION = 1
-DOCKER_CMD = re.compile(r"(?:^|[\s;&|(`$])docker(?:-compose)?\s+(?:build|run|compose|ps|images|pull|push|exec|logs|rm|rmi|inspect|stop|start|tag|login|buildx|version|info)\b")
-PODMAN_CMD = re.compile(r"(?:^|[\s;&|(`$])podman\s+[a-z]")
-PODMAN_BUILD = re.compile(r"(?:^|[\s;&|(`$])podman\s+(?:build|image\s+build)\b")
+_BOUNDARY = r"""(?:^|[\s;&|(`$"'])"""  # shell separators, or a quote (Codex embeds commands in JS strings)
+DOCKER_CMD = re.compile(_BOUNDARY + r"docker(?:-compose)?\s+(?:build|run|compose|ps|images|pull|push|exec|logs|rm|rmi|inspect|stop|start|tag|login|buildx|version|info)\b")
+PODMAN_CMD = re.compile(_BOUNDARY + r"podman\s+[a-z]")
+PODMAN_BUILD = re.compile(_BOUNDARY + r"podman\s+(?:build|image\s+build)\b")
 
 
 def _load(path: Path) -> Any:
@@ -118,7 +119,7 @@ def attribute(requests: list[dict], generations: dict[str, dict], start: float |
         status = req.get("status")
         if status == 402:
             budget_hits += 1
-        elif isinstance(status, int) and status >= 400:
+        elif isinstance(status, int) and status >= 400 and status != 499:  # 499: client cancelled
             errors += 1
         for gid in req.get("generation_ids") or []:
             gen = generations.get(gid)
