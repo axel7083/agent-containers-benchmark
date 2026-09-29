@@ -202,6 +202,9 @@ def collect_shard(shard_dir: Path) -> list[dict]:
 
 
 EXCLUDED = {"infra", "budget", "no-verdict"}
+# A trial without a Containerfile scores 0 on practice, but says nothing about any single practice:
+# it is left out of per-check pass rates.
+NO_EVIDENCE = {"no-artifact"}
 
 
 def reconcile(trials: list[dict], billing: dict | None) -> dict[str, dict]:
@@ -250,6 +253,8 @@ def summarize(trials: list[dict], shard_costs: dict[str, dict] | None = None, pl
         mean, (plo, phi) = cluster_bootstrap_mean(by_task)
         check_rates: dict[str, dict[str, int]] = defaultdict(lambda: {"pass": 0, "fail": 0, "na": 0, "error": 0})
         for t in valid:
+            if t["failure_class"] in NO_EVIDENCE:
+                continue
             for cid, c in t["checks"].items():
                 if c["status"] in check_rates[cid]:
                     check_rates[cid][c["status"]] += 1
@@ -335,6 +340,15 @@ def _catalog() -> dict | None:
     except Exception as exc:  # never lose a run because documentation could not be built
         print(f"warning: catalog not embedded: {exc}")
         return None
+
+
+def resummarize(run_path: str) -> dict:
+    """Recompute a published run's summary from its stored trials (after an aggregation fix)."""
+    run = json.loads(Path(run_path).read_text())
+    planned = {f"{c['cell']}__{c['arm']}": c.get("n_planned") or 0 for c in run["summary"]["cells"]}
+    run["summary"] = summarize(run["trials"], run.get("shards") or {}, planned)
+    Path(run_path).write_text(json.dumps(run, indent=1))
+    return run
 
 
 def index(runs_dir: str, out: str) -> dict:

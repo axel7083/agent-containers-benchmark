@@ -24,7 +24,7 @@
     const groups = {};
     for (const t of run.trials) {
       const r = t.checks[selectedId];
-      if (!r || r.status !== 'fail') continue;
+      if (!r || r.status !== 'fail' || t.failure_class === 'no-artifact') continue;
       const g = (groups[r.evidence] ??= { text: r.evidence, count: 0, cells: [] });
       g.count += 1;
       if (!g.cells.includes(t.cell)) g.cells.push(t.cell);
@@ -37,7 +37,7 @@
     const tasks = {};
     for (const t of run.trials) {
       const r = t.checks[selectedId];
-      if (!r) continue;
+      if (!r || t.failure_class === 'no-artifact') continue;
       tasks[t.task] ??= { pass: 0, fail: 0, na: 0 };
       if (r.status in tasks[t.task]) tasks[t.task][r.status] += 1;
     }
@@ -90,6 +90,8 @@
 
       {#if run}
         <h3>Pass rate in the selected run</h3>
+        <p class="note">Trials where the agent produced no Containerfile are left out: they score 0 on practice, but say
+          nothing about this check.</p>
         <div class="scroll">
           <table>
             <thead><tr><th>Cell</th>{#each arms as a (a)}<th class="num">{a}</th>{/each}</tr></thead>

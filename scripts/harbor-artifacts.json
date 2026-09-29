@@ -1,0 +1,9 @@
+{
+  "artifacts": [
+    {
+      "source": "/app",
+      "destination": "app",
+      "exclude": ["node_modules", ".git", ".venv", "venv", "__pycache__", "vendor", "target", "dist", "build"]
+    }
+  ]
+}

@@ -9,7 +9,8 @@ SHARD_ID=$(field id)
 ARM=$(field arm)
 printf '%s\n' "$SHARD_JSON" >"$OUT_DIR/shard.json"
 
-args=(run -e podman -p build/tasks -k "$(field trials)" -n 1 --max-retries 0
+# -c: keep each trial's final /app (minus dependency dirs) so trials can be re-graded offline.
+args=(run -c scripts/harbor-artifacts.json -e podman -p build/tasks -k "$(field trials)" -n 1 --max-retries 0
       -o "$OUT_DIR/jobs" --job-name "$SHARD_ID" -y -q)
 while read -r task; do args+=(-i "$task"); done < <(jq -r '.tasks[]' <<<"$SHARD_JSON")
 

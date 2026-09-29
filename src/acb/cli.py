@@ -43,6 +43,9 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("catalog", help="write the benchmark catalog (checks, arms, gates, tasks) as JSON")
     p.add_argument("--out", required=True)
 
+    p = sub.add_parser("resummarize", help="recompute the summary of published run files from their trials")
+    p.add_argument("runs", nargs="+")
+
     p = sub.add_parser("index", help="rebuild the runs index for the site")
     p.add_argument("runs_dir")
     p.add_argument("--out", required=True)
@@ -90,6 +93,13 @@ def main(argv: list[str] | None = None) -> int:
         from .bench.catalog import build_catalog
 
         Path(args.out).write_text(json.dumps(build_catalog(), indent=1))
+        return 0
+    if args.cmd == "resummarize":
+        from .bench.aggregate import resummarize
+
+        for path in args.runs:
+            resummarize(path)
+            print(f"resummarized {path}")
         return 0
     if args.cmd == "index":
         from .bench.aggregate import index

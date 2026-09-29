@@ -63,3 +63,19 @@ def test_catalog_is_generated_from_sources():
     lock = next(f for f in node["files"] if f["path"] == "package-lock.json")
     assert lock["content"] is None and lock["size"] > 0
     assert {o["name"] for o in node["oracles"]} >= {"best", "naive"}
+
+
+def test_trials_without_artifact_do_not_count_against_single_checks():
+    from acb.bench.aggregate import summarize
+
+    def trial(failure_class, status):
+        return {
+            "shard": "c__implicit", "cell": "c", "arm": "implicit", "harness": "h", "model": "m", "task": "t",
+            "failure_class": failure_class, "reward": 1.0 if failure_class == "none" else 0.0,
+            "practice_uncond": 1.0 if status == "pass" else 0.0, "checks": {"x": {"status": status, "evidence": ""}},
+            "metered": {}, "harness_reported": {}, "process": {}, "agent_seconds": 1.0,
+        }
+
+    cell = summarize([trial("none", "pass"), trial("no-artifact", "fail")])["cells"][0]
+    assert cell["checks"]["x"] == {"pass": 1, "fail": 0, "na": 0, "error": 0, "rate": 1.0}
+    assert cell["practice_uncond_mean"] == 0.5  # the practice score still counts the empty trial as 0
