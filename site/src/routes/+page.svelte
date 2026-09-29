@@ -1,5 +1,6 @@
 <script>
   import { base } from '$app/paths';
+  import ArmComparison from '$lib/ArmComparison.svelte';
   import Heatmap from '$lib/Heatmap.svelte';
   import { ARMS, ARM_HELP, ci, pct, secs, usd } from '$lib/format.js';
 
@@ -141,6 +142,16 @@
       {#if cells.length}
         <Heatmap rows={checkIds} {columns} value={heatValue} />
       {/if}
+    </section>
+
+    <section>
+      <h2>Knowledge vs disposition</h2>
+      <p class="note">
+        The same check across prompt arms. A practice skipped in the implicit arm but applied when spelled out is a
+        <strong>disposition gap</strong> (a short rule-style skill should fix it); one that fails even in the explicit arm
+        is a <strong>knowledge gap</strong> (the skill needs reference material). Sorted by implicit pass rate.
+      </p>
+      <ArmComparison cells={run.summary.cells} />
     </section>
 
     <section>
