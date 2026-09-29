@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: |
+          set -euo pipefail
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r requirements/dev.txt
+          .venv/bin/pip install --quiet --no-deps -e .
+          .venv/bin/ruff check src tests scripts
+          .venv/bin/python -m pytest -q
+
+  graders:
+    # Grade every oracle fixture, then run Harbor's oracle and nop agents on
+    # every task through the same rootless-podman path the benchmark uses.
+    runs-on: ubuntu-26.04
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install
+        run: |
+          set -euo pipefail
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r requirements/bench.txt
+          .venv/bin/pip install --quiet --no-deps -e .
+      - name: Build task-base image
+        run: podman build -q -t localhost/acb-task-base:ci images/task-base
+      - name: Oracle fixtures
+        run: .venv/bin/acb oracles --image localhost/acb-task-base:ci
+      - name: Harbor oracle and nop agents
+        run: |
+          set -euo pipefail
+          systemctl --user start podman.socket
+          .venv/bin/acb build-tasks --image localhost/acb-task-base:ci
+          .venv/bin/harbor run -e podman -p build/tasks -a oracle -n 2 -o jobs --job-name oracle -y -q
+          .venv/bin/harbor run -e podman -p build/tasks -a nop -n 2 -o jobs --job-name nop -y -q
+          .venv/bin/python scripts/check_calibration.py jobs/oracle jobs/nop

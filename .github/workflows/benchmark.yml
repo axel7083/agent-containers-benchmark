@@ -1,0 +1,231 @@
+# Runs the benchmark matrix. Security model (see SECURITY.md):
+# - The OpenRouter MANAGEMENT key exists only in `provision` and `revoke`, which
+#   run no agent and no third-party code besides actions/checkout.
+# - `provision` creates one capped, expiring child key per shard and passes it
+#   on sealed with the repository RSA public key.
+# - `run` (where agents execute) receives only the sealed child key; the proxy
+#   holds it, agents get a throwaway client token. Its GITHUB_TOKEN is read-only.
+# - Only `aggregate` can write to the repository (the `data` branch).
+name: benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      cells:
+        description: "Comma-separated cell ids from matrix.toml (empty = all)"
+        default: ""
+      arms:
+        description: "Comma-separated arms: implicit,nudge,explicit (empty = all)"
+        default: ""
+      tasks:
+        description: "Comma-separated task ids (empty = all)"
+        default: ""
+      trials:
+        description: "Trials per task (empty = matrix.toml default)"
+        default: ""
+      max_total_usd:
+        description: "Abort if the sum of per-shard key caps exceeds this"
+        default: "6"
+  schedule:
+    # Monthly canary: implicit arm, cheapest cells only.
+    - cron: "17 4 3 * *"
+
+permissions: {}
+
+concurrency:
+  group: benchmark
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    outputs:
+      plan: ${{ steps.plan.outputs.plan }}
+      shards: ${{ steps.plan.outputs.shards }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: plan
+        env:
+          CELLS: ${{ github.event_name == 'schedule' && 'codex.gpt-6-luna,opencode.glm-5.3-flash' || inputs.cells }}
+          ARMS: ${{ github.event_name == 'schedule' && 'implicit' || inputs.arms }}
+          TASKS: ${{ inputs.tasks }}
+          TRIALS: ${{ inputs.trials }}
+        run: |
+          set -euo pipefail
+          plan=$(PYTHONPATH=src python3 -m acb.cli plan --cells "$CELLS" --arms "$ARMS" --tasks "$TASKS" ${TRIALS:+--trials "$TRIALS"})
+          echo "$plan" | jq .
+          echo "plan=$(jq -c . <<<"$plan")" >>"$GITHUB_OUTPUT"
+          echo "shards=$(jq -c '.shards' <<<"$plan")" >>"$GITHUB_OUTPUT"
+
+  provision:
+    needs: plan
+    runs-on: ubuntu-26.04
+    environment: openrouter-admin
+    permissions:
+      contents: read
+    outputs:
+      keys: ${{ steps.keys.outputs.keys }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            scripts/openrouter_keys.py
+            .github/acb-seal.pub.pem
+          sparse-checkout-cone-mode: false
+      - id: keys
+        env:
+          OPENROUTER_MANAGEMENT_KEY: ${{ secrets.OPENROUTER_MANAGEMENT_KEY }}
+          PLAN: ${{ needs.plan.outputs.plan }}
+          MAX_TOTAL: ${{ inputs.max_total_usd || '1' }}
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$PLAN" >"$RUNNER_TEMP/plan.json"
+          python3 scripts/openrouter_keys.py provision --plan "$RUNNER_TEMP/plan.json" --run-id "$RUN_ID" \
+            --public-key .github/acb-seal.pub.pem --max-total "$MAX_TOTAL" --out "$RUNNER_TEMP/keys.json"
+          echo "keys=$(jq -c . "$RUNNER_TEMP/keys.json")" >>"$GITHUB_OUTPUT"
+          rm -f "$RUNNER_TEMP/keys.json"
+
+  run:
+    needs: [plan, provision]
+    runs-on: ubuntu-26.04
+    environment: bench-runner
+    timeout-minutes: 150
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    name: run (${{ matrix.shard.id }})
+    env:
+      OUT_DIR: ${{ github.workspace }}/out
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install harbor and acb (hash-locked)
+        run: |
+          set -euo pipefail
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r requirements/bench.txt
+          .venv/bin/pip install --quiet --no-deps -e .
+          .venv/bin/harbor --version
+      - name: Prepare rootless podman
+        run: |
+          set -euo pipefail
+          podman --version
+          systemctl --user start podman.socket
+          podman compose version
+          podman pull --quiet "$(cat images/task-base.lock)"
+          .venv/bin/acb build-tasks
+      - name: Start metering proxy
+        env:
+          ACB_UNSEAL_KEY: ${{ secrets.ACB_UNSEAL_KEY }}
+          SEALED_KEY: ${{ fromJSON(needs.provision.outputs.keys)[matrix.shard.id].sealed }}
+          MODEL: ${{ matrix.shard.model }}
+        run: scripts/meter-start.sh
+      - name: Run shard
+        env:
+          SHARD_JSON: ${{ toJSON(matrix.shard) }}
+        run: scripts/run-shard.sh
+      - name: Stop metering proxy
+        if: always()
+        run: scripts/meter-stop.sh
+      - name: Check artifacts for key material
+        if: always()
+        run: scripts/scan-secrets.sh "$OUT_DIR"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: shard-${{ matrix.shard.id }}
+          path: out/
+          include-hidden-files: true
+          retention-days: 90
+
+  revoke:
+    needs: [plan, provision, run]
+    if: always() && needs.provision.result != 'skipped'
+    runs-on: ubuntu-26.04
+    environment: openrouter-admin
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/openrouter_keys.py
+          sparse-checkout-cone-mode: false
+      - env:
+          OPENROUTER_MANAGEMENT_KEY: ${{ secrets.OPENROUTER_MANAGEMENT_KEY }}
+          ACB_KEYS_JSON: ${{ needs.provision.outputs.keys }}
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          mkdir -p billing
+          python3 scripts/openrouter_keys.py revoke --run-id "$RUN_ID" --out billing/billing.json
+          cat billing/billing.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: billing
+          path: billing/
+          retention-days: 90
+
+  aggregate:
+    needs: [plan, run, revoke]
+    if: always() && needs.run.result != 'skipped'
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: artifacts
+      - name: Aggregate (artifacts are untrusted input, parsed as data only)
+        env:
+          PLAN: ${{ needs.plan.outputs.plan }}
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$PLAN" >artifacts/plan.json
+          PYTHONPATH=src python3 -m acb.cli aggregate artifacts --out "run.json"
+          jq '.summary' run.json
+      - name: Commit to the data branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code "$remote" data >/dev/null; then
+            git fetch --depth 1 "$remote" data && git worktree add data-wt FETCH_HEAD
+          else
+            git worktree add --detach data-wt && git -C data-wt checkout --orphan data && git -C data-wt rm -rfq .
+          fi
+          mkdir -p data-wt/runs
+          cp run.json "data-wt/runs/${RUN_ID}.json"
+          PYTHONPATH=src python3 -m acb.cli index data-wt/runs --out data-wt/index.json
+          git -C data-wt add -A
+          git -C data-wt commit -qm "data: run ${RUN_ID}"
+          git -C data-wt push "$remote" HEAD:data
+
+  pages:
+    needs: aggregate
+    if: always() && needs.aggregate.result == 'success'
+    uses: ./.github/workflows/pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write

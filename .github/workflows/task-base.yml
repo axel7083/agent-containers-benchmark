@@ -1,0 +1,38 @@
+name: task-base
+
+on:
+  push:
+    branches: [main]
+    paths: ["images/task-base/**", ".github/workflows/task-base.yml"]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  image:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      packages: write
+    env:
+      IMAGE: ghcr.io/${{ github.repository }}/task-base
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and push
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          podman build -t "$IMAGE:${GITHUB_SHA}" \
+            --label org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}" \
+            --label org.opencontainers.image.revision="${GITHUB_SHA}" images/task-base
+          printf '%s' "$GH_TOKEN" | podman login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          podman push --digestfile digest "$IMAGE:${GITHUB_SHA}"
+          podman push "$IMAGE:${GITHUB_SHA}" "$IMAGE:latest"
+          podman logout ghcr.io
+          ref="$IMAGE@$(cat digest)"
+          echo "### task-base" >>"$GITHUB_STEP_SUMMARY"
+          echo "Pin in images/task-base.lock: \`$ref\`" >>"$GITHUB_STEP_SUMMARY"
+          echo "$ref"
