@@ -16,6 +16,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Reproduce
+        shell: bash {0}
         run: |
           podman --version
           IMG=docker.io/library/busybox:1.37
