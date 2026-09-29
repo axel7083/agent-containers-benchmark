@@ -40,6 +40,8 @@ HOP_BY_HOP = {
     "te", "trailer", "transfer-encoding", "upgrade", "accept-encoding", "cookie",
 }
 MAX_TEE = 32 * 1024 * 1024
+# Generations resolved in parallel at shutdown (sequential lookups took up to 4 minutes per shard).
+FINALIZE_CONCURRENCY = 8
 
 
 class Meter:
@@ -123,21 +125,31 @@ class Meter:
             self.record(entry)
 
     async def finalize(self) -> None:
-        """Resolve billed cost per generation, then the key's total usage."""
+        """Resolve billed cost per generation (concurrently), then the key's total usage."""
         assert self._session is not None
         auth = {"Authorization": f"Bearer {self._key}"}
-        for gen_id in self.generation_ids:
+        keep = ("model", "provider_name", "total_cost", "usage", "tokens_prompt", "tokens_completion",
+                "native_tokens_prompt", "native_tokens_completion", "native_tokens_cached", "native_tokens_reasoning",
+                "created_at", "finish_reason", "streamed", "latency", "generation_time", "cache_discount")
+        limit = asyncio.Semaphore(FINALIZE_CONCURRENCY)
+
+        async def resolve(gen_id: str) -> None:
             data = None
-            for attempt in range(6):
-                async with self._session.get(f"{self.upstream}/api/v1/generation", params={"id": gen_id}, headers=auth) as resp:
-                    if resp.status == 200:
-                        data = (await resp.json()).get("data")
-                        break
-                await asyncio.sleep(1 + attempt * 2)
-            keep = ("model", "provider_name", "total_cost", "usage", "tokens_prompt", "tokens_completion",
-                    "native_tokens_prompt", "native_tokens_completion", "native_tokens_cached", "native_tokens_reasoning",
-                    "created_at", "finish_reason", "streamed", "latency", "generation_time", "cache_discount")
+            async with limit:
+                for attempt in range(5):
+                    try:
+                        async with self._session.get(
+                            f"{self.upstream}/api/v1/generation", params={"id": gen_id}, headers=auth
+                        ) as resp:
+                            if resp.status == 200:
+                                data = (await resp.json()).get("data")
+                                break
+                    except Exception:  # transient network error: retry like a 404
+                        pass
+                    await asyncio.sleep(1 + attempt * 2)
             self.record({"type": "generation", "id": gen_id, **({k: data.get(k) for k in keep} if data else {"missing": True})})
+
+        await asyncio.gather(*(resolve(g) for g in self.generation_ids))
         async with self._session.get(f"{self.upstream}/api/v1/key", headers=auth) as resp:
             if resp.status == 200:
                 info = (await resp.json()).get("data", {})

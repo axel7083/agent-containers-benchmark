@@ -4,11 +4,14 @@ dataset_version = 1
 harbor_version = "0.23.0"
 trials = 1
 arms = ["implicit", "nudge", "explicit"]
+# One CI job (and one capped key) per cell x arm x task: many short jobs run 20 at a time.
+# "arm" groups every task of a cell x arm into one longer job.
+shard_by = "task"
 # Per-shard OpenRouter key cap = trials x tasks x est_cost_per_trial x headroom (min floor).
 # est_cost_per_trial: OpenRouter-billed cost per trial measured on the v1 baseline (run 36569276839),
 # a number or a per-arm table.
 cap_headroom = 1.5
-cap_floor_usd = 0.30
+cap_floor_usd = 0.05
 
 [[cells]]
 id = "claude-code.haiku-4.5"

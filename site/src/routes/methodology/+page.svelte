@@ -80,7 +80,8 @@
 
   <h2>Cost</h2>
   <p>
-    Every shard (harness × model × arm) gets its own OpenRouter key with a spending cap. The key's usage is the exact
+    Every shard (one CI job: a harness × model × arm, split by task by default so up to 20 jobs run at once, each
+    running its trials one after another) gets its own OpenRouter key with a spending cap. The key's usage is the exact
     billed amount and is the cost of record. A metering proxy between the agent and OpenRouter splits it across trials
     (per-generation cost) and forces the model under test; spend it cannot attribute to a trial (e.g. a request the agent
     cancelled mid-stream) is shown as unattributed. Harness-reported costs are displayed for comparison only: they are

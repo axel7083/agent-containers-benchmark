@@ -1,4 +1,13 @@
-"""Expand `matrix.toml` into CI shards (cell x arm) with per-shard budget caps."""
+"""Expand `matrix.toml` into CI shards with per-shard budget caps.
+
+A shard is one CI job with its own capped OpenRouter key. Trials inside a
+shard run sequentially (the metering proxy attributes cost by time window),
+so parallelism comes from the number of shards:
+
+- shard_by = "arm":  one shard per cell x arm, running every task.
+- shard_by = "task": one shard per cell x arm x task (default): ~5x more,
+  shorter jobs, so wall time is bounded by the slowest single task.
+"""
 
 from __future__ import annotations
 
@@ -28,38 +37,49 @@ def _keep(values: list[str], selector: str) -> list[str]:
     return [v for v in values if v in wanted]
 
 
-def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = None) -> dict:
+SHARD_BY = ("arm", "task")
+
+
+def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = None, shard_by: str | None = None) -> dict:
     matrix = load_matrix()
     trials = trials or matrix["trials"]
+    shard_by = shard_by or matrix.get("shard_by", "task")
+    if shard_by not in SHARD_BY:
+        raise SystemExit(f"shard_by must be one of {SHARD_BY}, got {shard_by!r}")
     all_cells = {c["id"]: c for c in matrix["cells"]}
     selected_tasks = _keep(task_ids(), tasks)
     shards = []
     for cell_id in _keep(list(all_cells), cells):
         cell = all_cells[cell_id]
         for arm in _keep(matrix["arms"], arms):
-            shard_id = f"{cell_id}__{arm}"
-            for value in (shard_id, cell["harness"], cell["version"], cell["model"].replace("/", ".")):
-                if not SAFE.match(value):
-                    raise SystemExit(f"unsafe identifier in matrix: {value!r}")
             per_trial = cell["est_cost_per_trial"]
             if isinstance(per_trial, dict):
                 per_trial = per_trial[arm]
-            est = trials * len(selected_tasks) * per_trial
-            cap = max(matrix["cap_floor_usd"], round(est * matrix["cap_headroom"], 2))
-            shards.append({
-                "id": shard_id,
-                "cell": cell_id,
-                "harness": cell["harness"],
-                "version": cell["version"],
-                "model": cell["model"],
-                "arm": arm,
-                "tasks": selected_tasks,
-                "trials": trials,
-                "cap_usd": cap,
-            })
+            groups = [[t] for t in selected_tasks] if shard_by == "task" else [selected_tasks]
+            for group in groups:
+                shard_id = f"{cell_id}__{arm}" + (f"__{group[0]}" if shard_by == "task" else "")
+                for value in (shard_id, cell["harness"], cell["version"], cell["model"].replace("/", ".")):
+                    if not SAFE.match(value):
+                        raise SystemExit(f"unsafe identifier in matrix: {value!r}")
+                est = trials * len(group) * per_trial
+                cap = max(matrix["cap_floor_usd"], round(est * matrix["cap_headroom"], 2))
+                shards.append({
+                    "id": shard_id,
+                    "cell": cell_id,
+                    "harness": cell["harness"],
+                    "version": cell["version"],
+                    "model": cell["model"],
+                    "arm": arm,
+                    "tasks": group,
+                    "trials": trials,
+                    "cap_usd": cap,
+                })
+    if len(shards) > 256:
+        raise SystemExit(f"{len(shards)} shards exceed GitHub's 256-job matrix limit; narrow the selection or use shard_by=arm")
     return {
         "dataset_version": matrix["dataset_version"],
         "harbor_version": matrix["harbor_version"],
+        "shard_by": shard_by,
         "total_cap_usd": round(sum(s["cap_usd"] for s in shards), 2),
         "shards": shards,
     }

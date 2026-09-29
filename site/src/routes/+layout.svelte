@@ -85,7 +85,7 @@
   :global(.lede) { color: var(--text-secondary); font-size: 1rem; }
   :global(.notice) { padding: 0.75rem 1rem; background: var(--surface-1); border: 1px solid var(--rule); border-radius: 6px; }
   :global(.filters) { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin: 1rem 0 0.25rem; }
-  :global(.filters label), :global(.filters fieldset) { display: flex; align-items: center; gap: 0.4rem; color: var(--text-secondary); font-size: 0.9rem; border: 0; padding: 0; margin: 0; }
+  :global(.filters > label), :global(.filters > fieldset) { display: flex; align-items: center; gap: 0.4rem; color: var(--text-secondary); font-size: 0.9rem; border: 0; padding: 0; margin: 0; }
   :global(select) { font: inherit; padding: 0.2rem 0.4rem; background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--rule); border-radius: 4px; }
   :global(.chip) { display: inline-block; padding: 0.1rem 0.6rem; border: 1px solid var(--rule); border-radius: 999px; cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); background: none; font-family: inherit; }
   :global(.chip input) { position: absolute; opacity: 0; pointer-events: none; }

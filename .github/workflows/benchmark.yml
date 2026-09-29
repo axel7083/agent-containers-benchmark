@@ -23,6 +23,11 @@ on:
       trials:
         description: "Trials per task (empty = matrix.toml default)"
         default: ""
+      shard_by:
+        description: "Shard granularity: task (one job per cell x arm x task) or arm (one job per cell x arm)"
+        type: choice
+        options: [task, arm]
+        default: task
       max_total_usd:
         description: "Abort if the sum of per-shard key caps exceeds this"
         default: "6"
@@ -54,9 +59,10 @@ jobs:
           ARMS: ${{ github.event_name == 'schedule' && 'implicit' || inputs.arms }}
           TASKS: ${{ inputs.tasks }}
           TRIALS: ${{ inputs.trials }}
+          SHARD_BY: ${{ inputs.shard_by || 'task' }}
         run: |
           set -euo pipefail
-          plan=$(PYTHONPATH=src python3 -m acb.cli plan --cells "$CELLS" --arms "$ARMS" --tasks "$TASKS" ${TRIALS:+--trials "$TRIALS"})
+          plan=$(PYTHONPATH=src python3 -m acb.cli plan --cells "$CELLS" --arms "$ARMS" --tasks "$TASKS" --shard-by "$SHARD_BY" ${TRIALS:+--trials "$TRIALS"})
           echo "$plan" | jq .
           echo "plan=$(jq -c . <<<"$plan")" >>"$GITHUB_OUTPUT"
           echo "shards=$(jq -c '.shards' <<<"$plan")" >>"$GITHUB_OUTPUT"

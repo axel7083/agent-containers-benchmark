@@ -240,7 +240,9 @@ def reconcile(trials: list[dict], billing: dict | None) -> dict[str, dict]:
     return shards
 
 
-def summarize(trials: list[dict], shard_costs: dict[str, dict] | None = None, planned: dict[str, int] | None = None) -> dict[str, Any]:
+def summarize(
+    trials: list[dict], shard_costs: dict[str, dict] | None = None, planned: dict[tuple[str, str], int] | None = None
+) -> dict[str, Any]:
     shard_costs = shard_costs or {}
     planned = planned or {}
     groups: dict[tuple[str, str], list[dict]] = defaultdict(list)
@@ -275,7 +277,7 @@ def summarize(trials: list[dict], shard_costs: dict[str, dict] | None = None, pl
             "harness": items[0]["harness"],
             "model": items[0]["model"],
             "n_trials": len(items),
-            "n_planned": sum(planned.get(sid, 0) for sid in shard_ids) or None,
+            "n_planned": planned.get((cell, arm)) or None,
             "n_valid": len(valid),
             "excluded": {k: sum(1 for t in items if t["failure_class"] == k) for k in EXCLUDED if any(t["failure_class"] == k for t in items)},
             "gate_pass_rate": passed / len(valid) if valid else None,
@@ -316,7 +318,9 @@ def aggregate(inputs: list[str], out: str) -> dict:
         for shard_dir in sorted(p.parent for p in root.glob("**/shard.json")):
             trials.extend(collect_shard(shard_dir))
     shard_costs = reconcile(trials, billing)
-    planned = {s["id"]: len(s["tasks"]) * int(s["trials"]) for s in (plan or {}).get("shards", [])}
+    planned: dict[tuple[str, str], int] = defaultdict(int)
+    for s in (plan or {}).get("shards", []):
+        planned[(s["cell"], s["arm"])] += len(s["tasks"]) * int(s["trials"])
     run = {
         "schema_version": SCHEMA_VERSION,
         "status": os.environ.get("RUN_RESULT", "unknown"),
@@ -350,7 +354,7 @@ def _catalog() -> dict | None:
 def resummarize(run_path: str) -> dict:
     """Recompute a published run's summary from its stored trials (after an aggregation fix)."""
     run = json.loads(Path(run_path).read_text())
-    planned = {f"{c['cell']}__{c['arm']}": c.get("n_planned") or 0 for c in run["summary"]["cells"]}
+    planned = {(c["cell"], c["arm"]): c.get("n_planned") or 0 for c in run["summary"]["cells"]}
     run["summary"] = summarize(run["trials"], run.get("shards") or {}, planned)
     Path(run_path).write_text(json.dumps(run, indent=1))
     return run

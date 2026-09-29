@@ -29,6 +29,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--arms", default="", help="comma-separated arms to keep")
     p.add_argument("--tasks", default="", help="comma-separated task ids to keep")
     p.add_argument("--trials", type=int, default=None)
+    p.add_argument("--shard-by", choices=["arm", "task"], default=None)
 
     p = sub.add_parser("meter", help="run the OpenRouter metering proxy (key read from stdin)")
     p.add_argument("--host", default="127.0.0.1")
@@ -75,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
 
         from .bench.plan import plan
 
-        print(json.dumps(plan(args.cells, args.arms, args.tasks, args.trials)))
+        print(json.dumps(plan(args.cells, args.arms, args.tasks, args.trials, args.shard_by)))
         return 0
     if args.cmd == "meter":
         from .meter.proxy import serve

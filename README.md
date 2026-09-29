@@ -71,6 +71,9 @@ systemctl --user start podman.socket
 ## Running the benchmark
 
 `Actions → benchmark → Run workflow`, choosing cells, arms, tasks, trials and a spending ceiling.
+Each shard (one CI job, one capped OpenRouter key) is a harness × model × arm × task by default
+(`shard_by` in `matrix.toml`, or the `shard_by` input): trials inside a shard run sequentially so the
+metering proxy can attribute cost per trial, and up to 20 shards run in parallel.
 A monthly scheduled canary runs the implicit arm on the cheapest cells. Results are committed to
 the `data` branch and published to GitHub Pages.
 
