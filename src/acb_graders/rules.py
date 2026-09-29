@@ -11,6 +11,21 @@ from .checks import CHECKS_BY_FAMILY
 
 ARMS = ("implicit", "nudge", "explicit")
 
+ARM_INFO: dict[str, dict[str, str]] = {
+    "implicit": {
+        "summary": "The task's natural request, nothing appended. No practice is named.",
+        "reading": "Baseline behaviour: what the agent does unprompted.",
+    },
+    "nudge": {
+        "summary": "One generic sentence appended, naming no specific practice.",
+        "reading": "Gain over implicit = disposition: the model knows the practice but only applies it when reminded.",
+    },
+    "explicit": {
+        "summary": "Every graded rule appended verbatim.",
+        "reading": "Gain over nudge = missing specific knowledge. Still failing here = the model cannot do it even when told.",
+    },
+}
+
 NUDGE = "Follow container best practices (security, reproducibility, image size) in your solution."
 
 

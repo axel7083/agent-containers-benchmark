@@ -48,3 +48,18 @@ def test_key_usage_is_the_cost_of_record():
 def test_per_arm_cost_estimates():
     shards = {s["id"]: s for s in plan(cells="claude-code.haiku-4.5", trials=1)["shards"]}
     assert shards["claude-code.haiku-4.5__explicit"]["cap_usd"] > shards["claude-code.haiku-4.5__implicit"]["cap_usd"]
+
+
+def test_catalog_is_generated_from_sources():
+    from acb.bench.catalog import build_catalog
+    from acb_graders.checks import CONTAINERFILE_CHECKS
+
+    cat = build_catalog()
+    assert [c["id"] for c in cat["families"]["containerfile"]["checks"]] == [c.id for c in CONTAINERFILE_CHECKS]
+    assert all(c["title"] and c["why"] and c["how"] for c in cat["families"]["containerfile"]["checks"])
+    explicit = next(a for a in cat["arms"] if a["id"] == "explicit")
+    assert "Pin base images by `@sha256:` digest." in explicit["appended"]["containerfile"]
+    node = next(t for t in cat["tasks"] if t["id"] == "containerfile-node-api")
+    lock = next(f for f in node["files"] if f["path"] == "package-lock.json")
+    assert lock["content"] is None and lock["size"] > 0
+    assert {o["name"] for o in node["oracles"]} >= {"best", "naive"}

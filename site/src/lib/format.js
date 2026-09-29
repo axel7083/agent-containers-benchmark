@@ -15,10 +15,7 @@ export function rampColor(rate) {
   return { fill: RAMP[i], ink: i >= 3 ? '#ffffff' : '#0b0b0b' };
 }
 
-export const ARMS = ['implicit', 'nudge', 'explicit'];
-
-export const ARM_HELP = {
-  implicit: 'natural request, no practices named',
-  nudge: 'one generic "follow best practices" sentence',
-  explicit: 'every graded rule spelled out',
+export const mean = (values) => {
+  const v = values.filter((x) => x != null);
+  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
 };

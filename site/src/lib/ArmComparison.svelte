@@ -1,12 +1,15 @@
 <script>
-  import { ARMS, pct, rampColor } from './format.js';
+  import { resolve } from '$app/paths';
+  import { pct, rampColor } from './format.js';
 
-  /** @type {{ cells: any[] }} all summary cells of the run (every arm) */
-  let { cells } = $props();
+  /** @type {{ cells: any[], armOrder: string[], checks: any[] }} all summary cells of the run (every arm) */
+  let { cells, armOrder, checks } = $props();
+
+  let titles = $derived(Object.fromEntries(checks.map((c) => [c.id, c.title])));
 
   let chosen = $state('');
   let cellIds = $derived([...new Set(cells.map((c) => c.cell))].sort());
-  let arms = $derived(ARMS.filter((a) => cells.some((c) => c.arm === a)));
+  let arms = $derived(armOrder.filter((a) => cells.some((c) => c.arm === a)));
 
   // Pool pass/fail counts per check and arm, over one cell or all of them.
   let rows = $derived.by(() => {
@@ -61,7 +64,7 @@
     <tbody>
       {#each rows as row (row.id)}
         <tr>
-          <td class="mono">{row.id}</td>
+          <td><a href={resolve('/checks/[id]', { id: row.id })}>{titles[row.id] ?? row.id}</a></td>
           {#each arms as a (a)}
             {@const r = row.rate(a)}
             {@const s = row.byArm[a]}

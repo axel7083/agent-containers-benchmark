@@ -1,8 +1,9 @@
 <script>
+  import { resolve } from '$app/paths';
   import { pct, rampColor } from './format.js';
 
-  /** @type {{ rows: string[], columns: { key: string, label: string, sub: string }[], value: (row: string, colKey: string) => { rate: number | null, pass: number, fail: number, na: number } | undefined }} */
-  let { rows, columns, value } = $props();
+  /** @type {{ rows: string[], columns: { key: string, label: string, sub: string }[], value: (row: string, colKey: string) => { rate: number | null, pass: number, fail: number, na: number } | undefined, rowLabel?: (row: string) => string, rowHref?: boolean }} */
+  let { rows, columns, value, rowLabel = (r) => r, rowHref = false } = $props();
 
   let hover = $state(null);
 </script>
@@ -16,7 +17,9 @@
       </div>
     {/each}
     {#each rows as row (row)}
-      <div class="rowhead" role="rowheader">{row}</div>
+      <div class="rowhead" role="rowheader" title={row}>
+        {#if rowHref}<a href={resolve('/checks/[id]', { id: row })}>{rowLabel(row)}</a>{:else}{rowLabel(row)}{/if}
+      </div>
       {#each columns as col (col.key)}
         {@const v = value(row, col.key)}
         {#if v && v.rate != null}
@@ -63,7 +66,9 @@
   .corner, .colhead, .rowhead { color: var(--text-secondary); }
   .colhead { display: flex; flex-direction: column; justify-content: end; padding: 0.25rem; }
   .colhead small { color: var(--text-muted); }
-  .rowhead { display: flex; align-items: center; padding-right: 0.5rem; font-family: var(--mono); }
+  .rowhead { display: flex; align-items: center; padding-right: 0.5rem; }
+  .rowhead a { color: var(--text-primary); text-decoration: none; }
+  .rowhead a:hover { text-decoration: underline; }
   .cell {
     display: flex; align-items: center; justify-content: center;
     min-height: 2rem; border: 0; border-radius: 4px; font: inherit; font-variant-numeric: tabular-nums;

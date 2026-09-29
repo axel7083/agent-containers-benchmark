@@ -318,11 +318,23 @@ def aggregate(inputs: list[str], out: str) -> dict:
         "harbor_version": (plan or {}).get("harbor_version"),
         "billing": billing,
         "shards": shard_costs,
+        "catalog": _catalog(),
         "summary": summarize(trials, shard_costs, planned),
         "trials": trials,
     }
     Path(out).write_text(json.dumps(run, indent=1))
     return run
+
+
+def _catalog() -> dict | None:
+    """Snapshot of the definitions this run was graded with (the site prefers it over the current one)."""
+    try:
+        from .catalog import build_catalog
+
+        return build_catalog()
+    except Exception as exc:  # never lose a run because documentation could not be built
+        print(f"warning: catalog not embedded: {exc}")
+        return None
 
 
 def index(runs_dir: str, out: str) -> dict:

@@ -40,6 +40,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("inputs", nargs="+")
     p.add_argument("--out", required=True)
 
+    p = sub.add_parser("catalog", help="write the benchmark catalog (checks, arms, gates, tasks) as JSON")
+    p.add_argument("--out", required=True)
+
     p = sub.add_parser("index", help="rebuild the runs index for the site")
     p.add_argument("runs_dir")
     p.add_argument("--out", required=True)
@@ -79,6 +82,14 @@ def main(argv: list[str] | None = None) -> int:
         from .bench.aggregate import aggregate
 
         aggregate(args.inputs, args.out)
+        return 0
+    if args.cmd == "catalog":
+        import json
+        from pathlib import Path
+
+        from .bench.catalog import build_catalog
+
+        Path(args.out).write_text(json.dumps(build_catalog(), indent=1))
         return 0
     if args.cmd == "index":
         from .bench.aggregate import index

@@ -96,7 +96,8 @@ class Check:
 
     `rule` is phrased as an instruction and is reused verbatim in the explicit
     prompt arm, so the grader and the prompt never drift apart. `accepted`
-    lists the equally valid strategies the check passes for.
+    lists the equally valid strategies the check passes for. `title`, `why`
+    and `how` document the check; the results site renders them as-is.
     """
 
     id: str
@@ -106,6 +107,24 @@ class Check:
     weight: float
     needs_runtime: bool
     evaluate: Callable[[Artifacts], tuple[Status, str]]
+    title: str = ""
+    why: str = ""
+    how: str = ""
+    not_applicable: str = ""
+
+    def describe(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title or self.id,
+            "category": self.category,
+            "weight": self.weight,
+            "rule": self.rule,
+            "why": self.why,
+            "how": self.how,
+            "accepted": list(self.accepted),
+            "not_applicable": self.not_applicable,
+            "informational": self.weight == 0,
+        }
 
     def run(self, artifacts: Artifacts) -> CheckResult:
         try:

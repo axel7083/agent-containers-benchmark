@@ -32,6 +32,8 @@ jobs:
           else
             echo '{"runs": []}' >site/static/data/index.json
           fi
+          # Checks, arms, gates and tasks, generated from the sources (never hardcoded in the site).
+          PYTHONPATH=src python3 -m acb.cli catalog --out site/static/data/catalog.json
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24

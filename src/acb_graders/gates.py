@@ -26,6 +26,28 @@ BUILD_TIMEOUT = 900
 START_TIMEOUT = 60
 
 
+# Gates run in this order; the first failing one is the trial's failure class.
+GATES: tuple[dict[str, str], ...] = (
+    {"id": "artifact", "title": "Artifact", "description": "A `Containerfile` or `Dockerfile` exists in the app directory."},
+    {"id": "build", "title": "Build", "description": "The grader removes the agent's containers and pods, then rebuilds the file with "
+     "`podman build --no-cache`. The agent's own images are never trusted."},
+    {"id": "start", "title": "Start", "description": "`podman run -d -p 18080:<port>` starts the image and the container keeps running."},
+    {"id": "probe", "title": "Probe", "description": "An HTTP request to the task's probe path returns the expected status and body "
+     "within 60 seconds."},
+)
+
+FAILURE_CLASS_HELP: dict[str, str] = {
+    "none": "All gates passed.",
+    "no-artifact": "The agent produced no Containerfile/Dockerfile.",
+    "build": "The rebuild failed.",
+    "start": "The container exited or could not be created.",
+    "probe": "The container runs but the probe never succeeded.",
+    "infra": "Infrastructure problem (registry rate limit, disk, grader crash); excluded from scores.",
+    "budget": "The shard's OpenRouter spending cap was hit; excluded from scores.",
+    "no-verdict": "No grader result was produced; excluded from scores.",
+}
+
+
 @dataclass
 class GateResult:
     gates: dict[str, bool] = field(default_factory=dict)
