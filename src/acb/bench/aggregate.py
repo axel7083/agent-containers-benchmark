@@ -224,6 +224,7 @@ def summarize(trials: list[dict]) -> dict[str, Any]:
                 if c["status"] in check_rates[cid]:
                     check_rates[cid][c["status"]] += 1
         costs = [t["metered"].get("billed_cost_usd") for t in items if t["metered"]]
+        reported = [t["harness_reported"].get("cost_usd") for t in items]
         cells.append({
             "cell": cell,
             "arm": arm,
@@ -238,6 +239,7 @@ def summarize(trials: list[dict]) -> dict[str, Any]:
             "practice_uncond_ci": [plo, phi],
             "checks": {cid: v | {"rate": v["pass"] / (v["pass"] + v["fail"]) if v["pass"] + v["fail"] else None} for cid, v in sorted(check_rates.items())},
             "billed_cost_usd": round(sum(c for c in costs if c), 4),
+            "harness_reported_cost_usd": round(sum(c for c in reported if c), 4) if any(reported) else None,
             "cost_per_success_usd": round(sum(c for c in costs if c) / passed, 4) if passed else None,
             "mean_agent_seconds": _mean([t["agent_seconds"] for t in items]),
             "docker_usage_rate": _mean([1.0 if t["process"].get("docker_commands") else 0.0 for t in items if t["process"]]),

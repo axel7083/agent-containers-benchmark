@@ -106,6 +106,7 @@
               <th class="num" title="Build, start and HTTP probe all pass. 95% Wilson interval.">Works</th>
               <th class="num" title="Weighted share of applicable practice checks passed (unconditional). 95% task-bootstrap interval.">Practice</th>
               <th class="num" title="OpenRouter billed cost for this cell and arm">Billed</th>
+              <th class="num" title="What the harness itself reported; often wrong for OpenRouter models">Harness says</th>
               <th class="num">$ / success</th>
               <th class="num" title="Mean agent wall time per trial">Agent time</th>
               <th class="num" title="Share of trials where the agent ran a docker command">Used docker</th>
@@ -121,6 +122,7 @@
                 <td class="num">{pct(c.gate_pass_rate)} <small>{ci(c.gate_pass_ci)}</small></td>
                 <td class="num"><strong>{pct(c.practice_uncond_mean)}</strong> <small>{ci(c.practice_uncond_ci)}</small></td>
                 <td class="num">{usd(c.billed_cost_usd)}</td>
+                <td class="num muted">{usd(c.harness_reported_cost_usd)}</td>
                 <td class="num">{usd(c.cost_per_success_usd)}</td>
                 <td class="num">{secs(c.mean_agent_seconds)}</td>
                 <td class="num">{pct(c.docker_usage_rate)}</td>
@@ -215,7 +217,7 @@
   th, td { padding: 0.45rem 0.6rem; text-align: left; border-bottom: 1px solid var(--rule); white-space: nowrap; }
   th { color: var(--text-secondary); font-weight: 600; }
   .num { text-align: right; font-variant-numeric: tabular-nums; }
-  small { color: var(--text-muted); }
+  small, .muted { color: var(--text-muted); }
   .mono { font-family: var(--mono); font-size: 0.8rem; }
   .failed { white-space: normal; }
   .failed span { display: inline-block; margin: 0 0.3rem 0.2rem 0; padding: 0 0.35rem; border: 1px solid var(--rule); border-radius: 4px; font-family: var(--mono); font-size: 0.75rem; }
