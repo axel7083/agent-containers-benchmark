@@ -71,7 +71,10 @@
       Run
       <select value={runFile} onchange={selectRun}>
         {#each index.runs as r (r.file)}
-          <option value={r.file}>{r.created_at?.slice(0, 16).replace('T', ' ')} · {r.n_trials} trials · {usd(r.billed_cost_usd)}</option>
+          <option value={r.file}>
+            {r.created_at?.slice(0, 16).replace('T', ' ')} · {r.n_trials}{r.n_planned ? `/${r.n_planned}` : ''} trials
+            · {usd(r.billed_cost_usd)}{r.status && r.status !== 'success' ? ` · ${r.status}` : ''}
+          </option>
         {/each}
       </select>
     </label>
@@ -91,6 +94,12 @@
       </span>
     {/if}
   </div>
+  {#if run && run.status && run.status !== 'success'}
+    <p class="notice partial">
+      Partial run ({run.status}): {run.trials.length} of {run.n_planned ?? '?'} planned trials completed. Compare cells
+      with care; the trial counts below differ.
+    </p>
+  {/if}
   <p class="armhelp"><strong>{arm}</strong>: {ARM_HELP[arm]}</p>
 
   {#if run}
@@ -102,10 +111,10 @@
             <tr>
               <th>Harness</th>
               <th>Model</th>
-              <th class="num" title="Trials graded / run (infra & budget failures excluded)">Trials</th>
+              <th class="num" title="Trials graded / completed / planned (infra and budget failures are not graded)">Trials</th>
               <th class="num" title="Build, start and HTTP probe all pass. 95% Wilson interval.">Works</th>
               <th class="num" title="Weighted share of applicable practice checks passed (unconditional). 95% task-bootstrap interval.">Practice</th>
-              <th class="num" title="OpenRouter billed cost for this cell and arm">Billed</th>
+              <th class="num" title="OpenRouter per-key usage: the exact billed amount for this cell and arm">Billed</th>
               <th class="num" title="What the harness itself reported; often wrong for OpenRouter models">Harness says</th>
               <th class="num">$ / success</th>
               <th class="num" title="Mean agent wall time per trial">Agent time</th>
@@ -118,10 +127,10 @@
               <tr>
                 <td>{c.harness}</td>
                 <td class="mono">{c.model}</td>
-                <td class="num">{c.n_valid}/{c.n_trials}</td>
+                <td class="num">{c.n_valid}/{c.n_trials}{c.n_planned && c.n_planned !== c.n_trials ? `/${c.n_planned}` : ''}</td>
                 <td class="num">{pct(c.gate_pass_rate)} <small>{ci(c.gate_pass_ci)}</small></td>
                 <td class="num"><strong>{pct(c.practice_uncond_mean)}</strong> <small>{ci(c.practice_uncond_ci)}</small></td>
-                <td class="num">{usd(c.billed_cost_usd)}</td>
+                <td class="num" title={c.unattributed_cost_usd ? `${usd(c.unattributed_cost_usd)} not attributable to a single trial (e.g. requests cancelled mid-stream)` : ''}>{usd(c.billed_cost_usd)}</td>
                 <td class="num muted">{usd(c.harness_reported_cost_usd)}</td>
                 <td class="num">{usd(c.cost_per_success_usd)}</td>
                 <td class="num">{secs(c.mean_agent_seconds)}</td>
@@ -183,7 +192,7 @@
                 <td>{t.failure_class === 'none' ? 'works' : t.failure_class}</td>
                 <td class="num">{pct(t.practice_uncond)}</td>
                 <td class="num">{t.image_size_mb ? `${Math.round(t.image_size_mb)} MB` : '–'}</td>
-                <td class="num">{usd(t.metered?.billed_cost_usd)}</td>
+                <td class="num">{usd(t.cost_usd ?? t.metered?.billed_cost_usd)}</td>
                 <td class="num">{secs(t.agent_seconds)}</td>
                 <td class="failed">
                   {#each failing(t) as id (id)}<span title={t.checks[id].evidence}>{id}</span>{/each}
@@ -201,6 +210,7 @@
   h1 { margin: 0 0 0.25rem; font-size: 1.6rem; }
   h2 { margin: 2rem 0 0.5rem; font-size: 1.15rem; }
   .lede { max-width: 60rem; color: var(--text-secondary); }
+  .partial { margin: 0.5rem 0; }
   .notice { padding: 1rem; background: var(--surface-1); border: 1px solid var(--rule); border-radius: 6px; }
   .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin: 1rem 0 0.25rem; }
   .filters label, fieldset { display: flex; align-items: center; gap: 0.4rem; color: var(--text-secondary); font-size: 0.9rem; }

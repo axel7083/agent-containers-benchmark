@@ -41,7 +41,10 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
             for value in (shard_id, cell["harness"], cell["version"], cell["model"].replace("/", ".")):
                 if not SAFE.match(value):
                     raise SystemExit(f"unsafe identifier in matrix: {value!r}")
-            est = trials * len(selected_tasks) * cell["est_cost_per_trial"]
+            per_trial = cell["est_cost_per_trial"]
+            if isinstance(per_trial, dict):
+                per_trial = per_trial[arm]
+            est = trials * len(selected_tasks) * per_trial
             cap = max(matrix["cap_floor_usd"], round(est * matrix["cap_headroom"], 2))
             shards.append({
                 "id": shard_id,

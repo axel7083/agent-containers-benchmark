@@ -204,7 +204,37 @@ def collect_shard(shard_dir: Path) -> list[dict]:
 EXCLUDED = {"infra", "budget", "no-verdict"}
 
 
-def summarize(trials: list[dict]) -> dict[str, Any]:
+def reconcile(trials: list[dict], billing: dict | None) -> dict[str, dict]:
+    """Make OpenRouter per-key usage the cost of record.
+
+    Each shard has its own key, so the key's `usage` is the exact billed total
+    for the shard. The proxy's per-generation costs only split that total
+    across trials; whatever the proxy could not see (e.g. a request the agent
+    cancelled mid-stream) is reported as unattributed, never dropped.
+    """
+    shards: dict[str, dict] = {}
+    usage = {k: _num((v or {}).get("usage")) for k, v in ((billing or {}).get("shards") or {}).items()}
+    by_shard: dict[str, list[dict]] = defaultdict(list)
+    for t in trials:
+        by_shard[t["shard"]].append(t)
+    for shard, items in by_shard.items():
+        metered = sum(t["metered"].get("billed_cost_usd") or 0.0 for t in items)
+        key_usage = usage.get(shard)
+        total = key_usage if key_usage is not None else metered
+        scale = total / metered if metered else 0.0
+        for t in items:
+            t["cost_usd"] = round((t["metered"].get("billed_cost_usd") or 0.0) * scale, 6)
+        shards[shard] = {
+            "key_usage_usd": key_usage,
+            "metered_usd": round(metered, 6),
+            "unattributed_usd": round(total - metered, 6) if key_usage is not None else None,
+        }
+    return shards
+
+
+def summarize(trials: list[dict], shard_costs: dict[str, dict] | None = None, planned: dict[str, int] | None = None) -> dict[str, Any]:
+    shard_costs = shard_costs or {}
+    planned = planned or {}
     groups: dict[tuple[str, str], list[dict]] = defaultdict(list)
     for t in trials:
         groups[(t["cell"], t["arm"])].append(t)
@@ -223,7 +253,11 @@ def summarize(trials: list[dict]) -> dict[str, Any]:
             for cid, c in t["checks"].items():
                 if c["status"] in check_rates[cid]:
                     check_rates[cid][c["status"]] += 1
-        costs = [t["metered"].get("billed_cost_usd") for t in items if t["metered"]]
+        shard_ids = sorted({t["shard"] for t in items})
+        billed = sum((shard_costs.get(sid, {}).get("key_usage_usd") or 0.0) for sid in shard_ids) if shard_costs else None
+        if not billed:
+            billed = sum(t.get("cost_usd", t["metered"].get("billed_cost_usd")) or 0.0 for t in items)
+        unattributed = sum((shard_costs.get(sid, {}).get("unattributed_usd") or 0.0) for sid in shard_ids)
         reported = [t["harness_reported"].get("cost_usd") for t in items]
         cells.append({
             "cell": cell,
@@ -231,6 +265,7 @@ def summarize(trials: list[dict]) -> dict[str, Any]:
             "harness": items[0]["harness"],
             "model": items[0]["model"],
             "n_trials": len(items),
+            "n_planned": sum(planned.get(sid, 0) for sid in shard_ids) or None,
             "n_valid": len(valid),
             "excluded": {k: sum(1 for t in items if t["failure_class"] == k) for k in EXCLUDED if any(t["failure_class"] == k for t in items)},
             "gate_pass_rate": passed / len(valid) if valid else None,
@@ -238,9 +273,10 @@ def summarize(trials: list[dict]) -> dict[str, Any]:
             "practice_uncond_mean": mean,
             "practice_uncond_ci": [plo, phi],
             "checks": {cid: v | {"rate": v["pass"] / (v["pass"] + v["fail"]) if v["pass"] + v["fail"] else None} for cid, v in sorted(check_rates.items())},
-            "billed_cost_usd": round(sum(c for c in costs if c), 4),
+            "billed_cost_usd": round(billed, 4),
+            "unattributed_cost_usd": round(unattributed, 4),
             "harness_reported_cost_usd": round(sum(c for c in reported if c), 4) if any(reported) else None,
-            "cost_per_success_usd": round(sum(c for c in costs if c) / passed, 4) if passed else None,
+            "cost_per_success_usd": round(billed / passed, 4) if passed else None,
             "mean_agent_seconds": _mean([t["agent_seconds"] for t in items]),
             "docker_usage_rate": _mean([1.0 if t["process"].get("docker_commands") else 0.0 for t in items if t["process"]]),
             "self_built_rate": _mean([1.0 if t["process"].get("self_built") else 0.0 for t in items if t["process"]]),
@@ -269,15 +305,20 @@ def aggregate(inputs: list[str], out: str) -> dict:
         billing = billing or _load(root / "billing" / "billing.json")
         for shard_dir in sorted(p.parent for p in root.glob("**/shard.json")):
             trials.extend(collect_shard(shard_dir))
+    shard_costs = reconcile(trials, billing)
+    planned = {s["id"]: len(s["tasks"]) * int(s["trials"]) for s in (plan or {}).get("shards", [])}
     run = {
         "schema_version": SCHEMA_VERSION,
+        "status": os.environ.get("RUN_RESULT", "unknown"),
+        "n_planned": sum(planned.values()) or None,
         "run_id": os.environ.get("RUN_ID", "local"),
         "run_url": os.environ.get("RUN_URL"),
         "created_at": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "dataset_version": (plan or {}).get("dataset_version"),
         "harbor_version": (plan or {}).get("harbor_version"),
         "billing": billing,
-        "summary": summarize(trials),
+        "shards": shard_costs,
+        "summary": summarize(trials, shard_costs, planned),
         "trials": trials,
     }
     Path(out).write_text(json.dumps(run, indent=1))
@@ -297,7 +338,9 @@ def index(runs_dir: str, out: str) -> dict:
             "run_url": run.get("run_url"),
             "created_at": run.get("created_at"),
             "dataset_version": run.get("dataset_version"),
+            "status": run.get("status"),
             "n_trials": len(run.get("trials") or []),
+            "n_planned": run.get("n_planned"),
             "billed_cost_usd": round(billed, 4),
         })
     runs.sort(key=lambda r: r.get("created_at") or "", reverse=True)

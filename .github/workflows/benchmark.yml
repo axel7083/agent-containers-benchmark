@@ -196,12 +196,18 @@ jobs:
           PLAN: ${{ needs.plan.outputs.plan }}
           RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RUN_RESULT: ${{ needs.run.result }}
         run: |
           set -euo pipefail
           printf '%s' "$PLAN" >artifacts/plan.json
           PYTHONPATH=src python3 -m acb.cli aggregate artifacts --out "run.json"
-          jq '.summary' run.json
+          jq '{status, n_planned, n_trials: (.trials | length), shards}' run.json
+          if [ "$(jq '.trials | length' run.json)" -eq 0 ]; then
+            echo "no trial completed; nothing to publish"
+            rm run.json
+          fi
       - name: Commit to the data branch
+        if: hashFiles('run.json') != ''
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}

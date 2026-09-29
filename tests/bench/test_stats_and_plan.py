@@ -30,3 +30,21 @@ def test_command_detection():
 def test_agent_args_never_carry_a_real_key():
     args = harbor_agent_args("claude-code", "1.0.0", "anthropic/claude-haiku-4.5", "http://acb-meter:8787", "tok")
     assert "ANTHROPIC_API_KEY=tok" in args and not any("sk-or-" in a for a in args)
+
+
+def test_key_usage_is_the_cost_of_record():
+    from acb.bench.aggregate import reconcile
+
+    trials = [
+        {"shard": "s", "metered": {"billed_cost_usd": 0.01}},
+        {"shard": "s", "metered": {"billed_cost_usd": 0.03}},
+    ]
+    shards = reconcile(trials, {"shards": {"s": {"usage": 0.05}}})
+    assert shards["s"]["unattributed_usd"] == 0.01
+    # The per-key total is split across trials in proportion to what the proxy saw.
+    assert [t["cost_usd"] for t in trials] == [0.0125, 0.0375]
+
+
+def test_per_arm_cost_estimates():
+    shards = {s["id"]: s for s in plan(cells="claude-code.haiku-4.5", trials=1)["shards"]}
+    assert shards["claude-code.haiku-4.5__explicit"]["cap_usd"] > shards["claude-code.haiku-4.5__implicit"]["cap_usd"]
