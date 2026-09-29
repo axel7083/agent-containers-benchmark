@@ -117,7 +117,8 @@ def attribute(requests: list[dict], generations: dict[str, dict], start: float |
             continue
         n += 1
         status = req.get("status")
-        if status == 402:
+        # OpenRouter answers 402 when credits run out and 403 "Key limit exceeded" when a key hits its cap.
+        if status == 402 or (status == 403 and "limit" in str(req.get("error", "")).lower()):
             budget_hits += 1
         elif isinstance(status, int) and status >= 400 and status != 499:  # 499: client cancelled
             errors += 1
@@ -164,6 +165,10 @@ def collect_shard(shard_dir: Path) -> list[dict]:
         metered = attribute(requests, generations, start, end)
         if metered.get("budget_hits"):
             failure_class = "budget"
+        elif exception == "AgentTimeoutError" and failure_class != "none":
+            # Ran out of time: still a failure of the agent, but labelled as such rather than by
+            # whatever half-finished state the grader found.
+            failure_class = "timeout"
         elif failure_class is None:
             failure_class = "infra" if exception else "no-verdict"
         task = _str(result.get("task_name"), 120) or ""

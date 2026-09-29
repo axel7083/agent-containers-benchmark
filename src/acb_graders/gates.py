@@ -42,6 +42,7 @@ FAILURE_CLASS_HELP: dict[str, str] = {
     "build": "The rebuild failed.",
     "start": "The container exited or could not be created.",
     "probe": "The container runs but the probe never succeeded.",
+    "timeout": "The agent did not finish within the task's time limit (counted as a failure).",
     "infra": "Infrastructure problem (registry rate limit, disk, grader crash); excluded from scores.",
     "budget": "The shard's OpenRouter spending cap was hit; excluded from scores.",
     "no-verdict": "No grader result was produced; excluded from scores.",

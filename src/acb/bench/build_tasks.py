@@ -27,6 +27,8 @@ ENV_COMPOSE = f"""\
 services:
   main:
     privileged: true
+    # Harbor's `sleep infinity` ignores SIGTERM as PID 1: every teardown waited 10 s for SIGKILL.
+    init: true
     extra_hosts:
       - "{METER_HOST}:host-gateway"
 """

@@ -5,7 +5,8 @@ harbor_version = "0.23.0"
 trials = 1
 arms = ["implicit", "nudge", "explicit"]
 # Per-shard OpenRouter key cap = trials x tasks x est_cost_per_trial x headroom (min floor).
-# est_cost_per_trial: measured OpenRouter-billed cost per trial (2026-09-29), a number or a per-arm table.
+# est_cost_per_trial: OpenRouter-billed cost per trial measured on the v1 baseline (run 36569276839),
+# a number or a per-arm table.
 cap_headroom = 1.5
 cap_floor_usd = 0.30
 
@@ -14,32 +15,32 @@ id = "claude-code.haiku-4.5"
 harness = "claude-code"
 version = "2.1.284"
 model = "anthropic/claude-haiku-4.5"
-est_cost_per_trial = { implicit = 0.05, nudge = 0.13, explicit = 0.30 }
+est_cost_per_trial = { implicit = 0.06, nudge = 0.12, explicit = 0.32 }
 
 [[cells]]
 id = "codex.gpt-6-luna"
 harness = "codex"
 version = "0.159.0"
 model = "openai/gpt-6-luna"
-est_cost_per_trial = 0.006
+est_cost_per_trial = { implicit = 0.005, nudge = 0.008, explicit = 0.012 }
 
 [[cells]]
 id = "opencode.gpt-6-luna"
 harness = "opencode"
 version = "1.18.33"
 model = "openai/gpt-6-luna"
-est_cost_per_trial = 0.006
+est_cost_per_trial = { implicit = 0.003, nudge = 0.008, explicit = 0.009 }
 
 [[cells]]
 id = "opencode.glm-5.3-flash"
 harness = "opencode"
 version = "1.18.33"
 model = "z-ai/glm-5.3-flash"
-est_cost_per_trial = 0.015
+est_cost_per_trial = { implicit = 0.005, nudge = 0.018, explicit = 0.024 }
 
 [[cells]]
 id = "opencode.deepseek-v4.1-flash"
 harness = "opencode"
 version = "1.18.33"
 model = "deepseek/deepseek-v4.1-flash"
-est_cost_per_trial = 0.008
+est_cost_per_trial = { implicit = 0.003, nudge = 0.006, explicit = 0.011 }

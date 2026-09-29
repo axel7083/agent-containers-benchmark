@@ -79,3 +79,14 @@ def test_trials_without_artifact_do_not_count_against_single_checks():
     cell = summarize([trial("none", "pass"), trial("no-artifact", "fail")])["cells"][0]
     assert cell["checks"]["x"] == {"pass": 1, "fail": 0, "na": 0, "error": 0, "rate": 1.0}
     assert cell["practice_uncond_mean"] == 0.5  # the practice score still counts the empty trial as 0
+
+
+def test_key_limit_403_counts_as_budget_not_model_failure():
+    from acb.bench.aggregate import attribute
+
+    requests = [
+        {"ts": 10.0, "status": 200, "generation_ids": []},
+        {"ts": 11.0, "status": 403, "error": '{"error":{"message":"Key limit exceeded (total limit)."}}'},
+        {"ts": 12.0, "status": 403, "error": "forbidden"},
+    ]
+    assert attribute(requests, {}, 9.0, 13.0)["budget_hits"] == 1

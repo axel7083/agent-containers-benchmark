@@ -100,7 +100,8 @@ jobs:
       contents: read
     strategy:
       fail-fast: false
-      max-parallel: 8
+      # All shards at once (public repos get 20 concurrent jobs): wall time = the slowest shard.
+      max-parallel: 20
       matrix:
         shard: ${{ fromJSON(needs.plan.outputs.shards) }}
     name: run (${{ matrix.shard.id }})
@@ -140,6 +141,13 @@ jobs:
       - name: Stop metering proxy
         if: always()
         run: scripts/meter-stop.sh
+      - name: Engine state after the shard
+        if: always()
+        run: |
+          # Podman 5.7 reports a spurious "removing container ... network: 1 error occurred" on every
+          # Harbor teardown (a race between podman's cleanup process and rm); nothing is leaked. Verify.
+          echo "containers: $(podman ps -a -q | wc -l)  volumes: $(podman volume ls -q | wc -l)  networks: $(podman network ls -q | wc -l)"
+          df -h / | tail -1
       - name: Check artifacts for key material
         if: always()
         run: scripts/scan-secrets.sh "$OUT_DIR"
