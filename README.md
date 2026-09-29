@@ -1,0 +1,88 @@
+# agent-containers-benchmark
+
+How well do coding agents (Claude Code, Codex, OpenCode, …) × models follow **container good
+practices with Podman**, before any skill is installed? This benchmark measures it, so that
+Podman skills can be written for the gaps that actually exist
+([podman-desktop#19442](https://github.com/podman-desktop/podman-desktop/issues/19442)).
+
+Results: **https://axel7083.github.io/agent-containers-benchmark/**
+
+## Protocol
+
+Each **trial** gives one agent one task inside a sandbox (Fedora 45, Podman 6, no Docker) and
+lets it work unattended. When it stops, a **hidden grader** (copied in only after the agent is
+done) removes everything the agent started, rebuilds its Containerfile with `--no-cache`, runs
+the image and probes it over HTTP.
+
+- **Gates** (did it work): artifact exists → `podman build` → container starts → probe answers.
+- **Practice checks** (is it good): fully qualified image names, tag/digest pinning, multi-stage
+  build, image size budget, non-root user, no secret baked into the image (a canary `.env` is
+  planted in every app), ignore file, lockfile installs, exec-form entrypoint, layer-cache
+  ordering, package-cache cleanup, HEALTHCHECK, hadolint. Checks answer `n/a` when a practice does
+  not apply, and accept every equally valid strategy (see `src/acb_graders/checks.py`).
+- **Process metrics** from the agent transcript: `docker` vs `podman` commands, whether the agent
+  built its own image to verify, steps, tool calls.
+- **Cost of record**: OpenRouter-billed cost per trial, measured by a metering proxy (not the
+  harness's own estimate, which differs across harnesses).
+
+The same tasks run under three **prompt arms**:
+
+| arm | prompt | what a gap means |
+|---|---|---|
+| `implicit` | natural request, no practice named | baseline behaviour |
+| `nudge` | + "follow container best practices" | implicit→nudge gain = *disposition*: a short rule-style skill helps |
+| `explicit` | + every graded rule, verbatim | nudge→explicit gain = missing *knowledge*: a reference skill helps |
+
+Scores are reported with 95% intervals (Wilson for pass rates, task-level cluster bootstrap for
+practice scores). Trials lost to infrastructure or budget caps are excluded, never counted as
+failures.
+
+## Layout
+
+```
+tasks/<id>/                  task sources: app/, instruction.md, tests/spec.toml, oracles/*
+src/acb_graders/             stdlib-only graders (vendored into each task's hidden tests/)
+src/acb/bench/               task builder, planner, aggregator, statistics
+src/acb/meter/               OpenRouter metering proxy
+images/task-base/            Fedora 45 + Podman 6 sandbox image (pinned by digest in task-base.lock)
+matrix.toml                  harness × model cells, trials, arms, budget caps
+scripts/openrouter_keys.py   the only code that touches the OpenRouter management key
+site/                        SvelteKit static results site (GitHub Pages)
+```
+
+## Running locally
+
+Requires Podman (rootless is fine) and a compose provider (`podman compose`).
+
+```sh
+python3 -m venv .venv && .venv/bin/pip install --require-hashes -r requirements/bench.txt && .venv/bin/pip install --no-deps -e .
+podman build -t localhost/acb-task-base:dev images/task-base
+
+# Grader validation: every oracle fixture must grade as its expect.toml says.
+.venv/bin/acb oracles --image localhost/acb-task-base:dev
+
+# Harbor calibration: oracle agent scores 1, nop agent scores 0.
+systemctl --user start podman.socket
+.venv/bin/acb build-tasks --image localhost/acb-task-base:dev
+.venv/bin/harbor run -e podman -p build/tasks -a oracle -n 2
+```
+
+## Running the benchmark
+
+`Actions → benchmark → Run workflow`, choosing cells, arms, tasks, trials and a spending ceiling.
+A monthly scheduled canary runs the implicit arm on the cheapest cells. Results are committed to
+the `data` branch and published to GitHub Pages.
+
+## Adding a task
+
+1. `tasks/<id>/`: `task.toml`, `instruction.md` (a natural request; never name the practices),
+   `app/` (plant a canary secret if the app would realistically have one), `tests/spec.toml`.
+2. `oracles/`: at least a `best` solution (used by Harbor's oracle agent), one alternative valid
+   strategy, and a naive or broken one, each with an `expect.toml`.
+3. `acb oracles --task <id>` must pass; then bump `dataset_version` in `matrix.toml`: trend lines
+   never cross a dataset version.
+
+## Security
+
+See [SECURITY.md](SECURITY.md). In short: the OpenRouter management key never reaches a job
+that runs an agent; agents only ever hold a throwaway token for a local proxy.
