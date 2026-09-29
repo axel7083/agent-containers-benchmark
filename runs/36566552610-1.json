@@ -1,0 +1,7822 @@
+{
+ "schema_version": 1,
+ "run_id": "36566552610-1",
+ "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36566552610",
+ "created_at": "2026-09-29T12:32:12+00:00",
+ "dataset_version": 1,
+ "harbor_version": "0.23.0",
+ "billing": {
+  "run_id": "36566552610-1",
+  "shards": {
+   "claude-code.haiku-4.5__implicit": {
+    "usage": 0.5315326,
+    "limit": 3,
+    "limit_remaining": 2.4684673999999998,
+    "created_at": "2026-09-29T12:13:04.952Z"
+   },
+   "claude-code.haiku-4.5__nudge": {
+    "usage": 0.9140497,
+    "limit": 3,
+    "limit_remaining": 2.0859503,
+    "created_at": "2026-09-29T12:13:05.123Z"
+   },
+   "claude-code.haiku-4.5__explicit": {
+    "usage": 1.4641378,
+    "limit": 3,
+    "limit_remaining": 1.5358622,
+    "created_at": "2026-09-29T12:13:05.397Z"
+   },
+   "codex.gpt-6-luna__implicit": {
+    "usage": 0.03855237,
+    "limit": 0.3,
+    "limit_remaining": 0.26144763,
+    "created_at": "2026-09-29T12:13:05.592Z"
+   },
+   "codex.gpt-6-luna__nudge": {
+    "usage": 0.04893968,
+    "limit": 0.3,
+    "limit_remaining": 0.25106032,
+    "created_at": "2026-09-29T12:13:05.833Z"
+   },
+   "codex.gpt-6-luna__explicit": {
+    "usage": 0.058087995,
+    "limit": 0.3,
+    "limit_remaining": 0.24191200499999999,
+    "created_at": "2026-09-29T12:13:06.071Z"
+   },
+   "opencode.gpt-6-luna__implicit": {
+    "usage": 0.02819796,
+    "limit": 0.3,
+    "limit_remaining": 0.27180203999999997,
+    "created_at": "2026-09-29T12:13:06.273Z"
+   },
+   "opencode.gpt-6-luna__nudge": {
+    "usage": 0.04867249,
+    "limit": 0.3,
+    "limit_remaining": 0.25132751,
+    "created_at": "2026-09-29T12:13:06.470Z"
+   },
+   "opencode.gpt-6-luna__explicit": {
+    "usage": 0,
+    "limit": 0.3,
+    "limit_remaining": 0.3,
+    "created_at": "2026-09-29T12:13:06.655Z"
+   },
+   "opencode.glm-5.3-flash__implicit": {
+    "usage": 0,
+    "limit": 0.45,
+    "limit_remaining": 0.45,
+    "created_at": "2026-09-29T12:13:06.864Z"
+   },
+   "opencode.glm-5.3-flash__nudge": {
+    "usage": 0,
+    "limit": 0.45,
+    "limit_remaining": 0.45,
+    "created_at": "2026-09-29T12:13:07.089Z"
+   },
+   "opencode.glm-5.3-flash__explicit": {
+    "usage": 0,
+    "limit": 0.45,
+    "limit_remaining": 0.45,
+    "created_at": "2026-09-29T12:13:07.287Z"
+   },
+   "opencode.deepseek-v4.1-flash__implicit": {
+    "usage": 0,
+    "limit": 0.3,
+    "limit_remaining": 0.3,
+    "created_at": "2026-09-29T12:13:07.483Z"
+   },
+   "opencode.deepseek-v4.1-flash__nudge": {
+    "usage": 0,
+    "limit": 0.3,
+    "limit_remaining": 0.3,
+    "created_at": "2026-09-29T12:13:07.674Z"
+   },
+   "opencode.deepseek-v4.1-flash__explicit": {
+    "usage": 0,
+    "limit": 0.3,
+    "limit_remaining": 0.3,
+    "created_at": "2026-09-29T12:13:07.858Z"
+   }
+  }
+ },
+ "summary": {
+  "cells": [
+   {
+    "cell": "claude-code.haiku-4.5",
+    "arm": "explicit",
+    "harness": "claude-code",
+    "model": "anthropic/claude-haiku-4.5",
+    "n_trials": 5,
+    "n_valid": 5,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.5655,
+     1.0
+    ],
+    "practice_uncond_mean": 0.9393,
+    "practice_uncond_ci": [
+     0.896,
+     0.9833
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "base-tag-pinned": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 4,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "deterministic-deps": {
+      "pass": 3,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "hadolint-clean": {
+      "pass": 3,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6
+     },
+     "healthcheck": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "ignore-file": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 4,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "pkg-cache-cleaned": {
+      "pass": 1,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     }
+    },
+    "billed_cost_usd": 1.3788,
+    "harness_reported_cost_usd": 6.8939,
+    "cost_per_success_usd": 0.2758,
+    "mean_agent_seconds": 136.98,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 5
+    }
+   },
+   {
+    "cell": "claude-code.haiku-4.5",
+    "arm": "implicit",
+    "harness": "claude-code",
+    "model": "anthropic/claude-haiku-4.5",
+    "n_trials": 11,
+    "n_valid": 11,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.7412,
+     1.0
+    ],
+    "practice_uncond_mean": 0.4432,
+    "practice_uncond_ci": [
+     0.2277,
+     0.6509
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 11,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 6,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5454545454545454
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 10,
+      "na": 0,
+      "error": 0,
+      "rate": 0.09090909090909091
+     },
+     "deterministic-deps": {
+      "pass": 5,
+      "fail": 2,
+      "na": 4,
+      "error": 0,
+      "rate": 0.7142857142857143
+     },
+     "exec-form-entrypoint": {
+      "pass": 9,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8181818181818182
+     },
+     "final-image-size": {
+      "pass": 9,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8181818181818182
+     },
+     "fq-image-names": {
+      "pass": 0,
+      "fail": 11,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "hadolint-clean": {
+      "pass": 6,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5454545454545454
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 11,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 6,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5454545454545454
+     },
+     "layer-cache-order": {
+      "pass": 6,
+      "fail": 2,
+      "na": 3,
+      "error": 0,
+      "rate": 0.75
+     },
+     "multi-stage": {
+      "pass": 2,
+      "fail": 0,
+      "na": 9,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 7,
+      "fail": 2,
+      "na": 2,
+      "error": 0,
+      "rate": 0.7777777777777778
+     },
+     "non-root-user": {
+      "pass": 1,
+      "fail": 10,
+      "na": 0,
+      "error": 0,
+      "rate": 0.09090909090909091
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 10,
+      "error": 0,
+      "rate": 0.0
+     }
+    },
+    "billed_cost_usd": 0.5315,
+    "harness_reported_cost_usd": 2.6577,
+    "cost_per_success_usd": 0.0483,
+    "mean_agent_seconds": 47.2727,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 0.8182,
+    "failure_classes": {
+     "none": 11
+    }
+   },
+   {
+    "cell": "claude-code.haiku-4.5",
+    "arm": "nudge",
+    "harness": "claude-code",
+    "model": "anthropic/claude-haiku-4.5",
+    "n_trials": 7,
+    "n_valid": 7,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.6457,
+     1.0
+    ],
+    "practice_uncond_mean": 0.7544,
+    "practice_uncond_ci": [
+     0.687,
+     0.8109
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 7,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 7,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 6,
+      "na": 0,
+      "error": 0,
+      "rate": 0.14285714285714285
+     },
+     "deterministic-deps": {
+      "pass": 4,
+      "fail": 0,
+      "na": 3,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 6,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 7,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 0,
+      "fail": 7,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "hadolint-clean": {
+      "pass": 5,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.7142857142857143
+     },
+     "healthcheck": {
+      "pass": 5,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.7142857142857143
+     },
+     "ignore-file": {
+      "pass": 7,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 5,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 6,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 5,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 6,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8571428571428571
+     },
+     "pkg-cache-cleaned": {
+      "pass": 2,
+      "fail": 0,
+      "na": 5,
+      "error": 0,
+      "rate": 1.0
+     }
+    },
+    "billed_cost_usd": 0.914,
+    "harness_reported_cost_usd": 4.5702,
+    "cost_per_success_usd": 0.1306,
+    "mean_agent_seconds": 98.5286,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 7
+    }
+   },
+   {
+    "cell": "codex.gpt-6-luna",
+    "arm": "explicit",
+    "harness": "codex",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 5,
+    "n_valid": 5,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.5655,
+     1.0
+    ],
+    "practice_uncond_mean": 0.9826,
+    "practice_uncond_ci": [
+     0.9478,
+     1.0
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "base-tag-pinned": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 4,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "deterministic-deps": {
+      "pass": 2,
+      "fail": 1,
+      "na": 2,
+      "error": 0,
+      "rate": 0.6666666666666666
+     },
+     "exec-form-entrypoint": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "hadolint-clean": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "ignore-file": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 4,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 5,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 5,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0395,
+    "harness_reported_cost_usd": 0.054,
+    "cost_per_success_usd": 0.0079,
+    "mean_agent_seconds": 149.62,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 5
+    }
+   },
+   {
+    "cell": "codex.gpt-6-luna",
+    "arm": "implicit",
+    "harness": "codex",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 10,
+    "n_valid": 10,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.7225,
+     1.0
+    ],
+    "practice_uncond_mean": 0.652,
+    "practice_uncond_ci": [
+     0.4933,
+     0.8108
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 10,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 8,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "containerfile-name": {
+      "pass": 8,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "deterministic-deps": {
+      "pass": 6,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 9,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 8,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "fq-image-names": {
+      "pass": 4,
+      "fail": 6,
+      "na": 0,
+      "error": 0,
+      "rate": 0.4
+     },
+     "hadolint-clean": {
+      "pass": 8,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.8
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 10,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 5,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5
+     },
+     "layer-cache-order": {
+      "pass": 6,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 2,
+      "fail": 0,
+      "na": 8,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 8,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 6,
+      "fail": 4,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 10,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0339,
+    "harness_reported_cost_usd": 0.0386,
+    "cost_per_success_usd": 0.0034,
+    "mean_agent_seconds": 50.35,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 0.4,
+    "failure_classes": {
+     "none": 10
+    }
+   },
+   {
+    "cell": "codex.gpt-6-luna",
+    "arm": "nudge",
+    "harness": "codex",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 6,
+    "n_valid": 6,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.6097,
+     1.0
+    ],
+    "practice_uncond_mean": 0.9214,
+    "practice_uncond_ci": [
+     0.8913,
+     0.9519
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "base-tag-pinned": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 4,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6666666666666666
+     },
+     "deterministic-deps": {
+      "pass": 4,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 5,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 3,
+      "fail": 3,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5
+     },
+     "hadolint-clean": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 1,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.16666666666666666
+     },
+     "ignore-file": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 5,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 5,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 5,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 6,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.033,
+    "harness_reported_cost_usd": 0.0489,
+    "cost_per_success_usd": 0.0055,
+    "mean_agent_seconds": 120.9,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 0.8333,
+    "failure_classes": {
+     "none": 6
+    }
+   },
+   {
+    "cell": "opencode.gpt-6-luna",
+    "arm": "implicit",
+    "harness": "opencode",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 9,
+    "n_valid": 9,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.7008,
+     1.0
+    ],
+    "practice_uncond_mean": 0.7082,
+    "practice_uncond_ci": [
+     0.5818,
+     0.8124
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 9,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 9,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 7,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.7777777777777778
+     },
+     "deterministic-deps": {
+      "pass": 5,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 7,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 9,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 3,
+      "fail": 6,
+      "na": 0,
+      "error": 0,
+      "rate": 0.3333333333333333
+     },
+     "hadolint-clean": {
+      "pass": 9,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 9,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 6,
+      "fail": 3,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6666666666666666
+     },
+     "layer-cache-order": {
+      "pass": 5,
+      "fail": 0,
+      "na": 4,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 2,
+      "fail": 0,
+      "na": 7,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 7,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 5,
+      "fail": 4,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5555555555555556
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 9,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0275,
+    "harness_reported_cost_usd": 0.0268,
+    "cost_per_success_usd": 0.0031,
+    "mean_agent_seconds": 64.1222,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 9
+    }
+   },
+   {
+    "cell": "opencode.gpt-6-luna",
+    "arm": "nudge",
+    "harness": "opencode",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 6,
+    "n_valid": 6,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.6097,
+     1.0
+    ],
+    "practice_uncond_mean": 0.8858,
+    "practice_uncond_ci": [
+     0.8432,
+     0.932
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 4,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6666666666666666
+     },
+     "base-tag-pinned": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 4,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.6666666666666666
+     },
+     "deterministic-deps": {
+      "pass": 3,
+      "fail": 1,
+      "na": 2,
+      "error": 0,
+      "rate": 0.75
+     },
+     "exec-form-entrypoint": {
+      "pass": 5,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 3,
+      "fail": 3,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5
+     },
+     "hadolint-clean": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 1,
+      "fail": 5,
+      "na": 0,
+      "error": 0,
+      "rate": 0.16666666666666666
+     },
+     "ignore-file": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 4,
+      "fail": 0,
+      "na": 2,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 5,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 5,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 6,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 6,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0398,
+    "harness_reported_cost_usd": 0.0393,
+    "cost_per_success_usd": 0.0066,
+    "mean_agent_seconds": 109.6333,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 6
+    }
+   }
+  ]
+ },
+ "trials": [
+  {
+   "shard": "claude-code.haiku-4.5__explicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "explicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__ASYXweH",
+   "reward": 1.0,
+   "practice_uncond": 0.9167,
+   "practice_cond": 0.9167,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine@sha256:78c9e40f10516d7070156948a1747347cc5093022f06deeff3c9decd5faa3af7, docker.io/library/alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d4"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "18 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.local, .env.*.local, .git, .gitignore, .gitattributes, .vscode, .idea"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "pass",
+     "evidence": "package cache cleaned in the same layer"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3018"
+    }
+   },
+   "hadolint_codes": [
+    "DL3018"
+   ],
+   "image_size_mb": 17.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 128.3,
+   "harness_reported": {
+    "input_tokens": 604798.0,
+    "cache_tokens": 488357.0,
+    "output_tokens": 5560.0,
+    "cost_usd": 0.9657397500000001
+   },
+   "metered": {
+    "billed_cost_usd": 0.193148,
+    "requests": 19,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 604798,
+    "tokens_cached": 488357,
+    "tokens_completion": 5560,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 20,
+    "tool_calls": 23,
+    "docker_commands": 0,
+    "podman_commands": 11,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__explicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "explicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__bMhYXDV",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293, gcr.io/distroless/nodejs20-debian12@sha256:6fe218dbad37e979c7542e670d28d6e23d3f53d2929693bc9cd"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "126 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65534]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .gitignore, .gitattributes, .env, .env.*, .env.local, .env.*.local, node_modules"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 125.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 202.1,
+   "harness_reported": {
+    "input_tokens": 1057774.0,
+    "cache_tokens": 721994.0,
+    "output_tokens": 10967.0,
+    "cost_usd": 2.34657575
+   },
+   "metered": {
+    "billed_cost_usd": 0.469315,
+    "requests": 29,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 1057774,
+    "tokens_cached": 721994,
+    "tokens_completion": 10967,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 30,
+    "tool_calls": 42,
+    "docker_commands": 0,
+    "podman_commands": 29,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__explicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "explicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__R4wKBd7",
+   "reward": 1.0,
+   "practice_uncond": 0.913,
+   "practice_cond": 0.913,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/python:3.13-slim@sha256:37134a49d21d2120e4c4d73bb76f8a4ab9aef31f096f7ec2ead48c2feead4332, docker.io/library/python:3.13-slim@sha256:37134a49d21d2120e4c4d73bb76f8a4ab9aef31f096f7ec2ea"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "141 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .gitignore, .gitattributes, __pycache__, *.pyc, *.pyo, *.egg-info, .venv"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3008"
+    }
+   },
+   "hadolint_codes": [
+    "DL3008"
+   ],
+   "image_size_mb": 140.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 105.7,
+   "harness_reported": {
+    "input_tokens": 497169.0,
+    "cache_tokens": 410903.0,
+    "output_tokens": 5477.0,
+    "cost_usd": 0.77398775
+   },
+   "metered": {
+    "billed_cost_usd": 0.154798,
+    "requests": 16,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 497169,
+    "tokens_cached": 410903,
+    "tokens_completion": 5477,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 17,
+    "tool_calls": 17,
+    "docker_commands": 0,
+    "podman_commands": 13,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__explicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "explicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__USYHhPr",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/node@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402, docker.io/library/node@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "173 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .gitignore, .env, .env.local, .env*.local, node_modules, npm-debug.log*, .DS_Store"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 172.9,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 100.4,
+   "harness_reported": {
+    "input_tokens": 594219.0,
+    "cache_tokens": 488372.0,
+    "output_tokens": 4844.0,
+    "cost_usd": 0.8948585
+   },
+   "metered": {
+    "billed_cost_usd": 0.178972,
+    "requests": 19,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 594219,
+    "tokens_cached": 488372,
+    "tokens_completion": 4844,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 20,
+    "tool_calls": 25,
+    "docker_commands": 0,
+    "podman_commands": 10,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__explicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "explicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__bekrY4n",
+   "reward": 1.0,
+   "practice_uncond": 0.8667,
+   "practice_cond": 0.8667,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/nginx:1-alpine@sha256:0530961ff0592b58c10f767535cc0abdfccf9e389ff7cc90f87320c1bc7e8506"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "64 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git/, .gitignore, .gitattributes, node_modules/, .npm/, .yarn/, dist/, build/"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 64.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 148.4,
+   "harness_reported": {
+    "input_tokens": 982736.0,
+    "cache_tokens": 721589.0,
+    "output_tokens": 9830.0,
+    "cost_usd": 1.9127857499999998
+   },
+   "metered": {
+    "billed_cost_usd": 0.382557,
+    "requests": 28,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 982736,
+    "tokens_cached": 721589,
+    "tokens_completion": 9830,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 29,
+    "tool_calls": 30,
+    "docker_commands": 0,
+    "podman_commands": 31,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__N9qMY3W",
+   "reward": 1.0,
+   "practice_uncond": 0.5217,
+   "practice_cond": 0.5217,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: golang:1.25-alpine, alpine:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: alpine:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: golang:1.25-alpine, alpine:latest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "17 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .git, .gitignore, .DS_Store, *.swp, *.swo, *~"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3007"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007"
+   ],
+   "image_size_mb": 17.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 18.9,
+   "harness_reported": {
+    "input_tokens": 136154.0,
+    "cache_tokens": 128005.0,
+    "output_tokens": 1237.0,
+    "cost_usd": 0.1357475
+   },
+   "metered": {
+    "billed_cost_usd": 0.02715,
+    "requests": 5,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 136154,
+    "tokens_cached": 128005,
+    "tokens_completion": 1237,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 6,
+    "tool_calls": 6,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__ZwgU2ee",
+   "reward": 1.0,
+   "practice_uncond": 0.3636,
+   "practice_cond": 0.3636,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: golang:1.25-alpine, alpine:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: alpine:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: golang:1.25-alpine, alpine:latest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "18 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "fail",
+     "evidence": "package cache left behind (lines [10])"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "2 findings: DL3007, DL3018"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007",
+    "DL3018"
+   ],
+   "image_size_mb": 17.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 72.1,
+   "harness_reported": {
+    "input_tokens": 225050.0,
+    "cache_tokens": 204979.0,
+    "output_tokens": 1617.0,
+    "cost_usd": 0.24340074999999997
+   },
+   "metered": {
+    "billed_cost_usd": 0.04868,
+    "requests": 8,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 225050,
+    "tokens_cached": 204979,
+    "tokens_completion": 1617,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 9,
+    "tool_calls": 10,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__9xjxEoJ",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "176 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, npm-debug.log, .env, .git, .gitignore, README.md, .DS_Store"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 175.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 46.3,
+   "harness_reported": {
+    "input_tokens": 226567.0,
+    "cache_tokens": 204964.0,
+    "output_tokens": 1913.0,
+    "cost_usd": 0.258472
+   },
+   "metered": {
+    "billed_cost_usd": 0.051694,
+    "requests": 8,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 226567,
+    "tokens_cached": 204964,
+    "tokens_completion": 1913,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 9,
+    "tool_calls": 12,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__DmCP2mY",
+   "reward": 1.0,
+   "practice_uncond": 0.6957,
+   "practice_cond": 0.6957,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:20-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:20-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "142 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, npm-debug.log, .git, .gitignore, .env, .env.local, README.md"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 142.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 48.5,
+   "harness_reported": {
+    "input_tokens": 252617.0,
+    "cache_tokens": 230667.0,
+    "output_tokens": 2044.0,
+    "cost_usd": 0.2763335
+   },
+   "metered": {
+    "billed_cost_usd": 0.055267,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 252617,
+    "tokens_cached": 230667,
+    "tokens_completion": 2044,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 11,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__tHvecTP",
+   "reward": 1.0,
+   "practice_uncond": 0.6957,
+   "practice_cond": 0.6957,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:20-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:20-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "142 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, npm-debug.log, .env, .env.local, .git, .gitignore, README.md"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 142.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 57.1,
+   "harness_reported": {
+    "input_tokens": 311982.0,
+    "cache_tokens": 282088.0,
+    "output_tokens": 2054.0,
+    "cost_usd": 0.3420515
+   },
+   "metered": {
+    "billed_cost_usd": 0.06841,
+    "requests": 11,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 311982,
+    "tokens_cached": 282088,
+    "tokens_completion": 2054,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 13,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__3prq4fX",
+   "reward": 1.0,
+   "practice_uncond": 0.6957,
+   "practice_cond": 0.6957,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "139 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .git, .gitignore, README.md"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 138.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 14.3,
+   "harness_reported": {
+    "input_tokens": 108753.0,
+    "cache_tokens": 102377.0,
+    "output_tokens": 1239.0,
+    "cost_usd": 0.11409974999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.02282,
+    "requests": 4,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 108753,
+    "tokens_cached": 102377,
+    "tokens_completion": 1239,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 5,
+    "tool_calls": 8,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__czAqsXR",
+   "reward": 1.0,
+   "practice_uncond": 0.6957,
+   "practice_cond": 0.6957,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "139 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: __pycache__, *.pyc, *.pyo, .git, .gitignore, README.md, .env"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 138.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 37.8,
+   "harness_reported": {
+    "input_tokens": 227065.0,
+    "cache_tokens": 204964.0,
+    "output_tokens": 1644.0,
+    "cost_usd": 0.254237
+   },
+   "metered": {
+    "billed_cost_usd": 0.050847,
+    "requests": 8,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 227065,
+    "tokens_cached": 204964,
+    "tokens_completion": 1644,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 9,
+    "tool_calls": 11,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__VgVsahk",
+   "reward": 1.0,
+   "practice_uncond": 0.0,
+   "practice_cond": 0.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: node:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:latest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "fail",
+     "evidence": "1279 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "fail",
+     "evidence": "secret from .env found in image filesystem"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "fail",
+     "evidence": "npm install ignores the lockfile contract; use npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "fail",
+     "evidence": "shell form: CMD node src/server.js"
+    },
+    "layer-cache-order": {
+     "status": "fail",
+     "evidence": "full source copied before installing dependencies (cache busts on every change)"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "2 findings: DL3007, DL3025"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007",
+    "DL3025"
+   ],
+   "image_size_mb": 1279.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 73.8,
+   "harness_reported": {
+    "input_tokens": 256658.0,
+    "cache_tokens": 230667.0,
+    "output_tokens": 1723.0,
+    "cost_usd": 0.2885135
+   },
+   "metered": {
+    "billed_cost_usd": 0.057703,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 256658,
+    "tokens_cached": 230667,
+    "tokens_completion": 1723,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 11,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__bg3SK7G",
+   "reward": 1.0,
+   "practice_uncond": 0.0,
+   "practice_cond": 0.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: node:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:latest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "fail",
+     "evidence": "1279 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "fail",
+     "evidence": "secret from .env found in image filesystem"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "fail",
+     "evidence": "npm install ignores the lockfile contract; use npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "fail",
+     "evidence": "shell form: CMD node src/server.js"
+    },
+    "layer-cache-order": {
+     "status": "fail",
+     "evidence": "full source copied before installing dependencies (cache busts on every change)"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "2 findings: DL3007, DL3025"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007",
+    "DL3025"
+   ],
+   "image_size_mb": 1279.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 75.4,
+   "harness_reported": {
+    "input_tokens": 256195.0,
+    "cache_tokens": 230667.0,
+    "output_tokens": 1955.0,
+    "cost_usd": 0.2919985
+   },
+   "metered": {
+    "billed_cost_usd": 0.0584,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 256195,
+    "tokens_cached": 230667,
+    "tokens_completion": 1955,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 14,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__Y9Ukbht",
+   "reward": 1.0,
+   "practice_uncond": 0.2353,
+   "practice_cond": 0.2353,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: busybox:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: busybox:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: busybox:latest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "5 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3007"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007"
+   ],
+   "image_size_mb": 4.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 39.4,
+   "harness_reported": {
+    "input_tokens": 193426.0,
+    "cache_tokens": 179306.0,
+    "output_tokens": 1674.0,
+    "cost_usd": 0.2022155
+   },
+   "metered": {
+    "billed_cost_usd": 0.040443,
+    "requests": 7,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 193426,
+    "tokens_cached": 179306,
+    "tokens_completion": 1674,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 8,
+    "tool_calls": 8,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__implicit",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__szyGtGw",
+   "reward": 1.0,
+   "practice_uncond": 0.4706,
+   "practice_cond": 0.4706,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: nginx:alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: nginx:alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "64 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 64.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 36.4,
+   "harness_reported": {
+    "input_tokens": 248984.0,
+    "cache_tokens": 230667.0,
+    "output_tokens": 1741.0,
+    "cost_usd": 0.2505935
+   },
+   "metered": {
+    "billed_cost_usd": 0.050119,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 248984,
+    "tokens_cached": 230667,
+    "tokens_completion": 1741,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 9,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__2QngWmx",
+   "reward": 1.0,
+   "practice_uncond": 0.75,
+   "practice_cond": 0.75,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: golang:1.25-alpine, alpine:3.20"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: golang:1.25-alpine, alpine:3.20"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "22 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65534]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .git, .gitignore, .dockerignore, Dockerfile, *.md, .env"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "pass",
+     "evidence": "package cache cleaned in the same layer"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3018"
+    }
+   },
+   "hadolint_codes": [
+    "DL3018"
+   ],
+   "image_size_mb": 22.1,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 112.6,
+   "harness_reported": {
+    "input_tokens": 517587.0,
+    "cache_tokens": 436711.0,
+    "output_tokens": 4565.0,
+    "cost_usd": 0.7371605
+   },
+   "metered": {
+    "billed_cost_usd": 0.147432,
+    "requests": 17,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 517587,
+    "tokens_cached": 436711,
+    "tokens_completion": 4565,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 18,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 12,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__JYxvjDx",
+   "reward": 1.0,
+   "practice_uncond": 0.8261,
+   "practice_cond": 0.8261,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine, node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine, node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "174 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, .git, .gitignore, README.md, .env, npm-debug.log*, .DS_Store, .vscode"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 174.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 64.9,
+   "harness_reported": {
+    "input_tokens": 288003.0,
+    "cache_tokens": 256370.0,
+    "output_tokens": 2829.0,
+    "cost_usd": 0.35724375
+   },
+   "metered": {
+    "billed_cost_usd": 0.071449,
+    "requests": 10,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 288003,
+    "tokens_cached": 256370,
+    "tokens_completion": 2829,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 12,
+    "docker_commands": 0,
+    "podman_commands": 12,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__bPL7utC",
+   "reward": 1.0,
+   "practice_uncond": 0.8261,
+   "practice_cond": 0.8261,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine3.20, node:22-alpine3.20"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine3.20, node:22-alpine3.20"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "165 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, npm-debug.log, .git, .gitignore, .env, .env.local, .DS_Store, .vscode"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 165.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 98.1,
+   "harness_reported": {
+    "input_tokens": 513820.0,
+    "cache_tokens": 411128.0,
+    "output_tokens": 3628.0,
+    "cost_usd": 0.84200275
+   },
+   "metered": {
+    "billed_cost_usd": 0.168401,
+    "requests": 17,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 513820,
+    "tokens_cached": 411128,
+    "tokens_completion": 3628,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 18,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 13,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__jDy8eaw",
+   "reward": 1.0,
+   "practice_uncond": 0.75,
+   "practice_cond": 0.75,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "130 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .git, .gitignore, .env, .env.local, .env.*.local, __pycache__, *.pyc, *.pyo"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "pass",
+     "evidence": "package cache cleaned in the same layer"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3008"
+    }
+   },
+   "hadolint_codes": [
+    "DL3008"
+   ],
+   "image_size_mb": 130.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 59.7,
+   "harness_reported": {
+    "input_tokens": 358405.0,
+    "cache_tokens": 307821.0,
+    "output_tokens": 3155.0,
+    "cost_usd": 0.4859117499999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.097182,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 358405,
+    "tokens_cached": 307821,
+    "tokens_completion": 3155,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 13,
+    "tool_calls": 15,
+    "docker_commands": 0,
+    "podman_commands": 6,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__xKSUDA2",
+   "reward": 1.0,
+   "practice_uncond": 0.8261,
+   "practice_cond": 0.8261,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "176 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: node_modules, npm-debug.log, .git, .gitignore, README.md, .env, .env.local, .DS_Store"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 175.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 171.2,
+   "harness_reported": {
+    "input_tokens": 281827.0,
+    "cache_tokens": 256385.0,
+    "output_tokens": 2474.0,
+    "cost_usd": 0.31740250000000003
+   },
+   "metered": {
+    "billed_cost_usd": 0.06348,
+    "requests": 10,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 281827,
+    "tokens_cached": 256385,
+    "tokens_completion": 2474,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 10,
+    "docker_commands": 0,
+    "podman_commands": 2,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__BhSetgE",
+   "reward": 1.0,
+   "practice_uncond": 0.5333,
+   "practice_cond": 0.5333,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: nginx:1.27-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: nginx:1.27-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "50 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: Dockerfile, .dockerignore, .git, .gitignore, *.md, .DS_Store"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 49.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 75.8,
+   "harness_reported": {
+    "input_tokens": 440780.0,
+    "cache_tokens": 385290.0,
+    "output_tokens": 4680.0,
+    "cost_usd": 0.5873824999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.117476,
+    "requests": 15,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 440780,
+    "tokens_cached": 385290,
+    "tokens_completion": 4680,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 16,
+    "tool_calls": 17,
+    "docker_commands": 0,
+    "podman_commands": 16,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "claude-code.haiku-4.5__nudge",
+   "cell": "claude-code.haiku-4.5",
+   "harness": "claude-code",
+   "harness_version": "2.1.284",
+   "model": "anthropic/claude-haiku-4.5",
+   "arm": "nudge",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__W7Xn9K2",
+   "reward": 1.0,
+   "practice_uncond": 0.7059,
+   "practice_cond": 0.7059,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: nginx:1.27-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: nginx:1.27-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "50 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .git, .gitignore, .env, .env.local, *.md"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 49.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 107.4,
+   "harness_reported": {
+    "input_tokens": 773526.0,
+    "cache_tokens": 617787.0,
+    "output_tokens": 6205.0,
+    "cost_usd": 1.24314475
+   },
+   "metered": {
+    "billed_cost_usd": 0.248629,
+    "requests": 24,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 773526,
+    "tokens_cached": 617787,
+    "tokens_completion": 6205,
+    "providers": [
+     "Amazon Bedrock"
+    ]
+   },
+   "process": {
+    "steps": 25,
+    "tool_calls": 27,
+    "docker_commands": 0,
+    "podman_commands": 23,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__explicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "explicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__r4dwRaZ",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25.11-alpine3.22@sha256:65b4400aee0927412e9ed791a11893273a49d55df24841f7599660fb80dae464, docker.io/library/alpine:3.22@sha256:5291449c3df73caf6ed85e649dec1b9e818b39a5d8c871"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "14 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, !.env.example, .git, .hg, .svn, vendor/, node_modules/"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 14.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 192.1,
+   "harness_reported": {
+    "input_tokens": 355978.0,
+    "cache_tokens": 327674.0,
+    "output_tokens": 7535.0,
+    "cost_usd": 0.010580964999999998
+   },
+   "metered": {
+    "billed_cost_usd": 0.008441,
+    "requests": 17,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 290766,
+    "tokens_cached": 263780,
+    "tokens_completion": 4862,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 22,
+    "tool_calls": 16,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__explicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "explicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__CxZzCWL",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/node:24-trixie-slim@sha256:8ec5d7557396cfe32d21c3f9c13072355ceab22b584578ca4bb28af31120cffe, gcr.io/distroless/nodejs24-debian13:nonroot@sha256:bb6b03d81066993293a10feda7250e8e1cc034"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "159 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, **/.git, .env, .env.*, **/.env, **/.env.*, node_modules, **/node_modules"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 158.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 147.3,
+   "harness_reported": {
+    "input_tokens": 281348.0,
+    "cache_tokens": 257661.0,
+    "output_tokens": 6668.0,
+    "cost_usd": 0.008870285
+   },
+   "metered": {
+    "billed_cost_usd": 0.006681,
+    "requests": 16,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 220491,
+    "tokens_cached": 198844,
+    "tokens_completion": 3975,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 21,
+    "tool_calls": 15,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__explicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "explicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__G6K38Bn",
+   "reward": 1.0,
+   "practice_uncond": 0.913,
+   "practice_cond": 0.913,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844e2707ac6e26b1632516fd3edc84a5e26, docker.io/library/python:3.13-slim-bookworm@sha256:2325bb286ec344af3e5898cc224b5844"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "144 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, *.env, *.env.*, .git, .hg, .svn, .venv"
+    },
+    "deterministic-deps": {
+     "status": "fail",
+     "evidence": "pip install without the pinned requirements file"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 144.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 133.4,
+   "harness_reported": {
+    "input_tokens": 478302.0,
+    "cache_tokens": 452940.0,
+    "output_tokens": 6928.0,
+    "cost_usd": 0.011161775000000002
+   },
+   "metered": {
+    "billed_cost_usd": 0.008538,
+    "requests": 25,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 365783,
+    "tokens_cached": 342782,
+    "tokens_completion": 4473,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 30,
+    "tool_calls": 24,
+    "docker_commands": 0,
+    "podman_commands": 11,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__explicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "explicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__i7a7bfV",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/node:22-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c, gcr.io/distroless/nodejs22-debian12:nonroot@sha256:13593b7570658e8477de39e2f4a1dd25db2f"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "152 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, **/.env, **/.env.*, .git, **/.git, .hg, **/.hg"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 151.5,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 159.6,
+   "harness_reported": {
+    "input_tokens": 358416.0,
+    "cache_tokens": 327839.0,
+    "output_tokens": 7856.0,
+    "cost_usd": 0.011027315
+   },
+   "metered": {
+    "billed_cost_usd": 0.007134,
+    "requests": 16,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 260080,
+    "tokens_cached": 247910,
+    "tokens_completion": 6268,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 21,
+    "tool_calls": 15,
+    "docker_commands": 0,
+    "podman_commands": 6,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__explicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "explicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__KFjPyxQ",
+   "reward": 1.0,
+   "practice_uncond": 1.0,
+   "practice_cond": 1.0,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine3.24-slim@sha256:c81a27f28bc2d9c2da8998444e653c7b85b9bbbaa92e44ef18d8920784e06507"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "14 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [101]"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .hg, .svn, .env, .env.*, **/.env, **/.env.*, !.env.example"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 13.6,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 115.7,
+   "harness_reported": {
+    "input_tokens": 427038.0,
+    "cache_tokens": 395242.0,
+    "output_tokens": 8825.0,
+    "cost_usd": 0.012338145
+   },
+   "metered": {
+    "billed_cost_usd": 0.008695,
+    "requests": 17,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 307549,
+    "tokens_cached": 284024,
+    "tokens_completion": 5830,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 22,
+    "tool_calls": 16,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__QqRJAeg",
+   "reward": 1.0,
+   "practice_uncond": 0.8571,
+   "practice_cond": 0.8571,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, *.log"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 76.5,
+   "harness_reported": {
+    "input_tokens": 182726.0,
+    "cache_tokens": 167058.0,
+    "output_tokens": 2435.0,
+    "cost_usd": 0.004845605
+   },
+   "metered": {
+    "billed_cost_usd": 0.004012,
+    "requests": 13,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 140457,
+    "tokens_cached": 126472,
+    "tokens_completion": 2000,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 18,
+    "tool_calls": 12,
+    "docker_commands": 0,
+    "podman_commands": 2,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__aU2JZy9",
+   "reward": 1.0,
+   "practice_uncond": 0.7619,
+   "practice_cond": 0.7619,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 29.6,
+   "harness_reported": {
+    "input_tokens": 50453.0,
+    "cache_tokens": 36866.0,
+    "output_tokens": 1693.0,
+    "cost_usd": 0.002913235
+   },
+   "metered": {
+    "billed_cost_usd": 0.002354,
+    "requests": 4,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 36875,
+    "tokens_cached": 24007,
+    "tokens_completion": 1012,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 9,
+    "tool_calls": 3,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__6aHJjFC",
+   "reward": 1.0,
+   "practice_uncond": 0.8696,
+   "practice_cond": 0.8696,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "175 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, .gitignore, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 174.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 27.3,
+   "harness_reported": {
+    "input_tokens": 64260.0,
+    "cache_tokens": 49269.0,
+    "output_tokens": 1451.0,
+    "cost_usd": 0.0030916900000000002
+   },
+   "metered": {
+    "billed_cost_usd": 0.002492,
+    "requests": 5,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 49281,
+    "tokens_cached": 36164,
+    "tokens_completion": 982,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 4,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__unPRhg9",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "175 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .env, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 174.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 51.4,
+   "harness_reported": {
+    "input_tokens": 122400.0,
+    "cache_tokens": 106950.0,
+    "output_tokens": 2712.0,
+    "cost_usd": 0.004356075
+   },
+   "metered": {
+    "billed_cost_usd": 0.004131,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 107251,
+    "tokens_cached": 92183,
+    "tokens_completion": 2653,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 14,
+    "tool_calls": 8,
+    "docker_commands": 0,
+    "podman_commands": 1,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__5HiKuAu",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "130 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, __pycache__, *.py[cod]"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 130.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 33.1,
+   "harness_reported": {
+    "input_tokens": 94921.0,
+    "cache_tokens": 79216.0,
+    "output_tokens": 1645.0,
+    "cost_usd": 0.0035772599999999996
+   },
+   "metered": {
+    "billed_cost_usd": 0.003008,
+    "requests": 7,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 82587,
+    "tokens_cached": 67316,
+    "tokens_completion": 852,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 6,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__GG4btWb",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "130 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, __pycache__, *.py[cod]"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 130.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 26.2,
+   "harness_reported": {
+    "input_tokens": 75523.0,
+    "cache_tokens": 61778.0,
+    "output_tokens": 1421.0,
+    "cost_usd": 0.003045955
+   },
+   "metered": {
+    "billed_cost_usd": 0.002799,
+    "requests": 6,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 61793,
+    "tokens_cached": 48510,
+    "tokens_completion": 1307,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 5,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__3QdTXD3",
+   "reward": 1.0,
+   "practice_uncond": 0.3478,
+   "practice_cond": 0.3478,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: node:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:latest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "fail",
+     "evidence": "1278 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3007"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007"
+   ],
+   "image_size_mb": 1277.5,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 87.6,
+   "harness_reported": {
+    "input_tokens": 195983.0,
+    "cache_tokens": 180201.0,
+    "output_tokens": 1862.0,
+    "cost_usd": 0.004704710000000001
+   },
+   "metered": {
+    "billed_cost_usd": 0.004452,
+    "requests": 14,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 182258,
+    "tokens_cached": 166943,
+    "tokens_completion": 1739,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 19,
+    "tool_calls": 13,
+    "docker_commands": 0,
+    "podman_commands": 2,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__iTmEmUu",
+   "reward": 1.0,
+   "practice_uncond": 0.3478,
+   "practice_cond": 0.3478,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:latest"
+    },
+    "base-tag-pinned": {
+     "status": "fail",
+     "evidence": "floating: node:latest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:latest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "fail",
+     "evidence": "1278 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "fail",
+     "evidence": "1 findings: DL3007"
+    }
+   },
+   "hadolint_codes": [
+    "DL3007"
+   ],
+   "image_size_mb": 1277.5,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 105.2,
+   "harness_reported": {
+    "input_tokens": 194280.0,
+    "cache_tokens": 178534.0,
+    "output_tokens": 2657.0,
+    "cost_usd": 0.00508104
+   },
+   "metered": {
+    "billed_cost_usd": 0.004685,
+    "requests": 14,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 164987,
+    "tokens_cached": 149508,
+    "tokens_completion": 2512,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 19,
+    "tool_calls": 13,
+    "docker_commands": 0,
+    "podman_commands": 6,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__ZHFVMe8",
+   "reward": 1.0,
+   "practice_uncond": 0.4,
+   "practice_cond": 0.4,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: nginx:alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: nginx:alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "64 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 64.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 35.2,
+   "harness_reported": {
+    "input_tokens": 90570.0,
+    "cache_tokens": 75989.0,
+    "output_tokens": 2025.0,
+    "cost_usd": 0.0035944899999999992
+   },
+   "metered": {
+    "billed_cost_usd": 0.002645,
+    "requests": 7,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 52017,
+    "tokens_cached": 38516,
+    "tokens_completion": 1145,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 6,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__cL7VH3n",
+   "reward": 1.0,
+   "practice_uncond": 0.5882,
+   "practice_cond": 0.5882,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/busybox:1.36.1"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/busybox:1.36.1"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "5 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 4.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 31.4,
+   "harness_reported": {
+    "input_tokens": 89893.0,
+    "cache_tokens": 75846.0,
+    "output_tokens": 1657.0,
+    "cost_usd": 0.0033423100000000002
+   },
+   "metered": {
+    "billed_cost_usd": 0.003342,
+    "requests": 7,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 89893,
+    "tokens_cached": 75846,
+    "tokens_completion": 1657,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 6,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__hwLQMNW",
+   "reward": 1.0,
+   "practice_uncond": 0.9565,
+   "practice_cond": 0.9565,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine@sha256:1ae0735f00daffa3aaf1363a5184c0d2dc55c78e3db4ec70241cdac97bf84b59"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .env, .env.*, *.log"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 137.4,
+   "harness_reported": {
+    "input_tokens": 187784.0,
+    "cache_tokens": 168548.0,
+    "output_tokens": 5410.0,
+    "cost_usd": 0.006794079999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.004243,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 126455,
+    "tokens_cached": 109441,
+    "tokens_completion": 2044,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 17,
+    "tool_calls": 11,
+    "docker_commands": 0,
+    "podman_commands": 2,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__HQDb6k4",
+   "reward": 1.0,
+   "practice_uncond": 0.913,
+   "practice_cond": 0.913,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "240 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .env.*, .git, .gitignore, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 240.1,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 137.7,
+   "harness_reported": {
+    "input_tokens": 363736.0,
+    "cache_tokens": 339341.0,
+    "output_tokens": 8023.0,
+    "cost_usd": 0.01045286
+   },
+   "metered": {
+    "billed_cost_usd": 0.007394,
+    "requests": 19,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 247590,
+    "tokens_cached": 229244,
+    "tokens_completion": 5618,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 24,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__TkE7eNZ",
+   "reward": 1.0,
+   "practice_uncond": 0.8696,
+   "practice_cond": 0.8696,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c, node:22.23.3-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe423835"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "235 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 235.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 91.8,
+   "harness_reported": {
+    "input_tokens": 132718.0,
+    "cache_tokens": 113321.0,
+    "output_tokens": 5214.0,
+    "cost_usd": 0.006164159999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.002675,
+    "requests": 9,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 73780,
+    "tokens_cached": 70065,
+    "tokens_completion": 3021,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 14,
+    "tool_calls": 8,
+    "docker_commands": 0,
+    "podman_commands": 1,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__6SLc6Zz",
+   "reward": 1.0,
+   "practice_uncond": 0.9565,
+   "practice_cond": 0.9565,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "136 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, .git, .gitignore, __pycache__, *.py[cod], .venv, venv"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 136.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 126.7,
+   "harness_reported": {
+    "input_tokens": 241034.0,
+    "cache_tokens": 217932.0,
+    "output_tokens": 6927.0,
+    "cost_usd": 0.008529445
+   },
+   "metered": {
+    "billed_cost_usd": 0.0048,
+    "requests": 15,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 153532,
+    "tokens_cached": 146633,
+    "tokens_completion": 4943,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 20,
+    "tool_calls": 14,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__N6Tq95V",
+   "reward": 1.0,
+   "practice_uncond": 0.8696,
+   "practice_cond": 0.8696,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:24.21.0-alpine3.24@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "178 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .env.*, node_modules, npm-debug.log*, .git, .gitignore"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 178.1,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 159.8,
+   "harness_reported": {
+    "input_tokens": 348357.0,
+    "cache_tokens": 323923.0,
+    "output_tokens": 7933.0,
+    "cost_usd": 0.010258555
+   },
+   "metered": {
+    "billed_cost_usd": 0.009191,
+    "requests": 19,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 295675,
+    "tokens_cached": 273052,
+    "tokens_completion": 7268,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 24,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "codex.gpt-6-luna__nudge",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__UvBL4TM",
+   "reward": 1.0,
+   "practice_uncond": 0.9333,
+   "practice_cond": 0.9333,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine@sha256:26b0bf6fbf07297983cb341998d79c831508787de26627dd2a112321b9c3a4af"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "56 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [101]"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: *, !site/, !site/**"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 56.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 72.0,
+   "harness_reported": {
+    "input_tokens": 159851.0,
+    "cache_tokens": 137383.0,
+    "output_tokens": 5118.0,
+    "cost_usd": 0.006740579999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.00473,
+    "requests": 10,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 107305,
+    "tokens_cached": 88867,
+    "tokens_completion": 3075,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 15,
+    "tool_calls": 9,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__6P9PHMt",
+   "reward": 1.0,
+   "practice_uncond": 0.8571,
+   "practice_cond": 0.8571,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, quotes-service"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 82.7,
+   "harness_reported": {
+    "input_tokens": 59981.0,
+    "cache_tokens": 59951.0,
+    "output_tokens": 1088.0,
+    "cost_usd": 0.00277976
+   },
+   "metered": {
+    "billed_cost_usd": 0.002856,
+    "requests": 11,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 69312,
+    "tokens_cached": 59951,
+    "tokens_completion": 2203,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 14,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__usWZWN2",
+   "reward": 1.0,
+   "practice_uncond": 0.8571,
+   "practice_cond": 0.8571,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine, docker.io/library/alpine:3.22"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine, docker.io/library/alpine:3.22"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "14 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [100]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .env, .env.*, !*.env.example"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 14.4,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 87.3,
+   "harness_reported": {
+    "input_tokens": 60456.0,
+    "cache_tokens": 60426.0,
+    "output_tokens": 1310.0,
+    "cost_usd": 0.00287626
+   },
+   "metered": {
+    "billed_cost_usd": 0.002939,
+    "requests": 11,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 70381,
+    "tokens_cached": 60426,
+    "tokens_completion": 2211,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__DMcmzvv",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "175 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 174.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 55.0,
+   "harness_reported": {
+    "input_tokens": 73422.0,
+    "cache_tokens": 73389.0,
+    "output_tokens": 1350.0,
+    "cost_usd": 0.0030385649999999996
+   },
+   "metered": {
+    "billed_cost_usd": 0.003102,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 83923,
+    "tokens_cached": 73389,
+    "tokens_completion": 2133,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 20,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__acMyQCy",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "176 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, node_modules, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 175.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 66.6,
+   "harness_reported": {
+    "input_tokens": 69232.0,
+    "cache_tokens": 69202.0,
+    "output_tokens": 1307.0,
+    "cost_usd": 0.00322177
+   },
+   "metered": {
+    "billed_cost_usd": 0.003298,
+    "requests": 11,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 80532,
+    "tokens_cached": 69202,
+    "tokens_completion": 2410,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 17,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__4ND4kAt",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: python:3.12-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: python:3.12-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "130 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, __pycache__/, *.py[cod], .venv/, venv/"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "installs from the pinned requirements"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 130.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 60.1,
+   "harness_reported": {
+    "input_tokens": 65054.0,
+    "cache_tokens": 65024.0,
+    "output_tokens": 1447.0,
+    "cost_usd": 0.003362115
+   },
+   "metered": {
+    "billed_cost_usd": 0.003428,
+    "requests": 11,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 76526,
+    "tokens_cached": 65024,
+    "tokens_completion": 2710,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 11,
+    "tool_calls": 15,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__6oeUbkA",
+   "reward": 1.0,
+   "practice_uncond": 0.6087,
+   "practice_cond": 0.6087,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "176 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 175.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 57.8,
+   "harness_reported": {
+    "input_tokens": 67902.0,
+    "cache_tokens": 67869.0,
+    "output_tokens": 1031.0,
+    "cost_usd": 0.0028183649999999998
+   },
+   "metered": {
+    "billed_cost_usd": 0.002882,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 77524,
+    "tokens_cached": 67869,
+    "tokens_completion": 2024,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 16,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__Kfn4S3i",
+   "reward": 1.0,
+   "practice_uncond": 0.6957,
+   "practice_cond": 0.6957,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "176 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, node_modules, .git"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 175.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 68.0,
+   "harness_reported": {
+    "input_tokens": 85316.0,
+    "cache_tokens": 85277.0,
+    "output_tokens": 1289.0,
+    "cost_usd": 0.0033027950000000003
+   },
+   "metered": {
+    "billed_cost_usd": 0.003379,
+    "requests": 14,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 95700,
+    "tokens_cached": 85277,
+    "tokens_completion": 2477,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 14,
+    "tool_calls": 24,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__7P43gtz",
+   "reward": 1.0,
+   "practice_uncond": 0.5333,
+   "practice_cond": 0.5333,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/nginx:alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/nginx:alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "64 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 64.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 46.2,
+   "harness_reported": {
+    "input_tokens": 62794.0,
+    "cache_tokens": 62761.0,
+    "output_tokens": 1224.0,
+    "cost_usd": 0.002491285
+   },
+   "metered": {
+    "billed_cost_usd": 0.002557,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 71550,
+    "tokens_cached": 62761,
+    "tokens_completion": 1693,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 18,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__CtLHwoE",
+   "reward": 1.0,
+   "practice_uncond": 0.4,
+   "practice_cond": 0.4,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: nginx:alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: nginx:alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "64 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "fail",
+     "evidence": "process runs as uid 0"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 64.3,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 53.4,
+   "harness_reported": {
+    "input_tokens": 80871.0,
+    "cache_tokens": 80832.0,
+    "output_tokens": 1313.0,
+    "cost_usd": 0.002955095
+   },
+   "metered": {
+    "billed_cost_usd": 0.003021,
+    "requests": 14,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 90467,
+    "tokens_cached": 80832,
+    "tokens_completion": 2048,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 14,
+    "tool_calls": 17,
+    "docker_commands": 0,
+    "podman_commands": 6,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__WESpJSE",
+   "reward": 1.0,
+   "practice_uncond": 0.9524,
+   "practice_cond": 0.9524,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25.0-alpine3.22@sha256:f18a072054848d87a8077455f0ac8a25886f2397f88bfdd222d6fafbb5bba440"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, .gitignore, **/*_test.go, Containerfile, README*"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 112.2,
+   "harness_reported": {
+    "input_tokens": 174048.0,
+    "cache_tokens": 173991.0,
+    "output_tokens": 1738.0,
+    "cost_usd": 0.006233735
+   },
+   "metered": {
+    "billed_cost_usd": 0.00631,
+    "requests": 20,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 191840,
+    "tokens_cached": 173991,
+    "tokens_completion": 4710,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 20,
+    "tool_calls": 23,
+    "docker_commands": 0,
+    "podman_commands": 13,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__7chcewN",
+   "reward": 1.0,
+   "practice_uncond": 0.8261,
+   "practice_cond": 0.8261,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22.18.0-bookworm-slim, node:22.18.0-bookworm-slim"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22.18.0-bookworm-slim, node:22.18.0-bookworm-slim"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "233 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .env.*, !.env.example, node_modules, npm-debug.log*, .git, .gitignore, Containerfile*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 232.7,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 104.4,
+   "harness_reported": {
+    "input_tokens": 126295.0,
+    "cache_tokens": 126253.0,
+    "output_tokens": 2012.0,
+    "cost_usd": 0.0053922300000000005
+   },
+   "metered": {
+    "billed_cost_usd": 0.005458,
+    "requests": 15,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 141359,
+    "tokens_cached": 126253,
+    "tokens_completion": 4645,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 15,
+    "tool_calls": 24,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__harNa6o",
+   "reward": 1.0,
+   "practice_uncond": 0.7826,
+   "practice_cond": 0.7826,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22.20.0-alpine3.22"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22.20.0-alpine3.22"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "169 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .env, .env.*, node_modules, npm-debug.log*, *.md"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 169.5,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 100.7,
+   "harness_reported": {
+    "input_tokens": 138174.0,
+    "cache_tokens": 138129.0,
+    "output_tokens": 1808.0,
+    "cost_usd": 0.006001040000000001
+   },
+   "metered": {
+    "billed_cost_usd": 0.00608,
+    "requests": 16,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 155960,
+    "tokens_cached": 138129,
+    "tokens_completion": 4971,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 16,
+    "tool_calls": 22,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-python-api",
+   "trial": "containerfile-python-api__XFhKeL6",
+   "reward": 1.0,
+   "practice_uncond": 0.8696,
+   "practice_cond": 0.8696,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "136 MB (budget 250 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, .git, .gitignore, .venv, venv, __pycache__, *.py[cod]"
+    },
+    "deterministic-deps": {
+     "status": "fail",
+     "evidence": "pip install without the pinned requirements file"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 136.0,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 136.6,
+   "harness_reported": {
+    "input_tokens": 285527.0,
+    "cache_tokens": 285464.0,
+    "output_tokens": 3139.0,
+    "cost_usd": 0.00950194
+   },
+   "metered": {
+    "billed_cost_usd": 0.009569,
+    "requests": 22,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 307886,
+    "tokens_cached": 285464,
+    "tokens_completion": 7856,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 22,
+    "tool_calls": 34,
+    "docker_commands": 0,
+    "podman_commands": 13,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-repair-node",
+   "trial": "containerfile-repair-node__kUcaRGK",
+   "reward": 1.0,
+   "practice_uncond": 0.8696,
+   "practice_cond": 0.8696,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-bookworm-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "237 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .env, .env.*, node_modules, .git, npm-debug.log*"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 237.1,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 128.4,
+   "harness_reported": {
+    "input_tokens": 218234.0,
+    "cache_tokens": 218171.0,
+    "output_tokens": 2340.0,
+    "cost_usd": 0.007689259999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.007755,
+    "requests": 22,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 237141,
+    "tokens_cached": 218171,
+    "tokens_completion": 6438,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 22,
+    "tool_calls": 30,
+    "docker_commands": 0,
+    "podman_commands": 20,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__nudge",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "nudge",
+   "task": "containerfile-static-site",
+   "trial": "containerfile-static-site__3YkNYL2",
+   "reward": 1.0,
+   "practice_uncond": 0.9333,
+   "practice_cond": 0.9333,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "fail",
+     "evidence": "Dockerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "pass",
+     "evidence": "all bases pinned by digest"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "55 MB (budget 100 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [101]"
+    },
+    "no-secret-in-image": {
+     "status": "na",
+     "evidence": "task has no planted secret"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .git, .git/**"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "exec-form-entrypoint": {
+     "status": "na",
+     "evidence": "inherits CMD/ENTRYPOINT from base image"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "not applicable to static"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 55.5,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 75.5,
+   "harness_reported": {
+    "input_tokens": 98816.0,
+    "cache_tokens": 98777.0,
+    "output_tokens": 1527.0,
+    "cost_usd": 0.0045106700000000005
+   },
+   "metered": {
+    "billed_cost_usd": 0.004597,
+    "requests": 14,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 111734,
+    "tokens_cached": 98777,
+    "tokens_completion": 4012,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 14,
+    "tool_calls": 19,
+    "docker_commands": 0,
+    "podman_commands": 7,
+    "self_built": true
+   }
+  }
+ ]
+}
