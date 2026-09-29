@@ -1,0 +1,273 @@
+{
+ "schema_version": 1,
+ "run_id": "36563830694-1",
+ "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36563830694",
+ "created_at": "2026-09-29T11:54:43+00:00",
+ "dataset_version": 1,
+ "harbor_version": "0.23.0",
+ "billing": {
+  "run_id": "36563830694-1",
+  "shards": {
+   "opencode.glm-5.3-flash__implicit": {
+    "usage": 0.010761615,
+    "limit": 0.3,
+    "limit_remaining": 0.289238385,
+    "created_at": "2026-09-29T11:47:47.865Z"
+   }
+  }
+ },
+ "summary": {
+  "cells": [
+   {
+    "cell": "opencode.glm-5.3-flash",
+    "arm": "implicit",
+    "harness": "opencode",
+    "model": "z-ai/glm-5.3-flash",
+    "n_trials": 1,
+    "n_valid": 1,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.2065,
+     1.0
+    ],
+    "practice_uncond_mean": 0.8261,
+    "practice_uncond_ci": [
+     null,
+     null
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "deterministic-deps": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "exec-form-entrypoint": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "hadolint-clean": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "ignore-file": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "multi-stage": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "no-secret-in-image": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0108,
+    "cost_per_success_usd": 0.0108,
+    "mean_agent_seconds": 229.4,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 1
+    }
+   }
+  ]
+ },
+ "trials": [
+  {
+   "shard": "opencode.glm-5.3-flash__implicit",
+   "cell": "opencode.glm-5.3-flash",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "z-ai/glm-5.3-flash",
+   "arm": "implicit",
+   "task": "containerfile-node-api",
+   "trial": "containerfile-node-api__cBGRqLa",
+   "reward": 1.0,
+   "practice_uncond": 0.8261,
+   "practice_cond": 0.8261,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: node:22-alpine, node:22-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: node:22-alpine, node:22-alpine"
+    },
+    "multi-stage": {
+     "status": "na",
+     "evidence": "app has no build step"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "173 MB (budget 300 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [1000]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .env.*, node_modules, npm-debug.log*, .git, .gitignore, *.md, Containerfile"
+    },
+    "deterministic-deps": {
+     "status": "pass",
+     "evidence": "npm ci"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "pass",
+     "evidence": "dependency install happens before copying the full source"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "pass",
+     "evidence": "HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CM (dropped: OCI image format ignores HEALTHCHECK, needs --format docker)"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 172.9,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 229.4,
+   "harness_reported": {
+    "input_tokens": 162443.0,
+    "cache_tokens": 119040.0,
+    "output_tokens": 1545.0,
+    "cost_usd": 0.012180649999999998
+   },
+   "metered": {
+    "billed_cost_usd": 0.010762,
+    "requests": 16,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 163013,
+    "tokens_cached": 119040,
+    "tokens_completion": 4208,
+    "providers": [
+     "Sail Research",
+     "StreamLake",
+     "Together"
+    ]
+   },
+   "process": {
+    "steps": 16,
+    "tool_calls": 19,
+    "docker_commands": 0,
+    "podman_commands": 29,
+    "self_built": true
+   }
+  }
+ ]
+}
