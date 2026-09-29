@@ -108,3 +108,11 @@ def test_key_limit_403_counts_as_budget_not_model_failure():
         {"ts": 12.0, "status": 403, "error": "forbidden"},
     ]
     assert attribute(requests, {}, 9.0, 13.0)["budget_hits"] == 1
+
+
+def test_caps_cover_one_full_size_request():
+    from acb.bench.plan import load_matrix
+
+    cells = {c["id"]: c for c in load_matrix()["cells"]}
+    for s in plan(trials=1)["shards"]:
+        assert s["cap_usd"] >= cells[s["cell"]].get("max_request_usd", 0) + s["est_usd"]

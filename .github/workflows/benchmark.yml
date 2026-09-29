@@ -29,7 +29,7 @@ on:
         options: [task, arm]
         default: task
       max_total_usd:
-        description: "Abort if the sum of per-shard key caps exceeds this"
+        description: "Abort if the expected spend (from matrix.toml estimates) exceeds this"
         default: "6"
   schedule:
     # Monthly canary: implicit arm, cheapest cells only.

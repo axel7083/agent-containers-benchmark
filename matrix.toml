@@ -7,7 +7,11 @@ arms = ["implicit", "nudge", "explicit"]
 # One CI job (and one capped key) per cell x arm x task: many short jobs run 20 at a time.
 # "arm" groups every task of a cell x arm into one longer job.
 shard_by = "task"
-# Per-shard OpenRouter key cap = trials x tasks x est_cost_per_trial x headroom (min floor).
+# Per-shard OpenRouter key cap = trials x tasks x est_cost_per_trial x headroom + max_request_usd.
+# OpenRouter reserves a request's worst case (max_tokens x output price) against the key limit before
+# running it, so a cap below one full-size request fails at the first call. max_request_usd = the
+# harness's requested max_tokens (Claude Code 64000, Codex 65536; 65536 assumed for OpenCode) x the
+# model's output price on 2026-09-29.
 # est_cost_per_trial: OpenRouter-billed cost per trial measured on the v1 baseline (run 36569276839),
 # a number or a per-arm table.
 cap_headroom = 1.5
@@ -23,6 +27,7 @@ version = "2.1.284"
 model = "anthropic/claude-opus-5.5"
 # Estimated from Haiku 4.5 x 4 (price ratio) until measured.
 est_cost_per_trial = { implicit = 0.25, nudge = 0.50, explicit = 1.30 }
+max_request_usd = 1.31
 
 [[cells]]
 id = "codex.gpt-6-sol"
@@ -31,6 +36,7 @@ version = "0.159.0"
 model = "openai/gpt-6-sol"
 # Estimated from gpt-6-luna x 20 (price ratio) until measured.
 est_cost_per_trial = { implicit = 0.10, nudge = 0.16, explicit = 0.24 }
+max_request_usd = 0.66
 
 [[cells]]
 id = "opencode.gpt-6-luna"
@@ -38,6 +44,7 @@ harness = "opencode"
 version = "1.18.33"
 model = "openai/gpt-6-luna"
 est_cost_per_trial = { implicit = 0.003, nudge = 0.008, explicit = 0.009 }
+max_request_usd = 0.04
 
 [[cells]]
 id = "opencode.glm-5.3-flash"
@@ -45,6 +52,7 @@ harness = "opencode"
 version = "1.18.33"
 model = "z-ai/glm-5.3-flash"
 est_cost_per_trial = { implicit = 0.005, nudge = 0.018, explicit = 0.024 }
+max_request_usd = 0.04
 
 [[cells]]
 id = "opencode.deepseek-v4.1-flash"
@@ -52,3 +60,4 @@ harness = "opencode"
 version = "1.18.33"
 model = "deepseek/deepseek-v4.1-flash"
 est_cost_per_trial = { implicit = 0.003, nudge = 0.006, explicit = 0.011 }
+max_request_usd = 0.08

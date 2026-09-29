@@ -82,14 +82,17 @@ def remaining_credits() -> float | None:
 
 def provision(plan_path: str, run_id: str, public_key_path: str, max_total: float, out_path: str) -> None:
     plan = json.load(open(plan_path))
-    total = float(plan["total_cap_usd"])
-    if total > max_total:
-        sys.exit(f"planned caps ${total:.2f} exceed the run budget ${max_total:.2f}")
+    # Expected spend, not the sum of caps: each cap also reserves one full-size request that is
+    # normally never billed. The account balance (no auto top-up) remains the hard ceiling.
+    expected = float(plan.get("total_est_usd", plan["total_cap_usd"]))
+    caps = float(plan["total_cap_usd"])
+    if expected > max_total:
+        sys.exit(f"expected spend ${expected:.2f} exceeds the run budget ${max_total:.2f}")
     credits = remaining_credits()
     if credits is not None:
-        print(f"credits remaining: ${credits:.2f}, planned caps: ${total:.2f}")
-        if credits < total:
-            sys.exit("not enough OpenRouter credits for the planned caps")
+        print(f"credits remaining: ${credits:.2f}, expected spend: ${expected:.2f}, sum of key caps: ${caps:.2f}")
+        if credits < expected:
+            sys.exit("not enough OpenRouter credits for the expected spend")
 
     expires = (dt.datetime.now(dt.UTC) + dt.timedelta(hours=EXPIRY_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     sealed: dict[str, dict] = {}

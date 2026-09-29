@@ -11,6 +11,7 @@ so parallelism comes from the number of shards:
 
 from __future__ import annotations
 
+import math
 import re
 import tomllib
 
@@ -62,7 +63,8 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
                     if not SAFE.match(value):
                         raise SystemExit(f"unsafe identifier in matrix: {value!r}")
                 est = trials * len(group) * per_trial
-                cap = max(matrix["cap_floor_usd"], round(est * matrix["cap_headroom"], 2))
+                # Round up to the cent: rounding down could leave the cap just below one full-size request.
+                cap = max(matrix["cap_floor_usd"], math.ceil((est * matrix["cap_headroom"] + cell.get("max_request_usd", 0.0)) * 100) / 100)
                 shards.append({
                     "id": shard_id,
                     "cell": cell_id,
@@ -72,6 +74,7 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
                     "arm": arm,
                     "tasks": group,
                     "trials": trials,
+                    "est_usd": round(est, 4),
                     "cap_usd": cap,
                 })
     if len(shards) > 256:
@@ -80,6 +83,9 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
         "dataset_version": matrix["dataset_version"],
         "harbor_version": matrix["harbor_version"],
         "shard_by": shard_by,
+        # Expected spend decides whether a run fits the budget; caps are per-key safety limits and
+        # include one reserved full-size request, so their sum overstates any realistic spend.
+        "total_est_usd": round(sum(s["est_usd"] for s in shards), 2),
         "total_cap_usd": round(sum(s["cap_usd"] for s in shards), 2),
         "shards": shards,
     }
