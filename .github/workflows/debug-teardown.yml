@@ -1,0 +1,37 @@
+# Temporary: reproduce the "removing container ... network" teardown error seen in every trial.
+name: debug-teardown
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  repro:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Reproduce
+        run: |
+          set -x
+          podman --version; podman info --format '{{.Host.NetworkBackend}} {{.Host.Pasta.Version}} {{.Host.RootlessNetworkCmd}}'
+          IMG=$(cat images/task-base.lock)
+          podman pull -q "$IMG"
+          podman network create acbnet
+          # 1) no nested container: does teardown work at all?
+          podman run -d --name plain --privileged --network acbnet "$IMG" sleep infinity
+          podman rm -f plain && echo "PLAIN OK"
+          # 2) nested podman without published port
+          podman run -d --name nested --privileged --network acbnet "$IMG" sleep infinity
+          podman exec nested podman run -d --name inner docker.io/library/busybox:1.37 sleep 600
+          podman rm -f nested && echo "NESTED OK"
+          # 3) nested podman with a published port (what the grader does)
+          podman run -d --name nestedport --privileged --network acbnet "$IMG" sleep infinity
+          podman exec nestedport podman run -d --name inner -p 18080:8080 docker.io/library/busybox:1.37 httpd -f -p 8080
+          podman exec nestedport sh -c 'nft list tables; ip -brief link'
+          podman --log-level=debug rm -f nestedport 2>&1 | grep -iE 'error|netavark|network|nft|iptables' | tail -40
+          podman ps -a; podman network ls; podman volume ls
