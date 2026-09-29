@@ -1,0 +1,781 @@
+{
+ "schema_version": 1,
+ "run_id": "36565108738-1",
+ "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36565108738",
+ "created_at": "2026-09-29T12:02:50+00:00",
+ "dataset_version": 1,
+ "harbor_version": "0.23.0",
+ "billing": {
+  "run_id": "36565108738-1",
+  "shards": {
+   "claude-code.haiku-4.5__implicit": {
+    "usage": 0,
+    "limit": 0.4,
+    "limit_remaining": 0.4,
+    "created_at": "2026-09-29T11:59:03.366Z"
+   },
+   "codex.gpt-6-luna__implicit": {
+    "usage": 0.00296827,
+    "limit": 0.3,
+    "limit_remaining": 0.29703173,
+    "created_at": "2026-09-29T11:59:03.646Z"
+   },
+   "opencode.gpt-6-luna__implicit": {
+    "usage": 0.002949555,
+    "limit": 0.3,
+    "limit_remaining": 0.297050445,
+    "created_at": "2026-09-29T11:59:03.863Z"
+   },
+   "opencode.deepseek-v4.1-flash__implicit": {
+    "usage": 0.003785604,
+    "limit": 0.3,
+    "limit_remaining": 0.296214396,
+    "created_at": "2026-09-29T11:59:04.101Z"
+   }
+  }
+ },
+ "summary": {
+  "cells": [
+   {
+    "cell": "codex.gpt-6-luna",
+    "arm": "implicit",
+    "harness": "codex",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 1,
+    "n_valid": 1,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.2065,
+     1.0
+    ],
+    "practice_uncond_mean": 0.7619,
+    "practice_uncond_ci": [
+     null,
+     null
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "deterministic-deps": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "exec-form-entrypoint": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "hadolint-clean": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "layer-cache-order": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0025,
+    "cost_per_success_usd": 0.0025,
+    "mean_agent_seconds": 26.7,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 0.0,
+    "failure_classes": {
+     "none": 1
+    }
+   },
+   {
+    "cell": "opencode.deepseek-v4.1-flash",
+    "arm": "implicit",
+    "harness": "opencode",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "n_trials": 1,
+    "n_valid": 1,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.2065,
+     1.0
+    ],
+    "practice_uncond_mean": 0.7619,
+    "practice_uncond_ci": [
+     null,
+     null
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "deterministic-deps": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "exec-form-entrypoint": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "hadolint-clean": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0038,
+    "cost_per_success_usd": 0.0038,
+    "mean_agent_seconds": 54.8,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 1
+    }
+   },
+   {
+    "cell": "opencode.gpt-6-luna",
+    "arm": "implicit",
+    "harness": "opencode",
+    "model": "openai/gpt-6-luna",
+    "n_trials": 1,
+    "n_valid": 1,
+    "excluded": {},
+    "gate_pass_rate": 1.0,
+    "gate_pass_ci": [
+     0.2065,
+     1.0
+    ],
+    "practice_uncond_mean": 0.8571,
+    "practice_uncond_ci": [
+     null,
+     null
+    ],
+    "checks": {
+     "base-digest-pinned": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "base-tag-pinned": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "containerfile-name": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "deterministic-deps": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "exec-form-entrypoint": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "final-image-size": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "fq-image-names": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "hadolint-clean": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "healthcheck": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
+     "ignore-file": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "layer-cache-order": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     },
+     "multi-stage": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "no-secret-in-image": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "non-root-user": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "pkg-cache-cleaned": {
+      "pass": 0,
+      "fail": 0,
+      "na": 1,
+      "error": 0,
+      "rate": null
+     }
+    },
+    "billed_cost_usd": 0.0029,
+    "cost_per_success_usd": 0.0029,
+    "mean_agent_seconds": 75.3,
+    "docker_usage_rate": 0.0,
+    "self_built_rate": 1.0,
+    "failure_classes": {
+     "none": 1
+    }
+   }
+  ]
+ },
+ "trials": [
+  {
+   "shard": "codex.gpt-6-luna__implicit",
+   "cell": "codex.gpt-6-luna",
+   "harness": "codex",
+   "harness_version": "0.159.0",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__asD9BtM",
+   "reward": 1.0,
+   "practice_uncond": 0.7619,
+   "practice_cond": 0.7619,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "fail",
+     "evidence": "no .containerignore/.dockerignore in build context"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 26.7,
+   "harness_reported": {
+    "input_tokens": 64071.0,
+    "cache_tokens": 49202.0,
+    "output_tokens": 1236.0,
+    "cost_usd": 0.00296827
+   },
+   "metered": {
+    "billed_cost_usd": 0.002492,
+    "requests": 5,
+    "request_errors": 1,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 49214,
+    "tokens_cached": 36126,
+    "tokens_completion": 991,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 10,
+    "tool_calls": 4,
+    "docker_commands": 0,
+    "podman_commands": 0,
+    "self_built": false
+   }
+  },
+  {
+   "shard": "opencode.deepseek-v4.1-flash__implicit",
+   "cell": "opencode.deepseek-v4.1-flash",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__Vg9iwmu",
+   "reward": 1.0,
+   "practice_uncond": 0.7619,
+   "practice_cond": 0.7619,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "fail",
+     "evidence": "short names: golang:1.25-alpine, alpine:3.20"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: golang:1.25-alpine, alpine:3.20"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "14 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [10001]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".dockerignore: .git, .env, Containerfile, Dockerfile, *.md"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 13.9,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 54.8,
+   "harness_reported": {
+    "input_tokens": 58334.0,
+    "cache_tokens": 51072.0,
+    "output_tokens": 848.0,
+    "cost_usd": 0.0006100319999999999
+   },
+   "metered": {
+    "billed_cost_usd": 0.003786,
+    "requests": 8,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 58927,
+    "tokens_cached": 51584,
+    "tokens_completion": 1061,
+    "providers": [
+     "Together"
+    ]
+   },
+   "process": {
+    "steps": 8,
+    "tool_calls": 8,
+    "docker_commands": 0,
+    "podman_commands": 4,
+    "self_built": true
+   }
+  },
+  {
+   "shard": "opencode.gpt-6-luna__implicit",
+   "cell": "opencode.gpt-6-luna",
+   "harness": "opencode",
+   "harness_version": "1.18.33",
+   "model": "openai/gpt-6-luna",
+   "arm": "implicit",
+   "task": "containerfile-go-api",
+   "trial": "containerfile-go-api__urB8Eyn",
+   "reward": 1.0,
+   "practice_uncond": 0.8571,
+   "practice_cond": 0.8571,
+   "gates": {
+    "artifact": 1.0,
+    "build": 1.0,
+    "start": 1.0,
+    "probe": 1.0
+   },
+   "checks": {
+    "containerfile-name": {
+     "status": "pass",
+     "evidence": "Containerfile"
+    },
+    "fq-image-names": {
+     "status": "pass",
+     "evidence": "docker.io/library/golang:1.25-alpine"
+    },
+    "base-tag-pinned": {
+     "status": "pass",
+     "evidence": "all bases have a version tag or digest"
+    },
+    "base-digest-pinned": {
+     "status": "fail",
+     "evidence": "not digest-pinned: docker.io/library/golang:1.25-alpine"
+    },
+    "multi-stage": {
+     "status": "pass",
+     "evidence": "2 stages, final copies build output"
+    },
+    "final-image-size": {
+     "status": "pass",
+     "evidence": "6 MB (budget 50 MB)"
+    },
+    "non-root-user": {
+     "status": "pass",
+     "evidence": "process uids [65532]"
+    },
+    "no-secret-in-image": {
+     "status": "pass",
+     "evidence": "planted secret not in image"
+    },
+    "ignore-file": {
+     "status": "pass",
+     "evidence": ".containerignore: .env, .git, README*, Containerfile"
+    },
+    "deterministic-deps": {
+     "status": "na",
+     "evidence": "not applicable to go"
+    },
+    "exec-form-entrypoint": {
+     "status": "pass",
+     "evidence": "exec form"
+    },
+    "layer-cache-order": {
+     "status": "na",
+     "evidence": "no dependency install step"
+    },
+    "pkg-cache-cleaned": {
+     "status": "na",
+     "evidence": "no OS package install in the final stage"
+    },
+    "healthcheck": {
+     "status": "fail",
+     "evidence": "no HEALTHCHECK"
+    },
+    "hadolint-clean": {
+     "status": "pass",
+     "evidence": "no warnings"
+    }
+   },
+   "hadolint_codes": [],
+   "image_size_mb": 5.8,
+   "failure_class": "none",
+   "exception": null,
+   "agent_seconds": 75.3,
+   "harness_reported": {
+    "input_tokens": 66806.0,
+    "cache_tokens": 66773.0,
+    "output_tokens": 1235.0,
+    "cost_usd": 0.0028701549999999997
+   },
+   "metered": {
+    "billed_cost_usd": 0.00295,
+    "requests": 12,
+    "request_errors": 0,
+    "budget_hits": 0,
+    "generations_unresolved": 0,
+    "tokens_prompt": 76176,
+    "tokens_cached": 66773,
+    "tokens_completion": 2243,
+    "providers": [
+     "OpenAI"
+    ]
+   },
+   "process": {
+    "steps": 12,
+    "tool_calls": 16,
+    "docker_commands": 0,
+    "podman_commands": 3,
+    "self_built": true
+   }
+  }
+ ]
+}
