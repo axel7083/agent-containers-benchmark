@@ -1,0 +1,24 @@
+# Read-only spend report: account credits and usage of live benchmark keys.
+# Runs in the openrouter-admin environment; no agent, no third-party code.
+name: spend
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  status:
+    runs-on: ubuntu-26.04
+    environment: openrouter-admin
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts/openrouter_keys.py
+          sparse-checkout-cone-mode: false
+      - env:
+          OPENROUTER_MANAGEMENT_KEY: ${{ secrets.OPENROUTER_MANAGEMENT_KEY }}
+        run: python3 scripts/openrouter_keys.py status | tee -a "$GITHUB_STEP_SUMMARY"

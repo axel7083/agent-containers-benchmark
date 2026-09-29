@@ -8,6 +8,7 @@ third-party code executes next to the management key.
   provision: check credits, create one capped + expiring key per shard, seal
              each key with the repository's RSA public key (only the sealed
              blob leaves this job, as a job output).
+  status:    read-only report of credits and live benchmark key usage.
   revoke:    record each child key's billed usage, delete it, and sweep any
              stale `acb-` key left behind by an aborted run.
 
@@ -143,6 +144,21 @@ def revoke(keys_json: str, run_id: str, out_path: str) -> None:
         json.dump({"run_id": run_id, "shards": billing}, fh, indent=2)
 
 
+def status() -> None:
+    """Read-only: account credits and usage of every live benchmark key."""
+    credits = remaining_credits()
+    print(f"credits remaining: {'unknown' if credits is None else f'${credits:.2f}'}")
+    total = 0.0
+    for info in _call("GET", "/keys").get("data", []):
+        name = info.get("name") or info.get("label") or ""
+        if not name.startswith(PREFIX):
+            continue
+        usage = float(info.get("usage") or 0)
+        total += usage
+        print(f"{name:70s} usage=${usage:.4f} limit=${info.get('limit')} remaining=${info.get('limit_remaining')} disabled={info.get('disabled')}")
+    print(f"live benchmark keys total usage: ${total:.4f}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -155,8 +171,11 @@ def main() -> None:
     r = sub.add_parser("revoke")
     r.add_argument("--run-id", required=True)
     r.add_argument("--out", required=True)
+    sub.add_parser("status")
     args = parser.parse_args()
-    if args.cmd == "provision":
+    if args.cmd == "status":
+        status()
+    elif args.cmd == "provision":
         provision(args.plan, args.run_id, args.public_key, args.max_total, args.out)
     else:
         revoke(os.environ.get("ACB_KEYS_JSON", "{}"), args.run_id, args.out)
