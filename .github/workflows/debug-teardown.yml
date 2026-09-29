@@ -21,14 +21,16 @@ jobs:
           IMG=docker.io/library/busybox:1.37
           podman pull -q "$IMG"
           podman network create acbnet
-          try() { name=$1; shift; podman run -d --name "$name" "$@" "$IMG" sleep 600 >/dev/null; if podman rm -f "$name" >/tmp/$name.log 2>&1; then echo "OK   $name"; else echo "FAIL $name"; fi; }
-          try unpriv-custom --network acbnet
-          try priv-custom --privileged --network acbnet
-          try priv-default --privileged
-          try capnet-custom --cap-add NET_ADMIN --network acbnet
-          try sysadmin-custom --cap-add SYS_ADMIN --network acbnet
-          try priv-custom-nosys --privileged --security-opt systempaths=unconfined --network acbnet
-          echo "---- debug rm of a privileged container on a custom network"
-          podman run -d --name dbg --privileged --network acbnet "$IMG" sleep 600 >/dev/null
-          podman --log-level=debug rm -f dbg 2>&1 | grep -vE 'level=debug msg="(Reading|Using|Initializing|Setting|Found|Cached|Loading|Not|Configured|Called|Successfully loaded)' | tail -40
-          echo "---- leftovers"; podman ps -a --format '{{.Names}} {{.Status}}'
+          try() { name=$1; shift; podman run -d --name "$name" "$@" "$IMG" sleep 600 >/dev/null; s=$(date +%s); if podman rm -f -v "$name" >/tmp/$name.log 2>&1; then r=OK; else r=FAIL; fi; echo "$r $name ($(( $(date +%s) - s ))s)"; }
+          try custom --network acbnet
+          try custom-init --init --network acbnet
+          try custom-priv-init --init --privileged --network acbnet
+          try custom-stoptimeout0 --stop-timeout 0 --network acbnet
+          echo "---- anonymous volume leak (compose-style down: stop, then rm -v)"
+          podman volume ls -q | wc -l
+          podman run -d --name vol --network acbnet -v /var/lib/containers "$IMG" sleep 600 >/dev/null
+          podman stop vol >/dev/null 2>&1; podman rm -v vol 2>&1 | tail -1
+          echo "volumes left: $(podman volume ls -q | wc -l)"
+          podman run -d --name volinit --init --network acbnet -v /var/lib/containers "$IMG" sleep 600 >/dev/null
+          podman stop volinit >/dev/null 2>&1; podman rm -v volinit 2>&1 | tail -1
+          echo "volumes left after init variant: $(podman volume ls -q | wc -l)"
