@@ -1,8 +1,10 @@
 {
  "schema_version": 1,
+ "status": "cancelled",
+ "n_planned": 225,
  "run_id": "36566552610-1",
  "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36566552610",
- "created_at": "2026-09-29T12:32:12+00:00",
+ "created_at": "2026-09-29T12:35:40+00:00",
  "dataset_version": 1,
  "harbor_version": "0.23.0",
  "billing": {
@@ -100,6 +102,48 @@
    }
   }
  },
+ "shards": {
+  "claude-code.haiku-4.5__explicit": {
+   "key_usage_usd": 1.4641378,
+   "metered_usd": 1.37879,
+   "unattributed_usd": 0.085348
+  },
+  "claude-code.haiku-4.5__implicit": {
+   "key_usage_usd": 0.5315326,
+   "metered_usd": 0.531533,
+   "unattributed_usd": -0.0
+  },
+  "claude-code.haiku-4.5__nudge": {
+   "key_usage_usd": 0.9140497,
+   "metered_usd": 0.914049,
+   "unattributed_usd": 1e-06
+  },
+  "codex.gpt-6-luna__explicit": {
+   "key_usage_usd": 0.058087995,
+   "metered_usd": 0.039489,
+   "unattributed_usd": 0.018599
+  },
+  "codex.gpt-6-luna__implicit": {
+   "key_usage_usd": 0.03855237,
+   "metered_usd": 0.03392,
+   "unattributed_usd": 0.004632
+  },
+  "codex.gpt-6-luna__nudge": {
+   "key_usage_usd": 0.04893968,
+   "metered_usd": 0.033033,
+   "unattributed_usd": 0.015907
+  },
+  "opencode.gpt-6-luna__implicit": {
+   "key_usage_usd": 0.02819796,
+   "metered_usd": 0.027462,
+   "unattributed_usd": 0.000736
+  },
+  "opencode.gpt-6-luna__nudge": {
+   "key_usage_usd": 0.04867249,
+   "metered_usd": 0.039769,
+   "unattributed_usd": 0.008903
+  }
+ },
  "summary": {
   "cells": [
    {
@@ -108,6 +152,7 @@
     "harness": "claude-code",
     "model": "anthropic/claude-haiku-4.5",
     "n_trials": 5,
+    "n_planned": 15,
     "n_valid": 5,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -227,9 +272,10 @@
       "rate": 1.0
      }
     },
-    "billed_cost_usd": 1.3788,
+    "billed_cost_usd": 1.4641,
+    "unattributed_cost_usd": 0.0853,
     "harness_reported_cost_usd": 6.8939,
-    "cost_per_success_usd": 0.2758,
+    "cost_per_success_usd": 0.2928,
     "mean_agent_seconds": 136.98,
     "docker_usage_rate": 0.0,
     "self_built_rate": 1.0,
@@ -243,6 +289,7 @@
     "harness": "claude-code",
     "model": "anthropic/claude-haiku-4.5",
     "n_trials": 11,
+    "n_planned": 15,
     "n_valid": 11,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -363,6 +410,7 @@
      }
     },
     "billed_cost_usd": 0.5315,
+    "unattributed_cost_usd": 0.0,
     "harness_reported_cost_usd": 2.6577,
     "cost_per_success_usd": 0.0483,
     "mean_agent_seconds": 47.2727,
@@ -378,6 +426,7 @@
     "harness": "claude-code",
     "model": "anthropic/claude-haiku-4.5",
     "n_trials": 7,
+    "n_planned": 15,
     "n_valid": 7,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -498,6 +547,7 @@
      }
     },
     "billed_cost_usd": 0.914,
+    "unattributed_cost_usd": 0.0,
     "harness_reported_cost_usd": 4.5702,
     "cost_per_success_usd": 0.1306,
     "mean_agent_seconds": 98.5286,
@@ -513,6 +563,7 @@
     "harness": "codex",
     "model": "openai/gpt-6-luna",
     "n_trials": 5,
+    "n_planned": 15,
     "n_valid": 5,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -632,9 +683,10 @@
       "rate": null
      }
     },
-    "billed_cost_usd": 0.0395,
+    "billed_cost_usd": 0.0581,
+    "unattributed_cost_usd": 0.0186,
     "harness_reported_cost_usd": 0.054,
-    "cost_per_success_usd": 0.0079,
+    "cost_per_success_usd": 0.0116,
     "mean_agent_seconds": 149.62,
     "docker_usage_rate": 0.0,
     "self_built_rate": 1.0,
@@ -648,6 +700,7 @@
     "harness": "codex",
     "model": "openai/gpt-6-luna",
     "n_trials": 10,
+    "n_planned": 15,
     "n_valid": 10,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -767,9 +820,10 @@
       "rate": null
      }
     },
-    "billed_cost_usd": 0.0339,
+    "billed_cost_usd": 0.0386,
+    "unattributed_cost_usd": 0.0046,
     "harness_reported_cost_usd": 0.0386,
-    "cost_per_success_usd": 0.0034,
+    "cost_per_success_usd": 0.0039,
     "mean_agent_seconds": 50.35,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.4,
@@ -783,6 +837,7 @@
     "harness": "codex",
     "model": "openai/gpt-6-luna",
     "n_trials": 6,
+    "n_planned": 15,
     "n_valid": 6,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -902,9 +957,10 @@
       "rate": null
      }
     },
-    "billed_cost_usd": 0.033,
+    "billed_cost_usd": 0.0489,
+    "unattributed_cost_usd": 0.0159,
     "harness_reported_cost_usd": 0.0489,
-    "cost_per_success_usd": 0.0055,
+    "cost_per_success_usd": 0.0082,
     "mean_agent_seconds": 120.9,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.8333,
@@ -918,6 +974,7 @@
     "harness": "opencode",
     "model": "openai/gpt-6-luna",
     "n_trials": 9,
+    "n_planned": 15,
     "n_valid": 9,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -1037,7 +1094,8 @@
       "rate": null
      }
     },
-    "billed_cost_usd": 0.0275,
+    "billed_cost_usd": 0.0282,
+    "unattributed_cost_usd": 0.0007,
     "harness_reported_cost_usd": 0.0268,
     "cost_per_success_usd": 0.0031,
     "mean_agent_seconds": 64.1222,
@@ -1053,6 +1111,7 @@
     "harness": "opencode",
     "model": "openai/gpt-6-luna",
     "n_trials": 6,
+    "n_planned": 15,
     "n_valid": 6,
     "excluded": {},
     "gate_pass_rate": 1.0,
@@ -1172,9 +1231,10 @@
       "rate": null
      }
     },
-    "billed_cost_usd": 0.0398,
+    "billed_cost_usd": 0.0487,
+    "unattributed_cost_usd": 0.0089,
     "harness_reported_cost_usd": 0.0393,
-    "cost_per_success_usd": 0.0066,
+    "cost_per_success_usd": 0.0081,
     "mean_agent_seconds": 109.6333,
     "docker_usage_rate": 0.0,
     "self_built_rate": 1.0,
@@ -1297,7 +1357,8 @@
     "docker_commands": 0,
     "podman_commands": 11,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.205104
   },
   {
    "shard": "claude-code.haiku-4.5__explicit",
@@ -1409,7 +1470,8 @@
     "docker_commands": 0,
     "podman_commands": 29,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.498366
   },
   {
    "shard": "claude-code.haiku-4.5__explicit",
@@ -1523,7 +1585,8 @@
     "docker_commands": 0,
     "podman_commands": 13,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.16438
   },
   {
    "shard": "claude-code.haiku-4.5__explicit",
@@ -1635,7 +1698,8 @@
     "docker_commands": 0,
     "podman_commands": 10,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.19005
   },
   {
    "shard": "claude-code.haiku-4.5__explicit",
@@ -1747,7 +1811,8 @@
     "docker_commands": 0,
     "podman_commands": 31,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.406237
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -1861,7 +1926,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.02715
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -1976,7 +2042,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.04868
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2088,7 +2155,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.051694
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2200,7 +2268,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.055267
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2312,7 +2381,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.06841
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2424,7 +2494,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.02282
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2536,7 +2607,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.050847
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2651,7 +2723,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.057703
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2766,7 +2839,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.0584
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2880,7 +2954,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.040443
   },
   {
    "shard": "claude-code.haiku-4.5__implicit",
@@ -2992,7 +3067,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.050119
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3106,7 +3182,8 @@
     "docker_commands": 0,
     "podman_commands": 12,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.147432
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3218,7 +3295,8 @@
     "docker_commands": 0,
     "podman_commands": 12,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.071449
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3330,7 +3408,8 @@
     "docker_commands": 0,
     "podman_commands": 13,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.168401
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3444,7 +3523,8 @@
     "docker_commands": 0,
     "podman_commands": 6,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.097182
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3556,7 +3636,8 @@
     "docker_commands": 0,
     "podman_commands": 2,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.06348
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3668,7 +3749,8 @@
     "docker_commands": 0,
     "podman_commands": 16,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.117476
   },
   {
    "shard": "claude-code.haiku-4.5__nudge",
@@ -3780,7 +3862,8 @@
     "docker_commands": 0,
     "podman_commands": 23,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.248629
   },
   {
    "shard": "codex.gpt-6-luna__explicit",
@@ -3892,7 +3975,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.012417
   },
   {
    "shard": "codex.gpt-6-luna__explicit",
@@ -4004,7 +4088,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.009828
   },
   {
    "shard": "codex.gpt-6-luna__explicit",
@@ -4116,7 +4201,8 @@
     "docker_commands": 0,
     "podman_commands": 11,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.012559
   },
   {
    "shard": "codex.gpt-6-luna__explicit",
@@ -4228,7 +4314,8 @@
     "docker_commands": 0,
     "podman_commands": 6,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.010494
   },
   {
    "shard": "codex.gpt-6-luna__explicit",
@@ -4340,7 +4427,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.01279
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -4452,7 +4540,8 @@
     "docker_commands": 0,
     "podman_commands": 2,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.00456
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -4564,7 +4653,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.002675
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -4676,7 +4766,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.002832
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -4788,7 +4879,8 @@
     "docker_commands": 0,
     "podman_commands": 1,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.004695
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -4900,7 +4992,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.003419
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -5012,7 +5105,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.003181
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -5126,7 +5220,8 @@
     "docker_commands": 0,
     "podman_commands": 2,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.00506
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -5240,7 +5335,8 @@
     "docker_commands": 0,
     "podman_commands": 6,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.005325
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -5352,7 +5448,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.003006
   },
   {
    "shard": "codex.gpt-6-luna__implicit",
@@ -5464,7 +5561,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.003798
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -5576,7 +5674,8 @@
     "docker_commands": 0,
     "podman_commands": 2,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.006286
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -5688,7 +5787,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.010954
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -5800,7 +5900,8 @@
     "docker_commands": 0,
     "podman_commands": 1,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.003963
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -5912,7 +6013,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.007111
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -6024,7 +6126,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.013617
   },
   {
    "shard": "codex.gpt-6-luna__nudge",
@@ -6136,7 +6239,8 @@
     "docker_commands": 0,
     "podman_commands": 0,
     "self_built": false
-   }
+   },
+   "cost_usd": 0.007008
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6248,7 +6352,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.002933
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6360,7 +6465,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.003018
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6472,7 +6578,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.003185
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6584,7 +6691,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.003386
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6696,7 +6804,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.00352
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6808,7 +6917,8 @@
     "docker_commands": 0,
     "podman_commands": 3,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.002959
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -6920,7 +7030,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.00347
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -7032,7 +7143,8 @@
     "docker_commands": 0,
     "podman_commands": 4,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.002626
   },
   {
    "shard": "opencode.gpt-6-luna__implicit",
@@ -7144,7 +7256,8 @@
     "docker_commands": 0,
     "podman_commands": 6,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.003102
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7256,7 +7369,8 @@
     "docker_commands": 0,
     "podman_commands": 13,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.007723
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7368,7 +7482,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.00668
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7480,7 +7595,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.007441
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7592,7 +7708,8 @@
     "docker_commands": 0,
     "podman_commands": 13,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.011711
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7704,7 +7821,8 @@
     "docker_commands": 0,
     "podman_commands": 20,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.009491
   },
   {
    "shard": "opencode.gpt-6-luna__nudge",
@@ -7816,7 +7934,8 @@
     "docker_commands": 0,
     "podman_commands": 7,
     "self_built": true
-   }
+   },
+   "cost_usd": 0.005626
   }
  ]
 }
