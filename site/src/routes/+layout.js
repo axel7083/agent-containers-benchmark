@@ -17,7 +17,12 @@ export async function load({ fetch }) {
     get('index.json').catch(() => ({ runs: [] })),
     get('catalog.json').catch(() => null),
   ]);
-  const latestFile = index.runs?.[0]?.file ?? '';
+  // Default to the newest of the largest completed runs, so a small smoke test does not hide the
+  // full baseline; every run stays selectable.
+  const runs = index.runs ?? [];
+  const complete = runs.filter((r) => r.status === 'success');
+  const largest = Math.max(0, ...complete.map((r) => r.n_planned ?? r.n_trials ?? 0));
+  const latestFile = (complete.find((r) => (r.n_planned ?? r.n_trials ?? 0) === largest) ?? runs[0])?.file ?? '';
   let error = '';
   if (latestFile) {
     try {
