@@ -48,7 +48,12 @@ export function versionNote(run, catalog) {
 
 /** Every check of the catalog in family order, each tagged with its family. */
 export function allChecks(catalog) {
-  return Object.entries(catalog?.families ?? {}).flatMap(([family, f]) => f.checks.map((c) => ({ ...c, family })));
+  // Ids key every list on the site: a catalog that repeats one (two families sharing an id) must not
+  // crash the page, so the first definition wins.
+  const seen = new Set();
+  return Object.entries(catalog?.families ?? {})
+    .flatMap(([family, f]) => f.checks.map((c) => ({ ...c, family })))
+    .filter((c) => !seen.has(c.id) && seen.add(c.id));
 }
 
 /** Checks of the given families (all of them when omitted). */
