@@ -25,8 +25,8 @@ id = "claude-code.opus-5.5"
 harness = "claude-code"
 version = "2.1.284"
 model = "anthropic/claude-opus-5.5"
-# Estimated from Haiku 4.5 x 4 (price ratio) until measured.
-est_cost_per_trial = { implicit = 0.25, nudge = 0.50, explicit = 1.30 }
+# Measured on run 36600908141 (1 trial per arm, node task).
+est_cost_per_trial = { implicit = 0.16, nudge = 0.24, explicit = 0.20 }
 max_request_usd = 1.31
 
 [[cells]]
@@ -34,8 +34,8 @@ id = "codex.gpt-6-sol"
 harness = "codex"
 version = "0.159.0"
 model = "openai/gpt-6-sol"
-# Estimated from gpt-6-luna x 20 (price ratio) until measured.
-est_cost_per_trial = { implicit = 0.10, nudge = 0.16, explicit = 0.24 }
+# Measured on run 36600908141 (1 trial per arm, node task).
+est_cost_per_trial = { implicit = 0.17, nudge = 0.23, explicit = 0.18 }
 max_request_usd = 0.66
 
 [[cells]]
