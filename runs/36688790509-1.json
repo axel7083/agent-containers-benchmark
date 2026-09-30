@@ -7083,10 +7083,10 @@
      },
      "health-probes": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "healthcheck": {
       "pass": 11,
@@ -7111,10 +7111,10 @@
      },
      "image-pinned": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "layer-cache-order": {
       "pass": 15,
@@ -7146,10 +7146,10 @@
      },
      "no-service-account-token": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "no-world-writable": {
       "pass": 2,
@@ -7188,31 +7188,31 @@
      },
      "pss-drop-all-capabilities": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-no-privilege-escalation": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-run-as-non-root": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-seccomp-runtime-default": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "quadlet-healthcheck": {
       "pass": 2,
@@ -7223,17 +7223,17 @@
      },
      "read-only-root-filesystem": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "resource-requests-limits": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "restarts-on-failure": {
       "pass": 2,
@@ -7244,10 +7244,10 @@
      },
      "secret-from-secret-ref": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "secret-not-plaintext": {
       "pass": 2,
@@ -7319,17 +7319,17 @@
      },
      "base-digest-pinned": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "base-tag-pinned": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "bot-config-valid": {
       "pass": 4,
@@ -7354,24 +7354,24 @@
      },
      "containerfile-name": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "deterministic-deps": {
       "pass": 11,
-      "fail": 2,
+      "fail": 1,
       "na": 4,
       "error": 0,
-      "rate": 0.8461538461538461
+      "rate": 0.9166666666666666
      },
      "exec-form-entrypoint": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "fast-sigterm": {
       "pass": 2,
@@ -7382,17 +7382,17 @@
      },
      "final-image-size": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "fq-image-names": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "graceful-shutdown": {
       "pass": 2,
@@ -7403,10 +7403,10 @@
      },
      "hadolint-clean": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "health-probes": {
       "pass": 1,
@@ -7417,10 +7417,10 @@
      },
      "healthcheck": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "honours-port-env": {
       "pass": 2,
@@ -7431,10 +7431,10 @@
      },
      "ignore-file": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "image-pinned": {
       "pass": 1,
@@ -7445,10 +7445,10 @@
      },
      "layer-cache-order": {
       "pass": 14,
-      "fail": 1,
+      "fail": 0,
       "na": 2,
       "error": 0,
-      "rate": 0.9333333333333333
+      "rate": 1.0
      },
      "logs-to-stdout": {
       "pass": 2,
@@ -7460,16 +7460,16 @@
      "multi-stage": {
       "pass": 2,
       "fail": 0,
-      "na": 15,
+      "na": 14,
       "error": 0,
       "rate": 1.0
      },
      "no-secret-in-image": {
       "pass": 12,
-      "fail": 1,
+      "fail": 0,
       "na": 4,
       "error": 0,
-      "rate": 0.9230769230769231
+      "rate": 1.0
      },
      "no-service-account-token": {
       "pass": 1,
@@ -7487,10 +7487,10 @@
      },
      "non-root-user": {
       "pass": 16,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.9411764705882353
+      "rate": 1.0
      },
      "numeric-user": {
       "pass": 2,
@@ -7508,10 +7508,10 @@
      },
      "pkg-cache-cleaned": {
       "pass": 0,
-      "fail": 1,
+      "fail": 0,
       "na": 16,
       "error": 0,
-      "rate": 0.0
+      "rate": null
      },
      "pss-drop-all-capabilities": {
       "pass": 1,
@@ -7738,10 +7738,10 @@
      },
      "health-probes": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "healthcheck": {
       "pass": 4,
@@ -7766,7 +7766,7 @@
      },
      "image-pinned": {
       "pass": 0,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
       "rate": 0.0
@@ -7801,7 +7801,7 @@
      },
      "no-service-account-token": {
       "pass": 0,
-      "fail": 2,
+      "fail": 1,
       "na": 0,
       "error": 0,
       "rate": 0.0
@@ -7843,31 +7843,31 @@
      },
      "pss-drop-all-capabilities": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-no-privilege-escalation": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-run-as-non-root": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "pss-seccomp-runtime-default": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "quadlet-healthcheck": {
       "pass": 0,
@@ -7878,17 +7878,17 @@
      },
      "read-only-root-filesystem": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "resource-requests-limits": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "restarts-on-failure": {
       "pass": 2,
@@ -7899,10 +7899,10 @@
      },
      "secret-from-secret-ref": {
       "pass": 1,
-      "fail": 1,
+      "fail": 0,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 1.0
      },
      "secret-not-plaintext": {
       "pass": 2,
@@ -8065,13 +8065,6 @@
       "error": 0,
       "rate": 0.9411764705882353
      },
-     "health-probes": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
      "healthcheck": {
       "pass": 11,
       "fail": 6,
@@ -8092,13 +8085,6 @@
       "na": 0,
       "error": 0,
       "rate": 0.9411764705882353
-     },
-     "image-pinned": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
      },
      "layer-cache-order": {
       "pass": 16,
@@ -8127,13 +8113,6 @@
       "na": 3,
       "error": 0,
       "rate": 1.0
-     },
-     "no-service-account-token": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
      },
      "no-world-writable": {
       "pass": 2,
@@ -8170,34 +8149,6 @@
       "error": 0,
       "rate": null
      },
-     "pss-drop-all-capabilities": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
-     "pss-no-privilege-escalation": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
-     "pss-run-as-non-root": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
-     "pss-seccomp-runtime-default": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
      "quadlet-healthcheck": {
       "pass": 1,
       "fail": 1,
@@ -8205,33 +8156,12 @@
       "error": 0,
       "rate": 0.5
      },
-     "read-only-root-filesystem": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
-     "resource-requests-limits": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
-     },
      "restarts-on-failure": {
       "pass": 2,
       "fail": 0,
       "na": 0,
       "error": 0,
       "rate": 1.0
-     },
-     "secret-from-secret-ref": {
-      "pass": 0,
-      "fail": 2,
-      "na": 0,
-      "error": 0,
-      "rate": 0.0
      },
      "secret-not-plaintext": {
       "pass": 2,
