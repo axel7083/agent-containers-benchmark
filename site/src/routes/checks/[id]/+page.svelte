@@ -17,6 +17,9 @@
   let arms = $derived((catalog?.arms ?? []).map((a) => a.id).filter((a) => run?.summary.cells.some((c) => c.arm === a)));
   let cellIds = $derived(run ? [...new Set(run.summary.cells.map((c) => c.cell))] : []);
 
+  // A trial that produced no artifact (also when it timed out first) says nothing about a single check.
+  const noArtifact = (t) => t.failure_class === 'no-artifact' || t.gates?.artifact === 0;
+
   const stat = (cell, arm) => run?.summary.cells.find((c) => c.cell === cell && c.arm === arm)?.checks[selectedId];
 
   // Most frequent failure evidence for this check, with the cells it appeared in.
@@ -25,7 +28,7 @@
     const groups = {};
     for (const t of run.trials) {
       const r = t.checks[selectedId];
-      if (!r || r.status !== 'fail' || t.failure_class === 'no-artifact') continue;
+      if (!r || r.status !== 'fail' || noArtifact(t)) continue;
       const g = (groups[r.evidence] ??= { text: r.evidence, count: 0, cells: [] });
       g.count += 1;
       if (!g.cells.includes(t.cell)) g.cells.push(t.cell);
@@ -38,7 +41,7 @@
     const tasks = {};
     for (const t of run.trials) {
       const r = t.checks[selectedId];
-      if (!r || t.failure_class === 'no-artifact') continue;
+      if (!r || noArtifact(t)) continue;
       tasks[t.task] ??= { pass: 0, fail: 0, na: 0 };
       if (r.status in tasks[t.task]) tasks[t.task][r.status] += 1;
     }

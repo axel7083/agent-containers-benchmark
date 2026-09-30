@@ -262,7 +262,8 @@ def summarize(
         mean, (plo, phi) = cluster_bootstrap_mean(by_task)
         check_rates: dict[str, dict[str, int]] = defaultdict(lambda: {"pass": 0, "fail": 0, "na": 0, "error": 0})
         for t in valid:
-            if t["failure_class"] in NO_EVIDENCE:
+            # No artifact (whatever the label: a timeout before writing any file too) = no evidence.
+            if t["failure_class"] in NO_EVIDENCE or (t.get("gates") or {}).get("artifact") == 0:
                 continue
             for cid, c in t["checks"].items():
                 if c["status"] in check_rates[cid]:

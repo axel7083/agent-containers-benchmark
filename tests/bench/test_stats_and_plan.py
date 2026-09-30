@@ -118,3 +118,16 @@ def test_caps_cover_one_full_size_request():
     cells = {c["id"]: c for c in load_matrix()["cells"]}
     for s in plan(trials=1)["shards"]:
         assert s["cap_usd"] >= cells[s["cell"]].get("max_request_usd", 0) + s["est_usd"]
+
+
+def test_timeout_without_artifact_is_not_evidence_either():
+    from acb.bench.aggregate import summarize
+
+    base = {"shard": "c__implicit", "cell": "c", "arm": "implicit", "harness": "h", "model": "m", "task": "t",
+            "metered": {}, "harness_reported": {}, "process": {}, "agent_seconds": 1.0}
+    ok = base | {"failure_class": "none", "reward": 1.0, "practice_uncond": 1.0, "gates": {"artifact": 1.0},
+                 "checks": {"x": {"status": "pass", "evidence": ""}}}
+    timed_out = base | {"failure_class": "timeout", "reward": 0.0, "practice_uncond": 0.0, "gates": {"artifact": 0.0},
+                        "checks": {"x": {"status": "fail", "evidence": ""}}}
+    cell = summarize([ok, timed_out])["cells"][0]
+    assert cell["checks"]["x"]["rate"] == 1.0 and cell["gate_pass_rate"] == 0.5
