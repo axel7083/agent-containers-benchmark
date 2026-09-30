@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-30T09:25:55+00:00",
+ "generated_at": "2026-09-30T09:56:25+00:00",
  "runs": [
   {
    "file": "runs/36688790509-1.json",
@@ -8,6 +8,7 @@
    "created_at": "2026-09-30T09:25:54+00:00",
    "dataset_version": 2,
    "status": "success",
+   "note": "Kubernetes and Quadlet trials re-graded on 2026-09-30 from their saved /app: the kube gate now provides Secrets the manifests leave to the cluster, and the Quadlet health check got its own id.",
    "n_trials": 264,
    "n_planned": 264,
    "billed_cost_usd": 15.9767
@@ -19,6 +20,7 @@
    "created_at": "2026-09-29T16:57:47+00:00",
    "dataset_version": 1,
    "status": "success",
+   "note": null,
    "n_trials": 6,
    "n_planned": 6,
    "billed_cost_usd": 1.108
@@ -30,6 +32,7 @@
    "created_at": "2026-09-29T16:50:07+00:00",
    "dataset_version": 1,
    "status": "success",
+   "note": null,
    "n_trials": 6,
    "n_planned": 6,
    "billed_cost_usd": 0.183
@@ -41,6 +44,7 @@
    "created_at": "2026-09-29T16:28:41+00:00",
    "dataset_version": 1,
    "status": "success",
+   "note": null,
    "n_trials": 5,
    "n_planned": 5,
    "billed_cost_usd": 0.0186
@@ -52,6 +56,7 @@
    "created_at": "2026-09-29T16:11:40+00:00",
    "dataset_version": 1,
    "status": "success",
+   "note": null,
    "n_trials": 225,
    "n_planned": 225,
    "billed_cost_usd": 8.8993
@@ -63,6 +68,7 @@
    "created_at": "2026-09-29T12:35:40+00:00",
    "dataset_version": 1,
    "status": "cancelled",
+   "note": null,
    "n_trials": 59,
    "n_planned": 225,
    "billed_cost_usd": 3.1321
@@ -74,6 +80,7 @@
    "created_at": "2026-09-29T12:09:54+00:00",
    "dataset_version": 1,
    "status": null,
+   "note": null,
    "n_trials": 1,
    "n_planned": null,
    "billed_cost_usd": 0.0786
@@ -85,6 +92,7 @@
    "created_at": "2026-09-29T12:02:50+00:00",
    "dataset_version": 1,
    "status": null,
+   "note": null,
    "n_trials": 3,
    "n_planned": null,
    "billed_cost_usd": 0.0092
@@ -96,6 +104,7 @@
    "created_at": "2026-09-29T11:54:43+00:00",
    "dataset_version": 1,
    "status": null,
+   "note": null,
    "n_trials": 1,
    "n_planned": null,
    "billed_cost_usd": 0.0108

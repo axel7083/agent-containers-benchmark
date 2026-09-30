@@ -1,6 +1,7 @@
 {
  "schema_version": 1,
  "status": "success",
+ "note": "Kubernetes and Quadlet trials re-graded on 2026-09-30 from their saved /app: the kube gate now provides Secrets the manifests leave to the cluster, and the Quadlet health check got its own id.",
  "n_planned": 264,
  "run_id": "36688790509-1",
  "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36688790509",
@@ -1933,7 +1934,7 @@
     {
      "id": "start",
      "title": "Start",
-     "description": "`podman kube play` runs the manifests and the pod reaches Running."
+     "description": "`podman kube play` runs the manifests and the pod reaches Running. Secrets and ConfigMaps the manifests reference but leave to the cluster are provided with placeholder values."
     },
     {
      "id": "probe",
@@ -2548,7 +2549,7 @@
       "informational": false
      },
      {
-      "id": "healthcheck",
+      "id": "quadlet-healthcheck",
       "title": "Health check",
       "category": "maintainability",
       "weight": 0.5,
@@ -3956,6 +3957,43 @@
       ]
      },
      {
+      "name": "external-secret",
+      "expect": {
+       "reward": 1,
+       "checks": {
+        "pass": [
+         "pss-run-as-non-root",
+         "pss-no-privilege-escalation",
+         "pss-drop-all-capabilities",
+         "pss-seccomp-runtime-default",
+         "read-only-root-filesystem",
+         "resource-requests-limits",
+         "health-probes",
+         "no-service-account-token",
+         "secret-from-secret-ref",
+         "image-pinned"
+        ]
+       }
+      },
+      "files": [
+       {
+        "path": "k8s/README.md",
+        "size": 227,
+        "content": "# Kubernetes manifests\n\nThe `quotes-db` Secret is deliberately not in this repository. Create it before the first deploy:\n\n```sh\nkubectl create secret generic quotes-db --from-file=password=/dev/stdin\nkubectl apply -f k8s/\n```\n"
+       },
+       {
+        "path": "k8s/deployment.yaml",
+        "size": 1261,
+        "content": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: quotes\n  labels:\n    app.kubernetes.io/name: quotes\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app.kubernetes.io/name: quotes\n  template:\n    metadata:\n      labels:\n        app.kubernetes.io/name: quotes\n    spec:\n      automountServiceAccountToken: false\n      securityContext:\n        runAsNonRoot: true\n        runAsUser: 65532\n        seccompProfile:\n          type: RuntimeDefault\n      containers:\n        - name: quotes\n          image: quay.io/acme/quotes:1.0.0\n          ports:\n            - containerPort: 8080\n          env:\n            - name: DB_PASSWORD\n              valueFrom:\n                secretKeyRef:\n                  name: quotes-db\n                  key: password\n          securityContext:\n            allowPrivilegeEscalation: false\n            readOnlyRootFilesystem: true\n            capabilities:\n              drop: [\"ALL\"]\n          resources:\n            requests:\n              cpu: 50m\n              memory: 32Mi\n            limits:\n              memory: 64Mi\n          livenessProbe:\n            httpGet:\n              path: /health\n              port: 8080\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: 8080\n"
+       },
+       {
+        "path": "k8s/service.yaml",
+        "size": 154,
+        "content": "apiVersion: v1\nkind: Service\nmetadata:\n  name: quotes\nspec:\n  selector:\n    app.kubernetes.io/name: quotes\n  ports:\n    - port: 80\n      targetPort: 8080\n"
+       }
+      ]
+     },
+     {
       "name": "naive",
       "expect": {
        "reward": 1,
@@ -4224,7 +4262,7 @@
          "auto-update",
          "persistent-data",
          "secret-not-plaintext",
-         "healthcheck"
+         "quadlet-healthcheck"
         ]
        }
       },
@@ -4271,7 +4309,7 @@
          "auto-update",
          "persistent-data",
          "secret-not-plaintext",
-         "healthcheck"
+         "quadlet-healthcheck"
         ]
        }
       },
@@ -4443,7 +4481,7 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 10,
+      "pass": 9,
       "fail": 0,
       "na": 0,
       "error": 0,
@@ -4562,6 +4600,13 @@
       "rate": 1.0
      },
      "pss-seccomp-runtime-default": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "quadlet-healthcheck": {
       "pass": 1,
       "fail": 0,
       "na": 0,
@@ -4762,11 +4807,11 @@
       "rate": 0.0
      },
      "healthcheck": {
-      "pass": 2,
+      "pass": 1,
       "fail": 8,
       "na": 0,
       "error": 0,
-      "rate": 0.2
+      "rate": 0.1111111111111111
      },
      "honours-port-env": {
       "pass": 1,
@@ -4887,6 +4932,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
      "read-only-root-filesystem": {
       "pass": 1,
       "fail": 0,
@@ -4957,10 +5009,10 @@
     "n_planned": 11,
     "n_valid": 11,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.6226,
-     0.9838
+     0.7412,
+     1.0
     ],
     "practice_uncond_mean": 0.9762,
     "practice_uncond_ci": [
@@ -5081,11 +5133,11 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 7,
+      "pass": 6,
       "fail": 3,
       "na": 0,
       "error": 0,
-      "rate": 0.7
+      "rate": 0.6666666666666666
      },
      "honours-port-env": {
       "pass": 1,
@@ -5206,6 +5258,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
      "read-only-root-filesystem": {
       "pass": 1,
       "fail": 0,
@@ -5259,13 +5318,12 @@
     "billed_cost_usd": 3.1485,
     "unattributed_cost_usd": 0.0,
     "harness_reported_cost_usd": 4.8564,
-    "cost_per_success_usd": 0.3148,
+    "cost_per_success_usd": 0.2862,
     "mean_agent_seconds": 145.4455,
     "docker_usage_rate": 0.0,
     "self_built_rate": 1.0,
     "failure_classes": {
-     "none": 10,
-     "start": 1
+     "none": 11
     }
    },
    {
@@ -5277,10 +5335,10 @@
     "n_planned": 11,
     "n_valid": 11,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.6226,
-     0.9838
+     0.7412,
+     1.0
     ],
     "practice_uncond_mean": 1.0,
     "practice_uncond_ci": [
@@ -5401,7 +5459,7 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 10,
+      "pass": 9,
       "fail": 0,
       "na": 0,
       "error": 0,
@@ -5526,6 +5584,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
      "read-only-root-filesystem": {
       "pass": 1,
       "fail": 0,
@@ -5579,13 +5644,12 @@
     "billed_cost_usd": 2.4935,
     "unattributed_cost_usd": 0.3455,
     "harness_reported_cost_usd": 2.4935,
-    "cost_per_success_usd": 0.2494,
+    "cost_per_success_usd": 0.2267,
     "mean_agent_seconds": 155.4182,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.9091,
     "failure_classes": {
-     "none": 10,
-     "start": 1
+     "none": 11
     }
    },
    {
@@ -5597,10 +5661,10 @@
     "n_planned": 11,
     "n_valid": 11,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.6226,
-     0.9838
+     0.7412,
+     1.0
     ],
     "practice_uncond_mean": 0.7382,
     "practice_uncond_ci": [
@@ -5722,7 +5786,7 @@
      },
      "healthcheck": {
       "pass": 0,
-      "fail": 10,
+      "fail": 9,
       "na": 0,
       "error": 0,
       "rate": 0.0
@@ -5846,6 +5910,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 0,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
      "read-only-root-filesystem": {
       "pass": 1,
       "fail": 0,
@@ -5899,13 +5970,12 @@
     "billed_cost_usd": 1.4281,
     "unattributed_cost_usd": 0.1658,
     "harness_reported_cost_usd": 1.4281,
-    "cost_per_success_usd": 0.1428,
+    "cost_per_success_usd": 0.1298,
     "mean_agent_seconds": 87.5,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.9091,
     "failure_classes": {
-     "none": 10,
-     "start": 1
+     "none": 11
     }
    },
    {
@@ -5917,10 +5987,10 @@
     "n_planned": 11,
     "n_valid": 11,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.6226,
-     0.9838
+     0.7412,
+     1.0
     ],
     "practice_uncond_mean": 0.9754,
     "practice_uncond_ci": [
@@ -6041,11 +6111,11 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 5,
+      "pass": 4,
       "fail": 5,
       "na": 0,
       "error": 0,
-      "rate": 0.5
+      "rate": 0.4444444444444444
      },
      "honours-port-env": {
       "pass": 1,
@@ -6166,6 +6236,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
      "read-only-root-filesystem": {
       "pass": 1,
       "fail": 0,
@@ -6219,13 +6296,12 @@
     "billed_cost_usd": 2.3858,
     "unattributed_cost_usd": 0.2609,
     "harness_reported_cost_usd": 2.3858,
-    "cost_per_success_usd": 0.2386,
+    "cost_per_success_usd": 0.2169,
     "mean_agent_seconds": 142.6273,
     "docker_usage_rate": 0.0,
     "self_built_rate": 1.0,
     "failure_classes": {
-     "none": 10,
-     "start": 1
+     "none": 11
     }
    },
    {
@@ -6361,7 +6437,7 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 20,
+      "pass": 18,
       "fail": 0,
       "na": 0,
       "error": 0,
@@ -6480,6 +6556,13 @@
       "rate": 1.0
      },
      "pss-seccomp-runtime-default": {
+      "pass": 2,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "quadlet-healthcheck": {
       "pass": 2,
       "fail": 0,
       "na": 0,
@@ -6680,11 +6763,11 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 2,
-      "fail": 18,
+      "pass": 1,
+      "fail": 17,
       "na": 0,
       "error": 0,
-      "rate": 0.1
+      "rate": 0.05555555555555555
      },
      "honours-port-env": {
       "pass": 2,
@@ -6804,6 +6887,13 @@
       "na": 0,
       "error": 0,
       "rate": 1.0
+     },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5
      },
      "read-only-root-filesystem": {
       "pass": 2,
@@ -6999,11 +7089,11 @@
       "rate": 0.5
      },
      "healthcheck": {
-      "pass": 13,
+      "pass": 11,
       "fail": 7,
       "na": 0,
       "error": 0,
-      "rate": 0.65
+      "rate": 0.6111111111111112
      },
      "honours-port-env": {
       "pass": 2,
@@ -7123,6 +7213,13 @@
       "na": 0,
       "error": 0,
       "rate": 0.5
+     },
+     "quadlet-healthcheck": {
+      "pass": 2,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
      },
      "read-only-root-filesystem": {
       "pass": 1,
@@ -7319,11 +7416,11 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 18,
+      "pass": 16,
       "fail": 1,
       "na": 0,
       "error": 0,
-      "rate": 0.9473684210526315
+      "rate": 0.9411764705882353
      },
      "honours-port-env": {
       "pass": 2,
@@ -7439,6 +7536,13 @@
      },
      "pss-seccomp-runtime-default": {
       "pass": 1,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
+     "quadlet-healthcheck": {
+      "pass": 2,
       "fail": 0,
       "na": 0,
       "error": 0,
@@ -7641,10 +7745,10 @@
      },
      "healthcheck": {
       "pass": 4,
-      "fail": 15,
+      "fail": 13,
       "na": 0,
       "error": 0,
-      "rate": 0.21052631578947367
+      "rate": 0.23529411764705882
      },
      "honours-port-env": {
       "pass": 2,
@@ -7764,6 +7868,13 @@
       "na": 0,
       "error": 0,
       "rate": 0.5
+     },
+     "quadlet-healthcheck": {
+      "pass": 0,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
      },
      "read-only-root-filesystem": {
       "pass": 1,
@@ -7962,11 +8073,11 @@
       "rate": 0.0
      },
      "healthcheck": {
-      "pass": 12,
-      "fail": 7,
+      "pass": 11,
+      "fail": 6,
       "na": 0,
       "error": 0,
-      "rate": 0.631578947368421
+      "rate": 0.6470588235294118
      },
      "honours-port-env": {
       "pass": 1,
@@ -8086,6 +8197,13 @@
       "na": 0,
       "error": 0,
       "rate": 0.0
+     },
+     "quadlet-healthcheck": {
+      "pass": 1,
+      "fail": 1,
+      "na": 0,
+      "error": 0,
+      "rate": 0.5
      },
      "read-only-root-filesystem": {
       "pass": 0,
@@ -8283,7 +8401,7 @@
       "rate": 1.0
      },
      "healthcheck": {
-      "pass": 20,
+      "pass": 18,
       "fail": 0,
       "na": 0,
       "error": 0,
@@ -8408,6 +8526,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 2,
+      "fail": 0,
+      "na": 0,
+      "error": 0,
+      "rate": 1.0
+     },
      "read-only-root-filesystem": {
       "pass": 2,
       "fail": 0,
@@ -8478,10 +8603,10 @@
     "n_planned": 22,
     "n_valid": 22,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.7218,
-     0.9747
+     0.8513,
+     1.0
     ],
     "practice_uncond_mean": 0.7428,
     "practice_uncond_ci": [
@@ -8603,7 +8728,7 @@
      },
      "healthcheck": {
       "pass": 0,
-      "fail": 20,
+      "fail": 18,
       "na": 0,
       "error": 0,
       "rate": 0.0
@@ -8727,6 +8852,13 @@
       "error": 0,
       "rate": 0.0
      },
+     "quadlet-healthcheck": {
+      "pass": 0,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
      "read-only-root-filesystem": {
       "pass": 2,
       "fail": 0,
@@ -8780,13 +8912,12 @@
     "billed_cost_usd": 0.0954,
     "unattributed_cost_usd": 0.0,
     "harness_reported_cost_usd": 0.0939,
-    "cost_per_success_usd": 0.0048,
+    "cost_per_success_usd": 0.0043,
     "mean_agent_seconds": 84.3727,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.9091,
     "failure_classes": {
-     "none": 20,
-     "start": 2
+     "none": 22
     }
    },
    {
@@ -8798,10 +8929,10 @@
     "n_planned": 22,
     "n_valid": 22,
     "excluded": {},
-    "gate_pass_rate": 0.9090909090909091,
+    "gate_pass_rate": 1.0,
     "gate_pass_ci": [
-     0.7218,
-     0.9747
+     0.8513,
+     1.0
     ],
     "practice_uncond_mean": 0.8845,
     "practice_uncond_ci": [
@@ -8923,10 +9054,10 @@
      },
      "healthcheck": {
       "pass": 6,
-      "fail": 14,
+      "fail": 12,
       "na": 0,
       "error": 0,
-      "rate": 0.3
+      "rate": 0.3333333333333333
      },
      "honours-port-env": {
       "pass": 2,
@@ -9047,6 +9178,13 @@
       "error": 0,
       "rate": 1.0
      },
+     "quadlet-healthcheck": {
+      "pass": 0,
+      "fail": 2,
+      "na": 0,
+      "error": 0,
+      "rate": 0.0
+     },
      "read-only-root-filesystem": {
       "pass": 2,
       "fail": 0,
@@ -9100,13 +9238,12 @@
     "billed_cost_usd": 0.1734,
     "unattributed_cost_usd": 0.0,
     "harness_reported_cost_usd": 0.1719,
-    "cost_per_success_usd": 0.0087,
+    "cost_per_success_usd": 0.0079,
     "mean_agent_seconds": 138.9,
     "docker_usage_rate": 0.0,
     "self_built_rate": 0.9091,
     "failure_classes": {
-     "none": 20,
-     "start": 2
+     "none": 22
     }
    }
   ]
@@ -10363,7 +10500,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -11656,7 +11793,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -12690,13 +12827,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__oRtDQf4",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 1.0,
-   "practice_cond": null,
+   "practice_cond": 1.0,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -12742,7 +12880,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 9.4,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 352.0,
    "harness_reported": {
@@ -12948,7 +13086,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python3 -c \"import urllib.request; urllib.request.urlopen('h"
     }
@@ -13978,13 +14116,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__esjXKWB",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 1.0,
-   "practice_cond": null,
+   "practice_cond": 1.0,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -14030,7 +14169,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 179.6,
    "harness_reported": {
@@ -14236,7 +14375,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -15268,13 +15407,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__uWoVcix",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 0.6,
-   "practice_cond": null,
+   "practice_cond": 0.6,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -15320,7 +15460,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 192.8,
    "harness_reported": {
@@ -15526,7 +15666,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -16556,13 +16696,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__Le4eyPs",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 1.0,
-   "practice_cond": null,
+   "practice_cond": 1.0,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -16608,7 +16749,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 191.4,
    "harness_reported": {
@@ -16814,7 +16955,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c 'import urllib.request; urllib.request.urlopen(\"ht"
     }
@@ -19300,7 +19441,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes_db_password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=/usr/local/bin/python -c \"import urllib.request; urllib.requ"
     }
@@ -19377,7 +19518,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes_db_password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -21877,7 +22018,7 @@
      "status": "pass",
      "evidence": "notes.container: EnvironmentFile="
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -21957,7 +22098,7 @@
      "status": "pass",
      "evidence": "notes.container: EnvironmentFile="
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -24439,7 +24580,7 @@
      "status": "pass",
      "evidence": "notes.container: EnvironmentFile="
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -24516,7 +24657,7 @@
      "status": "pass",
      "evidence": "notes.container: EnvironmentFile="
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python3 -c \"import urllib.request; urllib.request.urlopen('h"
     }
@@ -27030,7 +27171,7 @@
      "status": "pass",
      "evidence": "notes-api.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes-api.container: HealthCmd=curl -fsS http://localhost:8080/health || exit 1"
     }
@@ -27110,7 +27251,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes_db_password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=/usr/local/bin/python -c \"import urllib.request; urllib.requ"
     }
@@ -29633,7 +29774,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=DB_PASSWORD,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -29713,7 +29854,7 @@
      "status": "pass",
      "evidence": "notes.container: EnvironmentFile="
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -32233,7 +32374,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=DB_PASSWORD,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -32314,7 +32455,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=DB_PASSWORD,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=[\"CMD\", \"python3\", \"-c\", \"import urllib.request; urllib.requ"
     }
@@ -34814,7 +34955,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -34893,7 +35034,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "pass",
      "evidence": "notes.container: HealthCmd=python -c \"import urllib.request; urllib.request.urlopen('ht"
     }
@@ -36904,13 +37045,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__MRRtjnV",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 0.6,
-   "practice_cond": null,
+   "practice_cond": 0.6,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -36956,7 +37098,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 196.8,
    "harness_reported": {
@@ -37000,13 +37142,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__jW2WoSi",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 0.7,
-   "practice_cond": null,
+   "practice_cond": 0.7,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -37052,7 +37195,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 234.0,
    "harness_reported": {
@@ -37392,7 +37535,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -37471,7 +37614,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -39480,13 +39623,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__dRdxEXX",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 0.9,
-   "practice_cond": null,
+   "practice_cond": 0.9,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -39532,7 +39676,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 156.6,
    "harness_reported": {
@@ -39576,13 +39720,14 @@
     "kube"
    ],
    "trial": "kube-go-quotes__hiudemB",
-   "reward": 0.0,
+   "reward": 1.0,
    "practice_uncond": 0.8,
-   "practice_cond": null,
+   "practice_cond": 0.8,
    "gates": {
     "artifact": 1.0,
     "build": 1.0,
-    "start": 0.0
+    "start": 1.0,
+    "probe": 1.0
    },
    "checks": {
     "pss-run-as-non-root": {
@@ -39628,7 +39773,7 @@
    },
    "hadolint_codes": [],
    "image_size_mb": 8.9,
-   "failure_class": "start",
+   "failure_class": "none",
    "exception": null,
    "agent_seconds": 208.6,
    "harness_reported": {
@@ -39968,7 +40113,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=db_password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
@@ -40047,7 +40192,7 @@
      "status": "pass",
      "evidence": "notes.container: Secret=notes-db-password,type=env,target=DB_PASSWORD"
     },
-    "healthcheck": {
+    "quadlet-healthcheck": {
      "status": "fail",
      "evidence": "no HealthCmd="
     }
