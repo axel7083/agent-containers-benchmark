@@ -1,6 +1,17 @@
 {
- "generated_at": "2026-09-29T16:57:48+00:00",
+ "generated_at": "2026-09-30T09:25:55+00:00",
  "runs": [
+  {
+   "file": "runs/36688790509-1.json",
+   "run_id": "36688790509-1",
+   "run_url": "https://github.com/axel7083/agent-containers-benchmark/actions/runs/36688790509",
+   "created_at": "2026-09-30T09:25:54+00:00",
+   "dataset_version": 2,
+   "status": "success",
+   "n_trials": 264,
+   "n_planned": 264,
+   "billed_cost_usd": 15.9767
+  },
   {
    "file": "runs/36600908141-1.json",
    "run_id": "36600908141-1",
