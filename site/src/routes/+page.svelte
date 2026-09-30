@@ -93,6 +93,10 @@
     </p>
   {/if}
 
+  {#if run.note}
+    <p class="note">Note: {run.note}</p>
+  {/if}
+
   <section>
     <h2>Leaderboard</h2>
     <div class="scroll">
