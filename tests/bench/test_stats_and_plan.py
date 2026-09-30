@@ -55,15 +55,17 @@ def test_per_arm_cost_estimates():
 
 
 def test_task_sharding_splits_every_cell_and_arm_by_task():
-    from acb.bench.plan import task_ids
+    from acb.bench.plan import load_matrix, task_families, task_ids
 
-    from acb.bench.plan import load_matrix
 
     cell = load_matrix()["cells"][0]["id"]
     by_arm = plan(cells=cell, shard_by="arm")["shards"]
     by_task = plan(cells=cell, shard_by="task")["shards"]
-    assert len(by_task) == len(by_arm) * len(task_ids())
+    arms = {s["arm"] for s in by_task}
+    assert len(by_task) == len(arms) * len(task_ids())
     assert all(len(s["tasks"]) == 1 and s["id"].endswith(s["tasks"][0]) for s in by_task)
+    # Arm sharding groups tasks graded on the same check families (one explicit-arm text per job).
+    assert all(len({tuple(task_families(t)) for t in s["tasks"]}) == 1 for s in by_arm)
     # Same trials planned either way.
     assert sum(len(s["tasks"]) for s in by_task) == sum(len(s["tasks"]) for s in by_arm)
 

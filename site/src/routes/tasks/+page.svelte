@@ -1,12 +1,13 @@
 <script>
   import { resolve } from '$app/paths';
   import { mean, pct } from '$lib/format.js';
-  import { catalogOf, view } from '$lib/runs.svelte.js';
+  import { currentCatalog, view, versionNote } from '$lib/runs.svelte.js';
 
   let { data } = $props();
 
   let run = $derived(view.run);
-  let catalog = $derived(catalogOf(run, data.catalog));
+  let catalog = $derived(currentCatalog(run, data.catalog));
+  let note = $derived(versionNote(run, catalog));
   let tasks = $derived(catalog?.tasks ?? []);
   const EXCLUDED = ['infra', 'budget', 'no-verdict'];
 
@@ -22,12 +23,13 @@
   The scenarios agents are given, generated from <code>tasks/&lt;id&gt;/</code>. Open one for its exact prompt under each
   arm, the files the agent starts from, and the reference solutions that validate the grader.
 </p>
+{#if note}<p class="notice">{note}</p>{/if}
 
 <div class="scroll">
   <table>
     <thead>
       <tr>
-        <th>Task</th><th>Language</th><th>Difficulty</th><th>Instruction</th>
+        <th>Task</th><th>Graded on</th><th>Language</th><th>Difficulty</th><th>Instruction</th>
         <th class="num" title="All arms and cells of the selected run">Works</th><th class="num">Practice</th><th class="num">Trials</th>
       </tr>
     </thead>
@@ -36,6 +38,7 @@
         {@const s = stats(t.id)}
         <tr>
           <td><a href={resolve('/tasks/[id]', { id: t.id })}>{t.id}</a></td>
+          <td>{(t.families ?? [t.family]).join(' + ')}</td>
           <td>{t.spec.language}</td>
           <td>{t.metadata.difficulty ?? '–'}</td>
           <td class="instruction">{t.instruction.split('\n')[0]}</td>

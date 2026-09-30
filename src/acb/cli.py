@@ -21,7 +21,7 @@ def main(argv: list[str] | None = None) -> int:
 
     p = sub.add_parser("arm", help="write the extra-instruction file for an arm")
     p.add_argument("arm")
-    p.add_argument("--family", default="containerfile")
+    p.add_argument("--families", default="containerfile", help="comma-separated check families of the shard's tasks")
     p.add_argument("--out", required=True)
 
     p = sub.add_parser("plan", help="expand matrix.toml into shards (JSON on stdout)")
@@ -69,7 +69,7 @@ def main(argv: list[str] | None = None) -> int:
 
         from acb_graders.rules import render
 
-        Path(args.out).write_text(render(args.arm, args.family))
+        Path(args.out).write_text(render(args.arm, [f for f in args.families.split(",") if f]))
         return 0
     if args.cmd == "plan":
         import json

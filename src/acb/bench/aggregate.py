@@ -180,6 +180,8 @@ def collect_shard(shard_dir: Path) -> list[dict]:
             "model": _str(shard.get("model"), 120),
             "arm": _str(shard.get("arm"), 20),
             "task": task.split("/")[-1],
+            "gate": _str(checks.get("gate"), 20),
+            "families": [_str(f, 40) for f in (checks.get("families") or [])][:8],
             "trial": _str(result.get("trial_name"), 120),
             "reward": _num(rewards.get("reward")),
             "practice_uncond": _num(rewards.get("practice_uncond")),

@@ -2,8 +2,8 @@
   import { resolve } from '$app/paths';
   import { pct, rampColor } from './format.js';
 
-  /** @type {{ cells: any[], armOrder: string[], checks: any[] }} all summary cells of the run (every arm) */
-  let { cells, armOrder, checks } = $props();
+  /** @type {{ cells: any[], armOrder: string[], checks: any[], only?: boolean }} all summary cells of the run (every arm); `only` restricts rows to `checks` */
+  let { cells, armOrder, checks, only = false } = $props();
 
   let titles = $derived(Object.fromEntries(checks.map((c) => [c.id, c.title])));
 
@@ -17,6 +17,7 @@
     for (const c of cells) {
       if (chosen && c.cell !== chosen) continue;
       for (const [id, v] of Object.entries(c.checks)) {
+        if (only && !(id in titles)) continue;
         pooled[id] ??= {};
         const slot = (pooled[id][c.arm] ??= { pass: 0, fail: 0 });
         slot.pass += v.pass;

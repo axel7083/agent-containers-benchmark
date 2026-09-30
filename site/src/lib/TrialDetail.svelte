@@ -6,10 +6,10 @@
   /** @type {{ trial: any, checks: any[], gates: any[], failureHelp: Record<string, string>, runUrl?: string }} */
   let { trial, checks, gates, failureHelp, runUrl } = $props();
 
-  let rows = $derived(
-    checks.map((c) => ({ ...c, result: trial.checks[c.id] ?? { status: 'na', evidence: 'not evaluated' } })),
-  );
-  const gateState = (id) => (trial.gates[id] == null ? 'na' : trial.gates[id] === 1 ? 'pass' : 'fail');
+  // Only the checks this trial's task is graded on.
+  let rows = $derived(checks.filter((c) => c.id in trial.checks).map((c) => ({ ...c, result: trial.checks[c.id] })));
+  const gateState = (id) => (trial.gates[id] == null ? 'not reached' : trial.gates[id] === 1 ? 'pass' : 'fail');
+  const gateClass = (id) => (trial.gates[id] == null ? 'na' : trial.gates[id] === 1 ? 'pass' : 'fail');
 </script>
 
 <div class="detail">
@@ -29,7 +29,7 @@
 
   <div class="gates">
     {#each gates as g (g.id)}
-      <span class={`tag status-${gateState(g.id)}`} title={g.description}>{g.title}: {gateState(g.id)}</span>
+      <span class={`tag status-${gateClass(g.id)}`} title={g.description}>{g.title}: {gateState(g.id)}</span>
     {/each}
   </div>
 

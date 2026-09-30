@@ -1,6 +1,6 @@
 # Benchmark matrix. Each cell is one harness (pinned version) x one OpenRouter model.
 # A shard = cell x arm, running every selected task `trials` times in one CI job.
-dataset_version = 1
+dataset_version = 2
 harbor_version = "0.23.0"
 trials = 1
 arms = ["implicit", "nudge", "explicit"]

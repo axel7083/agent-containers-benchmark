@@ -14,7 +14,7 @@ args=(run -c scripts/harbor-artifacts.json -e podman -p build/tasks -k "$(field 
       -o "$OUT_DIR/jobs" --job-name "$SHARD_ID" -y -q)
 while read -r task; do args+=(-i "$task"); done < <(jq -r '.tasks[]' <<<"$SHARD_JSON")
 
-.venv/bin/acb arm "$ARM" --out "$OUT_DIR/arm.md"
+.venv/bin/acb arm "$ARM" --families "$(jq -r '.families | join(",")' <<<"$SHARD_JSON")" --out "$OUT_DIR/arm.md"
 if [ "$ARM" != "implicit" ]; then
   args+=(--extra-instruction-path "$OUT_DIR/arm.md")
 fi

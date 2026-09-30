@@ -3,16 +3,17 @@
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
   import { pct, rampColor } from '$lib/format.js';
-  import { catalogOf, checksOf, view } from '$lib/runs.svelte.js';
+  import { currentCatalog, checksOf, view, versionNote } from '$lib/runs.svelte.js';
 
   let { data } = $props();
 
   let run = $derived(view.run);
-  let catalog = $derived(catalogOf(run, data.catalog));
+  let catalog = $derived(currentCatalog(run, data.catalog));
+  let note = $derived(versionNote(run, catalog));
   let checks = $derived(checksOf(catalog));
   let selectedId = $derived(page.params.id);
   let check = $derived(checks.find((c) => c.id === selectedId));
-  let categories = $derived([...new Set(checks.map((c) => c.category))]);
+  let families = $derived([...new Set(checks.map((c) => c.family))]);
   let arms = $derived((catalog?.arms ?? []).map((a) => a.id).filter((a) => run?.summary.cells.some((c) => c.arm === a)));
   let cellIds = $derived(run ? [...new Set(run.summary.cells.map((c) => c.cell))] : []);
 
@@ -51,13 +52,14 @@
   Every practice the hidden grader scores. Definitions come straight from the grader source; the rule text is also,
   verbatim, what the <em>explicit</em> prompt arm appends.
 </p>
+{#if note}<p class="notice">{note}</p>{/if}
 
 <div class="layout">
   <aside>
-    {#each categories as cat (cat)}
-      <h3>{cat}</h3>
+    {#each families as fam (fam)}
+      <h3>{fam}</h3>
       <ul>
-        {#each checks.filter((c) => c.category === cat) as c (c.id)}
+        {#each checks.filter((c) => c.family === fam) as c (c.id)}
           <li><a href={resolve('/checks/[id]', { id: c.id })} aria-current={c.id === selectedId ? 'true' : undefined}>{c.title}</a></li>
         {/each}
       </ul>
@@ -68,7 +70,7 @@
     <article>
       <h2>{check.title} <small class="mono">{check.id}</small></h2>
       <p class="meta">
-        {check.category} · weight {check.weight}{check.informational ? ' (informational, not scored)' : ''}
+        family {check.family} · {check.category} · weight {check.weight}{check.informational ? ' (informational, not scored)' : ''}
       </p>
 
       <h3>Rule (as written in the explicit prompt)</h3>

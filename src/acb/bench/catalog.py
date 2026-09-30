@@ -12,7 +12,7 @@ import tomllib
 from pathlib import Path
 
 from acb_graders.checks import CHECKS_BY_FAMILY
-from acb_graders.gates import FAILURE_CLASS_HELP, GATES
+from acb_graders.gates import FAILURE_CLASS_HELP, GATES_BY_KIND
 from acb_graders.rules import ARM_INFO, ARMS, render
 
 from .plan import load_matrix
@@ -44,21 +44,27 @@ def _files(root: Path) -> list[dict]:
 def _task(task_dir: Path) -> dict:
     meta = tomllib.loads((task_dir / "task.toml").read_text())
     spec = tomllib.loads((task_dir / "tests" / "spec.toml").read_text())
-    family = spec["family"]
+    families = spec.get("families") or [spec["family"]]
     oracles = []
     for oracle_dir in sorted((task_dir / "oracles").iterdir()):
         expect = tomllib.loads((oracle_dir / "expect.toml").read_text())
         oracles.append({"name": oracle_dir.name, "expect": expect, "files": _files(oracle_dir)})
     return {
         "id": task_dir.name,
-        "family": family,
+        "family": spec["family"],
+        "families": families,
+        "gate": spec.get("gate", "image"),
         "metadata": meta.get("metadata", {}),
+        # Exact text appended to the instruction in each prompt arm, for this task's check families.
+        "appended": {arm: render(arm, families) for arm in ARMS},
         "timeouts": {"agent_sec": meta.get("agent", {}).get("timeout_sec"), "verifier_sec": meta.get("verifier", {}).get("timeout_sec")},
         "instruction": (task_dir / "instruction.md").read_text(),
         "spec": {
-            "language": spec["app"]["language"],
-            "port": spec["app"]["port"],
-            "needs_build": spec["app"].get("needs_build", False),
+            "language": spec.get("app", {}).get("language"),
+            "port": spec.get("app", {}).get("port"),
+            "needs_build": spec.get("app", {}).get("needs_build", False),
+            "run_args": spec.get("run", {}).get("args", []),
+            "run_env": spec.get("run", {}).get("env", {}),
             "probe": spec.get("probe", {}),
             "image_size_mb": spec.get("budget", {}).get("image_size_mb"),
             "canary_file": spec.get("canary", {}).get("file"),
@@ -79,7 +85,8 @@ def build_catalog() -> dict:
             {"id": arm, **ARM_INFO[arm], "appended": {family: render(arm, family) for family in families}}
             for arm in ARMS
         ],
-        "gates": list(GATES),
+        "gates": list(GATES_BY_KIND["image"]),
+        "gates_by_kind": {kind: list(gates) for kind, gates in GATES_BY_KIND.items()},
         "failure_classes": FAILURE_CLASS_HELP,
         "families": {
             family: {"checks": [check.describe() for check in CHECKS_BY_FAMILY[family]]} for family in families

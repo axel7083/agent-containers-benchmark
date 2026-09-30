@@ -11,19 +11,31 @@ Results: **https://axel7083.github.io/agent-containers-benchmark/**
 
 Each **trial** gives one agent one task inside a sandbox (Fedora 45, Podman 6, no Docker) and
 lets it work unattended. When it stops, a **hidden grader** (copied in only after the agent is
-done) removes everything the agent started, rebuilds its Containerfile with `--no-cache`, runs
-the image and probes it over HTTP.
+done) removes everything the agent started and judges the result from the files alone.
 
-- **Gates** (did it work): artifact exists → `podman build` → container starts → probe answers.
-- **Practice checks** (is it good): fully qualified image names, tag/digest pinning, multi-stage
-  build, image size budget, non-root user, no secret baked into the image (a canary `.env` is
-  planted in every app), ignore file, lockfile installs, exec-form entrypoint, layer-cache
-  ordering, package-cache cleanup, HEALTHCHECK, hadolint. Checks answer `n/a` when a practice does
-  not apply, and accept every equally valid strategy (see `src/acb_graders/checks.py`).
+- **Gates** (did it work), by kind of task:
+  - *image*: Containerfile exists → `podman build --no-cache` → container starts → HTTP probe
+    answers, optionally under platform constraints (an arbitrary UID in group 0 with no
+    capabilities for OpenShift, `PORT` for Cloud Run);
+  - *kube*: manifests exist → the repo image builds → `podman kube play` → the pod answers;
+  - *quadlet*: unit files exist → Podman's Quadlet generator accepts them (`quadlet -dryrun`).
+- **Practice checks** (is it good), in families; a task can be graded on several:
+
+  | family | what it grades |
+  |---|---|
+  | `containerfile` | fully qualified image names, tag/digest pinning, multi-stage, size budget, non-root, no secret in the image (a canary `.env` is planted), ignore file, lockfile installs, exec-form entrypoint, layer order, package cache, HEALTHCHECK, hadolint |
+  | `update-bots` | the repo's existing Dependabot/Renovate config is extended to cover the Containerfile, stays valid, keeps what it had |
+  | `openshift` | writes work under an arbitrary UID, unprivileged port, numeric `USER`, no world-writable directories |
+  | `cloudrun` | honours `$PORT`, drains in-flight requests on SIGTERM, stops promptly, logs to stdout |
+  | `kube` | Pod Security Standards "restricted" fields, read-only root filesystem, resources, probes, no service-account token, secrets via `secretKeyRef`, pinned images |
+  | `quadlet` | starts at boot, restarts, `AutoUpdate=registry`, persistent data with SELinux labels, secrets not in plaintext, health check |
+
+  Checks answer `n/a` when a practice does not apply and accept every equally valid strategy
+  (each one lists them; see `src/acb_graders/`).
 - **Process metrics** from the agent transcript: `docker` vs `podman` commands, whether the agent
   built its own image to verify, steps, tool calls.
-- **Cost of record**: OpenRouter-billed cost per trial, measured by a metering proxy (not the
-  harness's own estimate, which differs across harnesses).
+- **Cost of record**: OpenRouter-billed usage of each shard's key, split across trials by a
+  metering proxy (harness self-reported costs are shown for comparison only).
 
 The same tasks run under three **prompt arms**:
 
@@ -31,7 +43,7 @@ The same tasks run under three **prompt arms**:
 |---|---|---|
 | `implicit` | natural request, no practice named | baseline behaviour |
 | `nudge` | + "follow container best practices" | implicit→nudge gain = *disposition*: a short rule-style skill helps |
-| `explicit` | + every graded rule, verbatim | nudge→explicit gain = missing *knowledge*: a reference skill helps |
+| `explicit` | + every rule of the task's check families, verbatim | nudge→explicit gain = missing *knowledge*: a reference skill helps |
 
 Scores are reported with 95% intervals (Wilson for pass rates, task-level cluster bootstrap for
 practice scores). Trials lost to infrastructure or budget caps are excluded, never counted as
@@ -41,7 +53,7 @@ failures.
 
 ```
 tasks/<id>/                  task sources: app/, instruction.md, tests/spec.toml, oracles/*
-src/acb_graders/             stdlib-only graders (vendored into each task's hidden tests/)
+src/acb_graders/             graders (vendored into each task's hidden tests/): gates.py, checks.py, families/
 src/acb/bench/               task builder, planner, aggregator, statistics
 src/acb/meter/               OpenRouter metering proxy
 images/task-base/            Fedora 45 + Podman 6 sandbox image (pinned by digest in task-base.lock)
@@ -85,6 +97,9 @@ the `data` branch and published to GitHub Pages.
    strategy, and a naive or broken one, each with an `expect.toml`.
 3. `acb oracles --task <id>` must pass; then bump `dataset_version` in `matrix.toml`: trend lines
    never cross a dataset version.
+
+`tests/spec.toml` selects the gate (`gate = "image" | "kube" | "quadlet"`) and the check families
+(`families = [...]`); a new family is a module in `src/acb_graders/families/` exposing `CHECKS`.
 
 ## Security
 

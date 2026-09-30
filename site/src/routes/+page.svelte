@@ -4,7 +4,7 @@
   import Heatmap from '$lib/Heatmap.svelte';
   import TrialDetail from '$lib/TrialDetail.svelte';
   import { ci, pct, secs, usd } from '$lib/format.js';
-  import { catalogOf, checksOf, view } from '$lib/runs.svelte.js';
+  import { catalogOf, checksOf, gatesOf, view } from '$lib/runs.svelte.js';
 
   let { data } = $props();
 
@@ -15,6 +15,7 @@
   let armDefs = $derived(catalog?.arms ?? []);
 
   let chosenArm = $state('implicit');
+  let family = $state('');
   let trialCell = $state('');
   let trialTask = $state('');
   let expanded = $state('');
@@ -26,11 +27,15 @@
   let arm = $derived(availableArms.includes(chosenArm) ? chosenArm : (availableArms[0] ?? chosenArm));
   let armDef = $derived(armDefs.find((a) => a.id === arm));
   let cells = $derived(run ? run.summary.cells.filter((c) => c.arm === arm) : []);
+  let presentIds = $derived(new Set(cells.flatMap((c) => Object.keys(c.checks))));
+  // Families that have at least one graded check in this run and arm.
+  let families = $derived([...new Set(checkDefs.filter((c) => presentIds.has(c.id)).map((c) => c.family))]);
+  let visibleChecks = $derived(checkDefs.filter((c) => presentIds.has(c.id) && (!family || c.family === family)));
   // Heatmap rows follow the catalog order; checks absent from the catalog are appended.
-  let checkIds = $derived.by(() => {
-    const present = new Set(cells.flatMap((c) => Object.keys(c.checks)));
-    return [...checkDefs.map((c) => c.id).filter((id) => present.has(id)), ...[...present].filter((id) => !(id in titles)).sort()];
-  });
+  let checkIds = $derived([
+    ...visibleChecks.map((c) => c.id),
+    ...(family ? [] : [...presentIds].filter((id) => !(id in titles)).sort()),
+  ]);
   let columns = $derived(cells.map((c) => ({ key: c.cell, label: c.harness, sub: c.model.split('/').pop() })));
   let taskIds = $derived(run ? [...new Set(run.trials.map((t) => t.task))].sort() : []);
   let trials = $derived(
@@ -135,6 +140,21 @@
       Pass rate of each graded practice, per harness × model, for the <strong>{arm}</strong> arm. Click a practice for its
       definition, how it is measured and example evidence.
     </p>
+    {#if families.length > 1}
+      <div class="filters">
+        <fieldset>
+          <span>Check family</span>
+          <label class="chip" class:active={!family}>
+            <input type="radio" name="family" checked={!family} onchange={() => (family = '')} />all
+          </label>
+          {#each families as f (f)}
+            <label class="chip" class:active={family === f}>
+              <input type="radio" name="family" checked={family === f} onchange={() => (family = f)} />{f}
+            </label>
+          {/each}
+        </fieldset>
+      </div>
+    {/if}
     {#if cells.length}
       <Heatmap rows={checkIds} {columns} value={heatValue} rowLabel={(id) => titles[id] ?? id} rowHref />
     {/if}
@@ -147,7 +167,7 @@
       <strong>disposition gap</strong> (a short rule-style skill should fix it); one that fails even in the explicit arm is
       a <strong>knowledge gap</strong> (the skill needs reference material). Sorted by implicit pass rate.
     </p>
-    <ArmComparison cells={run.summary.cells} armOrder={armDefs.map((a) => a.id)} checks={checkDefs} />
+    <ArmComparison cells={run.summary.cells} armOrder={armDefs.map((a) => a.id)} checks={family ? visibleChecks : checkDefs} only={!!family} />
   </section>
 
   <section>
@@ -202,7 +222,7 @@
                   <TrialDetail
                     trial={t}
                     checks={checkDefs}
-                    gates={catalog?.gates ?? []}
+                    gates={gatesOf(catalog, t.gate ?? 'image')}
                     failureHelp={catalog?.failure_classes ?? {}}
                     runUrl={run.run_url}
                   />

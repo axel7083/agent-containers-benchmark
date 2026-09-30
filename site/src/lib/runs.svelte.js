@@ -32,6 +32,33 @@ export function catalogOf(run, current) {
   return run?.catalog ?? current;
 }
 
-export function checksOf(catalog, family = 'containerfile') {
-  return catalog?.families?.[family]?.checks ?? [];
+/** Definitions of the benchmark as it is today (the Checks, Tasks and Methodology pages describe this). */
+export function currentCatalog(run, current) {
+  return current ?? run?.catalog;
+}
+
+/** A note when the selected run was graded with another dataset version than the one being described. */
+export function versionNote(run, catalog) {
+  const used = run?.dataset_version;
+  const now = catalog?.dataset_version;
+  return used != null && now != null && used !== now
+    ? `These are the dataset v${now} definitions. The selected run used dataset v${used}, so tasks and checks added since then have no results in it.`
+    : '';
+}
+
+/** Every check of the catalog in family order, each tagged with its family. */
+export function allChecks(catalog) {
+  return Object.entries(catalog?.families ?? {}).flatMap(([family, f]) => f.checks.map((c) => ({ ...c, family })));
+}
+
+/** Checks of the given families (all of them when omitted). */
+export function checksOf(catalog, families) {
+  const all = allChecks(catalog);
+  if (!families) return all;
+  const wanted = new Set([families].flat());
+  return all.filter((c) => wanted.has(c.family));
+}
+
+export function gatesOf(catalog, kind = 'image') {
+  return catalog?.gates_by_kind?.[kind] ?? catalog?.gates ?? [];
 }

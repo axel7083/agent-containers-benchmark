@@ -17,7 +17,7 @@ import tomllib
 
 from .paths import MATRIX_FILE, TASKS_DIR
 
-SAFE = re.compile(r"^[A-Za-z0-9._-]+$")
+SAFE = re.compile(r"^[A-Za-z0-9._+-]+$")
 
 
 def load_matrix() -> dict:
@@ -26,6 +26,11 @@ def load_matrix() -> dict:
 
 def task_ids() -> list[str]:
     return sorted(p.name for p in TASKS_DIR.iterdir() if (p / "task.toml").exists())
+
+
+def task_families(task_id: str) -> tuple[str, ...]:
+    spec = tomllib.loads((TASKS_DIR / task_id / "tests" / "spec.toml").read_text())
+    return tuple(spec.get("families") or [spec["family"]])
 
 
 def _keep(values: list[str], selector: str) -> list[str]:
@@ -56,9 +61,18 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
             per_trial = cell["est_cost_per_trial"]
             if isinstance(per_trial, dict):
                 per_trial = per_trial[arm]
-            groups = [[t] for t in selected_tasks] if shard_by == "task" else [selected_tasks]
+            if shard_by == "task":
+                groups = [[t] for t in selected_tasks]
+            else:
+                # The explicit arm appends the rules of the task's check families, one text per Harbor job:
+                # tasks sharing a job must share their families.
+                by_families: dict[tuple[str, ...], list[str]] = {}
+                for t in selected_tasks:
+                    by_families.setdefault(task_families(t), []).append(t)
+                groups = list(by_families.values())
             for group in groups:
-                shard_id = f"{cell_id}__{arm}" + (f"__{group[0]}" if shard_by == "task" else "")
+                suffix = group[0] if shard_by == "task" else "+".join(task_families(group[0]))
+                shard_id = f"{cell_id}__{arm}__{suffix}"
                 for value in (shard_id, cell["harness"], cell["version"], cell["model"].replace("/", ".")):
                     if not SAFE.match(value):
                         raise SystemExit(f"unsafe identifier in matrix: {value!r}")
@@ -72,6 +86,7 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
                     "version": cell["version"],
                     "model": cell["model"],
                     "arm": arm,
+                    "families": list(task_families(group[0])),
                     "tasks": group,
                     "trials": trials,
                     "est_usd": round(est, 4),

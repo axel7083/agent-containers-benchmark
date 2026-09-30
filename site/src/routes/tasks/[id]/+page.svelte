@@ -2,21 +2,26 @@
   import { page } from '$app/state';
   import { resolve } from '$app/paths';
   import { mean, pct, rampColor } from '$lib/format.js';
-  import { catalogOf, checksOf, view } from '$lib/runs.svelte.js';
+  import Inline from '$lib/Inline.svelte';
+  import { currentCatalog, checksOf, gatesOf, view, versionNote } from '$lib/runs.svelte.js';
 
   let { data } = $props();
 
   let run = $derived(view.run);
-  let catalog = $derived(catalogOf(run, data.catalog));
+  let catalog = $derived(currentCatalog(run, data.catalog));
+  let note = $derived(versionNote(run, catalog));
   let tasks = $derived(catalog?.tasks ?? []);
   let selectedId = $derived(page.params.id);
   let task = $derived(tasks.find((t) => t.id === selectedId));
-  let titles = $derived(Object.fromEntries(checksOf(catalog, task?.family).map((c) => [c.id, c.title])));
+  let taskFamilies = $derived(task?.families ?? (task ? [task.family] : []));
+  let taskChecks = $derived(checksOf(catalog, taskFamilies));
+  let titles = $derived(Object.fromEntries(checksOf(catalog).map((c) => [c.id, c.title])));
+  let gates = $derived(gatesOf(catalog, task?.gate ?? 'image'));
   let armDefs = $derived(catalog?.arms ?? []);
   let promptArm = $state('implicit');
   let prompt = $derived.by(() => {
     if (!task) return '';
-    const extra = armDefs.find((a) => a.id === promptArm)?.appended?.[task.family] ?? '';
+    const extra = task.appended?.[promptArm] ?? armDefs.find((a) => a.id === promptArm)?.appended?.[task.family] ?? '';
     return extra ? `${task.instruction.trimEnd()}\n\n${extra}` : task.instruction;
   });
 
@@ -37,6 +42,7 @@
   The scenarios each agent is given. Everything below is generated from <code>tasks/&lt;id&gt;/</code> in the repository:
   the prompt, the app the agent starts from, and the reference solutions used to validate the grader.
 </p>
+{#if note}<p class="notice">{note}</p>{/if}
 
 <div class="layout">
   <aside>
@@ -55,7 +61,7 @@
     <article>
       <h2>{task.id}</h2>
       <p class="meta">
-        family {task.family} · {task.spec.language} · {task.metadata.difficulty ?? 'n/a'} · agent timeout {task.timeouts.agent_sec}s
+        graded on {taskFamilies.join(' + ')} · {task.spec.language} · {task.metadata.difficulty ?? 'n/a'} · agent timeout {task.timeouts.agent_sec}s
       </p>
 
       <h3>Prompt given to the agent</h3>
@@ -66,19 +72,39 @@
       </div>
       <pre>{prompt}</pre>
 
+      <h3>How "works" is decided</h3>
+      <ol class="gates">
+        {#each gates as g (g.id)}
+          <li><strong>{g.title}</strong>: <Inline text={g.description} /></li>
+        {/each}
+      </ol>
+
       <h3>Grading spec</h3>
       <div class="scroll">
         <table>
           <tbody>
-            <tr><th>App language</th><td>{task.spec.language}</td></tr>
-            <tr><th>Listens on</th><td>port {task.spec.port}</td></tr>
-            <tr><th>Probe</th><td><code>GET {task.spec.probe.path ?? '/'}</code> → {task.spec.probe.expect_status ?? 200}{task.spec.probe.expect_body ? `, body contains "${task.spec.probe.expect_body}"` : ''}</td></tr>
-            <tr><th>Build step</th><td>{task.spec.needs_build ? 'yes (multi-stage applies)' : 'no (multi-stage is n/a)'}</td></tr>
-            <tr><th>Image size budget</th><td>{task.spec.image_size_mb ? `${task.spec.image_size_mb} MB` : 'none'}</td></tr>
-            <tr><th>Planted secret</th><td>{task.spec.canary_file ? `${task.spec.canary_file} with a canary value` : 'none'}</td></tr>
+            <tr><th>App language</th><td>{task.spec.language ?? '–'}</td></tr>
+            {#if task.spec.port}<tr><th>Listens on</th><td>port {task.spec.port}</td></tr>{/if}
+            {#if task.spec.probe?.path}
+              <tr><th>Probe</th><td><code>GET {task.spec.probe.path}</code> → {task.spec.probe.expect_status ?? 200}{task.spec.probe.expect_body ? `, body contains "${task.spec.probe.expect_body}"` : ''}</td></tr>
+            {/if}
+            {#if task.spec.run_args?.length}
+              <tr><th>Run constraints</th><td class="wrap"><code>podman run {task.spec.run_args.join(' ')}</code></td></tr>
+            {/if}
+            {#if Object.keys(task.spec.run_env ?? {}).length}
+              <tr><th>Run environment</th><td><code>{Object.entries(task.spec.run_env).map(([k, v]) => `${k}=${v}`).join(' ')}</code></td></tr>
+            {/if}
+            {#if taskFamilies.includes('containerfile')}
+              <tr><th>Build step</th><td>{task.spec.needs_build ? 'yes (multi-stage applies)' : 'no (multi-stage is n/a)'}</td></tr>
+              <tr><th>Image size budget</th><td>{task.spec.image_size_mb ? `${task.spec.image_size_mb} MB` : 'none'}</td></tr>
+              <tr><th>Planted secret</th><td>{task.spec.canary_file ? `${task.spec.canary_file} with a canary value` : 'none'}</td></tr>
+            {/if}
           </tbody>
         </table>
       </div>
+
+      <h3>Checks graded on this task <small>({taskChecks.length})</small></h3>
+      <p>{#each taskChecks as c (c.id)}<a class="tag" href={resolve('/checks/[id]', { id: c.id })}>{c.title}</a>{/each}</p>
 
       <h3>Starting files <small>({task.files.length})</small></h3>
       {#each task.files as f (f.path)}
@@ -159,6 +185,9 @@
   .expect .tag { text-decoration: none; }
   .fname { margin: 0.6rem 0 0; }
   .pill { padding: 0 0.35rem; border-radius: 4px; }
+  .gates li { margin: 0.2rem 0; }
+  .wrap { white-space: normal !important; }
+  p .tag { text-decoration: none; }
   th { width: 12rem; }
   @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } aside { position: static; } }
 </style>

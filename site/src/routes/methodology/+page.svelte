@@ -1,12 +1,15 @@
 <script>
   import Inline from '$lib/Inline.svelte';
   import { resolve } from '$app/paths';
-  import { catalogOf, checksOf, view } from '$lib/runs.svelte.js';
+  import { currentCatalog, checksOf, view, versionNote } from '$lib/runs.svelte.js';
 
   let { data } = $props();
 
-  let catalog = $derived(catalogOf(view.run, data.catalog));
+  let catalog = $derived(currentCatalog(view.run, data.catalog));
+  let note = $derived(versionNote(view.run, catalog));
   let families = $derived(Object.keys(catalog?.families ?? {}));
+  let gateKinds = $derived(Object.entries(catalog?.gates_by_kind ?? { image: catalog?.gates ?? [] }));
+  const tasksByKind = (kind) => (catalog?.tasks ?? []).filter((t) => (t.gate ?? 'image') === kind).length;
   let scored = $derived(checksOf(catalog).filter((c) => !c.informational));
 </script>
 
@@ -16,6 +19,7 @@
   prompt arm, working unattended in a sandbox (Fedora, Podman, no Docker). When it stops, a hidden grader, copied into the
   sandbox only after the agent is done, judges the result.
 </p>
+{#if note}<p class="notice">{note}</p>{/if}
 
 {#if catalog}
   <h2>Prompt arms</h2>
@@ -34,21 +38,32 @@
     </table>
   </div>
   {#each catalog.arms as a (a.id)}
-    {#each families as f (f)}
-      {#if a.appended[f]}
-        <h3>Text appended in the <em>{a.id}</em> arm{families.length > 1 ? ` (${f})` : ''}</h3>
-        <pre>{a.appended[f]}</pre>
+    {@const texts = families.map((f) => [f, a.appended[f]]).filter(([, t]) => t)}
+    {#if texts.length}
+      <h3>Text appended in the <em>{a.id}</em> arm</h3>
+      {#if new Set(texts.map(([, t]) => t)).size === 1}
+        <pre>{texts[0][1]}</pre>
+      {:else}
+        <p class="note">One rule list per check family; a task graded on several families gets them concatenated
+          (each <a href={resolve('/tasks')}>task page</a> shows its exact prompt).</p>
+        {#each texts as [f, t] (f)}
+          <details><summary>{f}</summary><pre>{t}</pre></details>
+        {/each}
       {/if}
-    {/each}
+    {/if}
   {/each}
 
   <h2>Gates: did it work?</h2>
-  <p class="note">Evaluated in order; the first failing gate is the trial's outcome. "Works" means all gates passed.</p>
-  <ol class="gates">
-    {#each catalog.gates as g (g.id)}
-      <li><strong>{g.title}</strong>: <Inline text={g.description} /></li>
-    {/each}
-  </ol>
+  <p class="note">Evaluated in order; the first failing gate is the trial's outcome. "Works" means all gates passed. The
+    gates depend on what the task asks for.</p>
+  {#each gateKinds as [kind, gates] (kind)}
+    <h3>{kind} tasks <small>({tasksByKind(kind)})</small></h3>
+    <ol class="gates">
+      {#each gates as g (g.id)}
+        <li><strong>{g.title}</strong>: <Inline text={g.description} /></li>
+      {/each}
+    </ol>
+  {/each}
 
   <h3>Outcomes</h3>
   <div class="scroll">
@@ -115,5 +130,7 @@
 <style>
   .wrap { white-space: normal !important; }
   .gates li { margin: 0.3rem 0; }
+  details { margin: 0.25rem 0; background: var(--surface-1); border: 1px solid var(--rule); border-radius: 6px; padding: 0.4rem 0.75rem; max-width: 70rem; }
+  summary { cursor: pointer; }
   p { max-width: 70rem; }
 </style>
