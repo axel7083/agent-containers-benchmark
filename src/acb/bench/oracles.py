@@ -30,11 +30,17 @@ class OracleOutcome:
 
 def grade_fixture(task_dir: Path, oracle_dir: Path, image: str, engine: str = "podman") -> dict:
     with tempfile.TemporaryDirectory(prefix="acb-oracle-") as tmp:
-        work = Path(tmp)
-        app, out = work / "app", work / "out"
+        app = Path(tmp) / "app"
         shutil.copytree(task_dir / "app", app)
         shutil.copytree(oracle_dir, app, dirs_exist_ok=True)
         (app / "expect.toml").unlink(missing_ok=True)
+        return grade_app(task_dir, app, image, engine)
+
+
+def grade_app(task_dir: Path, app: Path, image: str, engine: str = "podman") -> dict:
+    """Grade an app directory with the task's spec, exactly like Harbor's verify phase does."""
+    with tempfile.TemporaryDirectory(prefix="acb-grade-") as tmp:
+        out = Path(tmp) / "out"
         out.mkdir()
         subprocess.run(
             [

@@ -41,7 +41,8 @@ HOP_BY_HOP = {
 }
 MAX_TEE = 32 * 1024 * 1024
 # Generations resolved in parallel at shutdown (sequential lookups took up to 4 minutes per shard).
-FINALIZE_CONCURRENCY = 8
+FINALIZE_CONCURRENCY = 12
+FINALIZE_ATTEMPTS = 8  # 1+3+...+15 s: about a minute per generation at most
 
 
 class Meter:
@@ -136,7 +137,8 @@ class Meter:
         async def resolve(gen_id: str) -> None:
             data = None
             async with limit:
-                for attempt in range(5):
+                # Some providers' generation records only appear tens of seconds after the response.
+                for attempt in range(FINALIZE_ATTEMPTS):
                     try:
                         async with self._session.get(
                             f"{self.upstream}/api/v1/generation", params={"id": gen_id}, headers=auth

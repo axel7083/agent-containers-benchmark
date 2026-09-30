@@ -209,7 +209,7 @@ CHECKS: tuple[Check, ...] = (
           why="Unit files are world-readable under /etc; `Environment=` also shows up in `systemctl show`.",
           how="The app's secret variable is provided with `Secret=` or an `EnvironmentFile=`, never `Environment=`.",
           not_applicable="The app needs no secret."),
-    Check("healthcheck", "maintainability", "Declare a health check (`HealthCmd=`).",
+    Check("quadlet-healthcheck", "maintainability", "Declare a health check (`HealthCmd=`).",
           ("HealthCmd=",), 0.5, False, healthcheck,
           title="Health check",
           why="Podman runs it on a timer and, with `HealthOnFailure=`, can restart an unhealthy service.",

@@ -47,7 +47,8 @@ GATES_BY_KIND: dict[str, tuple[dict[str, str], ...]] = {
          "(Pod, Deployment, StatefulSet, DaemonSet, ReplicaSet or Job)."},
         {"id": "build", "title": "Build", "description": "The repository's Containerfile is rebuilt with `podman build --no-cache`; "
          "the workloads' images are pointed at it for the local run."},
-        {"id": "start", "title": "Start", "description": "`podman kube play` runs the manifests and the pod reaches Running."},
+        {"id": "start", "title": "Start", "description": "`podman kube play` runs the manifests and the pod reaches Running. "
+         "Secrets and ConfigMaps the manifests reference but leave to the cluster are provided with placeholder values."},
         {"id": "probe", "title": "Probe", "description": "An HTTP request to the pod's container port answers the probe path "
          "within 60 seconds."},
     ),

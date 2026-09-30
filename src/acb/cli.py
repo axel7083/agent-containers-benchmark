@@ -44,6 +44,12 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("catalog", help="write the benchmark catalog (checks, arms, gates, tasks) as JSON")
     p.add_argument("--out", required=True)
 
+    p = sub.add_parser("regrade", help="re-run the graders on the /app saved by finished trials (after a grader fix)")
+    p.add_argument("artifacts", help="directory of downloaded run artifacts")
+    p.add_argument("--image", required=True, help="task-base image reference")
+    p.add_argument("--task", help="substring filter on task id")
+    p.add_argument("--engine", default="podman")
+
     p = sub.add_parser("resummarize", help="recompute the summary of published run files from their trials")
     p.add_argument("runs", nargs="+")
 
@@ -94,6 +100,12 @@ def main(argv: list[str] | None = None) -> int:
         from .bench.catalog import build_catalog
 
         Path(args.out).write_text(json.dumps(build_catalog(), indent=1))
+        return 0
+    if args.cmd == "regrade":
+        from .bench.regrade import regrade
+
+        changes = regrade(args.artifacts, args.image, args.task, args.engine)
+        print(f"re-graded {len(changes)} trials")
         return 0
     if args.cmd == "resummarize":
         from .bench.aggregate import resummarize

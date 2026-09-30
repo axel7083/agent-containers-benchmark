@@ -326,6 +326,8 @@ def aggregate(inputs: list[str], out: str) -> dict:
     run = {
         "schema_version": SCHEMA_VERSION,
         "status": os.environ.get("RUN_RESULT", "unknown"),
+        # Free-text provenance, e.g. "kube trials re-graded after a gate fix".
+        "note": os.environ.get("RUN_NOTE") or None,
         "n_planned": sum(planned.values()) or None,
         "run_id": os.environ.get("RUN_ID", "local"),
         "run_url": os.environ.get("RUN_URL"),
@@ -376,6 +378,7 @@ def index(runs_dir: str, out: str) -> dict:
             "created_at": run.get("created_at"),
             "dataset_version": run.get("dataset_version"),
             "status": run.get("status"),
+            "note": run.get("note"),
             "n_trials": len(run.get("trials") or []),
             "n_planned": run.get("n_planned"),
             "billed_cost_usd": round(billed, 4),

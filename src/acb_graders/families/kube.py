@@ -76,6 +76,45 @@ def _specs(a: Artifacts) -> list[tuple[str, dict]]:
     return _facts(a).get("_pods") or []
 
 
+def missing_config(pods: list[tuple[str, dict]], defined: list[dict], secret_env: str | None) -> list[dict]:
+    """Placeholder Secret/ConfigMap documents for references the manifests leave to the cluster."""
+    have = {(d.get("kind"), (d.get("metadata") or {}).get("name")) for d in defined}
+    wanted: dict[tuple[str, str], set[str]] = {}
+
+    def want(kind: str, name, key=None) -> None:
+        if isinstance(name, str) and name:
+            wanted.setdefault((kind, name), set())
+            if isinstance(key, str) and key:
+                wanted[(kind, name)].add(key)
+
+    for _, pod in pods:
+        for c in containers(pod):
+            for e in c.get("env") or []:
+                src = (e.get("valueFrom") or {}) if isinstance(e, dict) else {}
+                if isinstance(src.get("secretKeyRef"), dict):
+                    want("Secret", src["secretKeyRef"].get("name"), src["secretKeyRef"].get("key"))
+                if isinstance(src.get("configMapKeyRef"), dict):
+                    want("ConfigMap", src["configMapKeyRef"].get("name"), src["configMapKeyRef"].get("key"))
+            for ef in c.get("envFrom") or []:
+                if isinstance(ef, dict) and isinstance(ef.get("secretRef"), dict):
+                    want("Secret", ef["secretRef"].get("name"), secret_env)
+                if isinstance(ef, dict) and isinstance(ef.get("configMapRef"), dict):
+                    want("ConfigMap", ef["configMapRef"].get("name"))
+        for v in pod.get("volumes") or []:
+            if isinstance(v, dict) and isinstance(v.get("secret"), dict):
+                want("Secret", v["secret"].get("secretName"), secret_env)
+            if isinstance(v, dict) and isinstance(v.get("configMap"), dict):
+                want("ConfigMap", v["configMap"].get("name"))
+    docs = []
+    for (kind, name), keys in sorted(wanted.items()):
+        if (kind, name) in have:
+            continue
+        values = {k: "acb-placeholder" for k in sorted(keys)} or {"value": "acb-placeholder"}
+        docs.append({"apiVersion": "v1", "kind": kind, "metadata": {"name": name},
+                     ("stringData" if kind == "Secret" else "data"): values})
+    return docs
+
+
 # --------------------------------------------------------------------- gates
 
 
@@ -98,7 +137,7 @@ def run_gates(a: Artifacts) -> GateResult:
     gates.inspect_image(a, res.log)
 
     # Point every workload container at the image we just built, and keep only the kinds kube play runs.
-    playable = []
+    workloads, config = [], []
     for _, doc in docs:
         doc = yaml.safe_load(yaml.safe_dump(doc))  # deep copy
         if doc.get("kind") in WORKLOAD_KINDS:
@@ -106,10 +145,15 @@ def run_gates(a: Artifacts) -> GateResult:
             for c in containers(pod, include_init=False):
                 c["image"] = gates.IMAGE
                 c["imagePullPolicy"] = "IfNotPresent"
-            playable.append(doc)
+            workloads.append(doc)
         elif doc.get("kind") in ("Secret", "ConfigMap", "PersistentVolumeClaim"):
-            playable.append(doc)
-    Path(MANIFEST).write_text(yaml.safe_dump_all(playable))
+            config.append(doc)
+    # Keeping the Secret out of the repository and creating it out of band is good practice, not a
+    # failure: provide any Secret or ConfigMap the workloads reference but the manifests do not define.
+    provided = missing_config(pods, config, a.spec.sections.get("kube", {}).get("secret_env"))
+    _facts(a)["provided_by_grader"] = [f"{d['kind']}/{d['metadata']['name']}" for d in provided]
+    # Secrets and ConfigMaps first: kube play resolves references in document order.
+    Path(MANIFEST).write_text(yaml.safe_dump_all(provided + config + workloads))
     play = gates.run(["podman", "kube", "play", "--replace", MANIFEST], timeout=300, log=res.log)
     if play.returncode != 0:
         return res.fail("start")
