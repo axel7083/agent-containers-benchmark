@@ -2,7 +2,8 @@
 # A shard = cell x arm, running every selected task `trials` times in one CI job.
 dataset_version = 2
 harbor_version = "0.23.0"
-trials = 1
+# Trials per task and arm; a cell may override it (`trials = N`), and the workflow input overrides both.
+trials = 2
 arms = ["implicit", "nudge", "explicit"]
 # One CI job (and one capped key) per cell x arm x task: many short jobs run 20 at a time.
 # "arm" groups every task of a cell x arm into one longer job.
@@ -22,6 +23,8 @@ cap_floor_usd = 0.05
 
 [[cells]]
 id = "claude-code.opus-5.5"
+# Frontier default model: ~95%% of a run\'s cost with its twin, so one trial per task and arm.
+trials = 1
 harness = "claude-code"
 version = "2.1.284"
 model = "anthropic/claude-opus-5.5"
@@ -31,6 +34,8 @@ max_request_usd = 1.31
 
 [[cells]]
 id = "codex.gpt-6-sol"
+# Frontier default model: ~95%% of a run\'s cost with its twin, so one trial per task and arm.
+trials = 1
 harness = "codex"
 version = "0.159.0"
 model = "openai/gpt-6-sol"

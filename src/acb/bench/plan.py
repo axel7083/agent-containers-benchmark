@@ -48,7 +48,7 @@ SHARD_BY = ("arm", "task")
 
 def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = None, shard_by: str | None = None) -> dict:
     matrix = load_matrix()
-    trials = trials or matrix["trials"]
+    override = trials  # an explicit value wins over the matrix default and per-cell settings
     shard_by = shard_by or matrix.get("shard_by", "task")
     if shard_by not in SHARD_BY:
         raise SystemExit(f"shard_by must be one of {SHARD_BY}, got {shard_by!r}")
@@ -57,6 +57,7 @@ def plan(cells: str = "", arms: str = "", tasks: str = "", trials: int | None = 
     shards = []
     for cell_id in _keep(list(all_cells), cells):
         cell = all_cells[cell_id]
+        trials = override or cell.get("trials") or matrix["trials"]
         for arm in _keep(matrix["arms"], arms):
             per_trial = cell["est_cost_per_trial"]
             if isinstance(per_trial, dict):
