@@ -1,0 +1,26 @@
+family = "cloudrun"
+families = ["containerfile", "cloudrun"]
+
+[app]
+language = "python"
+port = 8080
+needs_build = false
+
+[run]
+env = { PORT = "8080" }
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 250
+
+[canary]
+file = ".env"
+value = "acb-canary-c4e19a70"
+
+[cloudrun]
+slow_path = "/report"
+log_marker = "/health"

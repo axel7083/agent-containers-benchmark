@@ -1,0 +1,10 @@
+FROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY server.js ./
+RUN mkdir -p /app/data && chmod 777 /app/data
+USER 1001
+ENV PORT=8080
+EXPOSE 8080
+CMD ["node", "server.js"]

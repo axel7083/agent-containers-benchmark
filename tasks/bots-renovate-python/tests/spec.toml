@@ -1,0 +1,23 @@
+family = "update-bots"
+families = ["containerfile", "update-bots"]
+
+[app]
+language = "python"
+port = 8080
+needs_build = false
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 250
+
+[canary]
+file = ".env"
+value = "acb-canary-9f4a6c33"
+
+[bots]
+kind = "renovate"
+existing = ["pip_requirements"]

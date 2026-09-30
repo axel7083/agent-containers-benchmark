@@ -1,0 +1,3 @@
+reward = 1
+[checks]
+pass = ["starts-at-boot", "restarts-on-failure", "auto-update", "persistent-data", "secret-not-plaintext", "healthcheck"]

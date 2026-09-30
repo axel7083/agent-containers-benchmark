@@ -1,0 +1,12 @@
+FROM docker.io/library/node:22-slim@sha256:43ac6c60b8f89723f746e8a92ce91abd5017e627ce1ddfe4238355d3a30b772c
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+COPY server.js ./
+# OpenShift runs an arbitrary UID in group 0: give the root group the owner's rights.
+RUN mkdir -p /app/data && chgrp -R 0 /app/data && chmod -R g=u /app/data
+USER 1001
+ENV PORT=8080
+EXPOSE 8080
+HEALTHCHECK CMD ["node", "-e", "fetch('http://127.0.0.1:' + process.env.PORT + '/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+CMD ["node", "server.js"]

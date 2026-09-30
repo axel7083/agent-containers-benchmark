@@ -1,0 +1,24 @@
+family = "openshift"
+families = ["containerfile", "openshift"]
+
+[app]
+language = "node"
+port = 80
+needs_build = false
+
+[run]
+# OpenShift restricted-v2: arbitrary UID in the root group, no capabilities, no privilege escalation,
+# no privileged ports (podman otherwise lets containers bind low ports).
+args = ["--user", "40713:0", "--cap-drop=all", "--security-opt", "no-new-privileges", "--sysctl", "net.ipv4.ip_unprivileged_port_start=1024"]
+port_from_image = true
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 300
+
+[openshift]
+write_path = "/notes"

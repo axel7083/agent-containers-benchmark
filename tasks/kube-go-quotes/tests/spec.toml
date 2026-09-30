@@ -1,0 +1,14 @@
+family = "kube"
+gate = "kube"
+
+[app]
+language = "go"
+port = 8080
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[kube]
+secret_env = "DB_PASSWORD"

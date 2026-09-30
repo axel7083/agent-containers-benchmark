@@ -1,0 +1,3 @@
+reward = 0
+[checks]
+fail = ["starts-at-boot", "auto-update"]

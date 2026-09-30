@@ -1,0 +1,5 @@
+[Container]
+Image=notes:latest
+PublishPort=8080:8080
+Environment=DB_PASSWORD=hunter2
+Volume=/srv/notes:/var/lib/notes

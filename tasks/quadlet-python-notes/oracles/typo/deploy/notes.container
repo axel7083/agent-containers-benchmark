@@ -1,0 +1,6 @@
+[Container]
+Image=quay.io/acme/notes:latest
+AutoUpdates=registry
+
+[Install]
+WantedBy=multi-user.target

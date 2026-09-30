@@ -1,0 +1,23 @@
+family = "update-bots"
+families = ["containerfile", "update-bots"]
+
+[app]
+language = "node"
+port = 8080
+needs_build = false
+
+[probe]
+path = "/health"
+expect_status = 200
+expect_body = "ok"
+
+[budget]
+image_size_mb = 300
+
+[canary]
+file = ".env"
+value = "acb-canary-0be7d215"
+
+[bots]
+kind = "dependabot"
+existing = ["npm"]

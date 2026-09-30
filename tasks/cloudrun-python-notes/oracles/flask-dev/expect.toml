@@ -1,0 +1,4 @@
+reward = 1
+[checks]
+pass = ["honours-port-env"]
+fail = ["graceful-shutdown", "fast-sigterm", "logs-to-stdout", "non-root-user", "exec-form-entrypoint"]

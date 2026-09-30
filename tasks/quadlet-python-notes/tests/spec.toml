@@ -1,0 +1,10 @@
+family = "quadlet"
+gate = "quadlet"
+
+[app]
+language = "python"
+port = 8080
+
+[quadlet]
+data_dir = "/var/lib/notes"
+secret_env = "DB_PASSWORD"

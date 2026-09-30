@@ -1,0 +1,5 @@
+reward = 1
+[checks]
+pass = ["pss-run-as-non-root", "pss-no-privilege-escalation", "pss-drop-all-capabilities", "pss-seccomp-runtime-default",
+        "read-only-root-filesystem", "resource-requests-limits", "health-probes", "no-service-account-token",
+        "secret-from-secret-ref", "image-pinned"]

@@ -1,0 +1,3 @@
+reward = 1
+[checks]
+pass = ["bot-covers-containerfile", "bot-keeps-existing", "bot-config-valid", "base-digest-pinned", "non-root-user"]

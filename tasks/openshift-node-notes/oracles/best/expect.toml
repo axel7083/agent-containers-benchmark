@@ -1,0 +1,4 @@
+reward = 1
+[checks]
+pass = ["arbitrary-uid-writes", "unprivileged-port", "numeric-user", "no-world-writable", "non-root-user", "exec-form-entrypoint",
+        "base-digest-pinned", "fq-image-names", "deterministic-deps", "layer-cache-order", "ignore-file"]

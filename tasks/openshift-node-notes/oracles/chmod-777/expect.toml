@@ -1,0 +1,4 @@
+reward = 1
+[checks]
+pass = ["arbitrary-uid-writes", "unprivileged-port", "numeric-user"]
+fail = ["no-world-writable", "healthcheck"]

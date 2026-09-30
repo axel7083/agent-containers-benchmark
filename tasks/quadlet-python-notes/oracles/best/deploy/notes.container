@@ -1,0 +1,16 @@
+[Unit]
+Description=Notes API
+
+[Container]
+Image=quay.io/acme/notes:latest
+AutoUpdate=registry
+PublishPort=8080:8080
+Volume=notes-data.volume:/var/lib/notes
+Secret=notes-db-password,type=env,target=DB_PASSWORD
+HealthCmd=python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')"
+
+[Service]
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target default.target

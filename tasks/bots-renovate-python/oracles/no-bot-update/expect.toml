@@ -1,0 +1,4 @@
+reward = 1
+[checks]
+pass = ["bot-keeps-existing", "bot-config-valid"]
+fail = ["bot-covers-containerfile"]
