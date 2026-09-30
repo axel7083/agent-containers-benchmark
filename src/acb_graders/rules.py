@@ -29,13 +29,16 @@ ARM_INFO: dict[str, dict[str, str]] = {
 NUDGE = "Follow container best practices (security, reproducibility, image size) in your solution."
 
 
-def render(arm: str, family: str) -> str:
+def render(arm: str, families: str | list[str] | tuple[str, ...]) -> str:
+    """Text appended to a task's instruction; `families` are the check families the task is graded on."""
+    if isinstance(families, str):
+        families = [families]
     if arm == "implicit":
         return ""
     if arm == "nudge":
         return NUDGE + "\n"
     if arm == "explicit":
         lines = ["Follow these container best practices:"]
-        lines += [f"- {c.rule}" for c in CHECKS_BY_FAMILY[family] if c.weight > 0]
+        lines += [f"- {c.rule}" for family in families for c in CHECKS_BY_FAMILY[family] if c.weight > 0]
         return "\n".join(lines) + "\n"
     raise ValueError(f"unknown arm {arm!r}")

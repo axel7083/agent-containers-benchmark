@@ -28,6 +28,14 @@ def practice_score(results: list[CheckResult]) -> float | None:
     return sum(r.weight for r in scored if r.status == "pass") / total
 
 
+def _public(facts: dict) -> dict:
+    """Runtime facts for checks.json, without the parsed-file caches (keys starting with `_`)."""
+    return {
+        family: ({k: v for k, v in data.items() if not k.startswith("_")} if isinstance(data, dict) else data)
+        for family, data in facts.items()
+    }
+
+
 def grade(spec: Spec, app_dir: Path) -> dict:
     artifacts = Artifacts(app_dir=app_dir, spec=spec)
     artifacts.containerfile_path = gates.find_containerfile(app_dir)
@@ -39,7 +47,7 @@ def grade(spec: Spec, app_dir: Path) -> dict:
     except Exception as exc:  # grader crash is infra, never a model failure
         gate = gates.GateResult(failure_class="infra", log=[f"grader error: {type(exc).__name__}: {exc}"])
 
-    results = [check.run(artifacts) for check in CHECKS_BY_FAMILY[spec.family]]
+    results = [check.run(artifacts) for family in spec.families for check in CHECKS_BY_FAMILY[family]]
     uncond = practice_score(results) or 0.0
     passed = gate.passed
 
@@ -49,9 +57,8 @@ def grade(spec: Spec, app_dir: Path) -> dict:
     }
     if passed:
         reward["practice_cond"] = round(uncond, 4)
-    for name in ("artifact", "build", "start", "probe"):
-        if name in gate.gates:
-            reward[f"gate.{name}"] = 1.0 if gate.gates[name] else 0.0
+    for name, value in gate.gates.items():
+        reward[f"gate.{name}"] = 1.0 if value else 0.0
     for r in results:
         if r.status in ("pass", "fail"):
             reward[f"check.{r.id}"] = 1.0 if r.status == "pass" else 0.0
@@ -59,6 +66,8 @@ def grade(spec: Spec, app_dir: Path) -> dict:
     details = {
         "schema_version": SCHEMA_VERSION,
         "family": spec.family,
+        "families": spec.families,
+        "gate": spec.gate,
         "failure_class": gate.failure_class,
         "gates": gate.gates,
         "containerfile": str(artifacts.containerfile_path.relative_to(app_dir)) if artifacts.containerfile_path else None,
@@ -68,6 +77,7 @@ def grade(spec: Spec, app_dir: Path) -> dict:
             "image_user": artifacts.runtime.image_user,
             "process_uids": artifacts.runtime.process_uids,
             "hadolint": artifacts.runtime.hadolint,
+            "facts": _public(artifacts.runtime.facts),
         },
         "log": gate.log,
     }

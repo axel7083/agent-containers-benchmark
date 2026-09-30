@@ -197,14 +197,23 @@ def layer_cache_order(a: Artifacts) -> Result:
     return "na", "no dependency install step"
 
 
+def _shipped_stages(final: Stage) -> list[Stage]:
+    """The final stage and every stage it derives from (`FROM <stage>`): their layers ship."""
+    chain, seen, stage = [], set(), final
+    while stage is not None and stage.index not in seen:
+        seen.add(stage.index)
+        chain.append(stage)
+        stage = stage.base_stage
+    return chain
+
+
 def pkg_cache_cleaned(a: Artifacts) -> Result:
     cf = _cf(a)
     if cf is None:
         return _no_file()
-    final = cf.final_stage
-    installs = [r for r in final.find("RUN") if _PKG_INSTALL.search(r.args)]
+    installs = [r for stage in _shipped_stages(cf.final_stage) for r in stage.find("RUN") if _PKG_INSTALL.search(r.args)]
     if not installs:
-        return "na", "no OS package install in the final stage"
+        return "na", "no OS package install in the stages that ship"
     dirty = [r.line for r in installs if not _PKG_CLEAN.search(r.args)]
     return ("fail", f"package cache left behind (lines {dirty})") if dirty else ("pass", "package cache cleaned in the same layer")
 
@@ -328,12 +337,14 @@ CONTAINERFILE_CHECKS: tuple[Check, ...] = (
         not_applicable="No dependency install step, or a language without dependency manifests.",
     ),
     Check(
-        "pkg-cache-cleaned", "efficiency", "Clean the OS package manager cache in the same layer that installs packages.",
+        "pkg-cache-cleaned", "efficiency",
+        "Clean the OS package manager cache in the same layer that installs packages, in every stage that ends up in the final image.",
         ("dnf clean all", "rm -rf /var/lib/apt/lists/*", "apk --no-cache", "cache mounts"), 0.5, False, pkg_cache_cleaned,
         title="Package manager cache cleaned",
         why="Package indexes and caches left in a layer add tens of MB that no later layer can remove.",
-        how="Every `RUN` in the final stage that installs OS packages also cleans the cache (or uses `--no-cache` / a cache mount).",
-        not_applicable="The final stage installs no OS packages.",
+        how="Every `RUN` that installs OS packages in the final stage, or in a stage it derives from (`FROM <stage>`), also "
+        "cleans the cache (or uses `--no-cache` / a cache mount). Builder stages that are only copied from are ignored.",
+        not_applicable="No stage that ships installs OS packages.",
     ),
     Check(
         "healthcheck", "maintainability", "Declare a HEALTHCHECK for the service.", ("HEALTHCHECK instruction",), 0.5, False, healthcheck,
@@ -351,4 +362,10 @@ CONTAINERFILE_CHECKS: tuple[Check, ...] = (
     ),
 )
 
-CHECKS_BY_FAMILY: dict[str, tuple[Check, ...]] = {"containerfile": CONTAINERFILE_CHECKS}
+def _registry() -> dict[str, tuple[Check, ...]]:
+    from .families import FAMILY_CHECKS
+
+    return {"containerfile": CONTAINERFILE_CHECKS, **FAMILY_CHECKS}
+
+
+CHECKS_BY_FAMILY: dict[str, tuple[Check, ...]] = _registry()

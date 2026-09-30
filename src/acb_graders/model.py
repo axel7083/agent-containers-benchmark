@@ -23,10 +23,26 @@ class Probe:
 
 
 @dataclass
-class Spec:
-    """Contents of a task's `tests/spec.toml`."""
+class RunOptions:
+    """How the image gate runs the rebuilt image (e.g. OpenShift-like constraints)."""
 
-    family: str
+    env: dict[str, str] = field(default_factory=dict)
+    args: list[str] = field(default_factory=list)
+    # Use the image's first EXPOSEd port instead of `app.port` (the agent may legitimately change it).
+    port_from_image: bool = False
+
+
+@dataclass
+class Spec:
+    """Contents of a task's `tests/spec.toml`.
+
+    `gate` selects how "does it work" is decided (image | kube | quadlet); `families` lists the
+    check families the practice score is computed from. Family-specific settings live in their own
+    tables (`[bots]`, `[cloudrun]`, `[kube]`, ...) and are kept verbatim in `sections`.
+    """
+
+    gate: str
+    families: list[str]
     language: str
     port: int
     needs_build: bool = False
@@ -34,21 +50,33 @@ class Spec:
     canary_file: str | None = None
     canary_value: str | None = None
     probe: Probe = field(default_factory=Probe)
+    run: RunOptions = field(default_factory=RunOptions)
+    sections: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def family(self) -> str:
+        """Primary family (first in `families`)."""
+        return self.families[0]
 
     @classmethod
     def load(cls, path: Path) -> "Spec":
         data = tomllib.loads(path.read_text())
         app = data.get("app", {})
         canary = data.get("canary", {})
+        families = data.get("families") or [data["family"]]
+        known = {"family", "families", "gate", "app", "canary", "probe", "budget", "run"}
         return cls(
-            family=data["family"],
-            language=app["language"],
-            port=int(app["port"]),
+            gate=data.get("gate", "image"),
+            families=list(families),
+            language=app.get("language", ""),
+            port=int(app.get("port", 8080)),
             needs_build=bool(app.get("needs_build", False)),
             image_size_mb=data.get("budget", {}).get("image_size_mb"),
             canary_file=canary.get("file"),
             canary_value=canary.get("value"),
             probe=Probe(**data.get("probe", {})),
+            run=RunOptions(**data.get("run", {})),
+            sections={k: v for k, v in data.items() if k not in known},
         )
 
 
@@ -63,6 +91,8 @@ class Runtime:
     canary_in_filesystem: bool | None = None
     canary_in_history: bool | None = None
     hadolint: list[dict[str, Any]] | None = None
+    # Family-specific observations (e.g. {"cloudrun": {...}, "kube": {...}}).
+    facts: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

@@ -15,7 +15,9 @@ RUN dnf install -y --setopt=install_weak_deps=False \
 
 # Nested engine configuration: no systemd inside, storage on a volume
 # (overlay-on-overlay is not allowed), netavark bridge networking.
-COPY containers.conf /etc/containers/containers.conf
+# Podman 6 applies drop-ins after the main files, and Fedora's vendor drop-in selects journald
+# (absent here, so `podman logs` would be empty): ship our settings as a later drop-in.
+COPY containers.conf /etc/containers/containers.conf.d/99-acb.conf
 COPY storage.conf /etc/containers/storage.conf
 VOLUME ["/var/lib/containers", "/var/tmp"]
 
